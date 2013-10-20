@@ -87,5 +87,9 @@ class User < ActiveRecord::Base
     UserMailer.expire_email(self).deliver
     destroy
   end
-  
+
+  def self.find_by_email(email)
+    where("email = ?", email)
+  end
+
 end

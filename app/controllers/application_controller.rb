@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_path, :alert => exception.message
+    redirect_to authenticated_root_path, :alert => exception.message
   end
 
   def after_sign_in_path_for(resource)
@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
       when 'platinum'
         content_platinum_path
       else
-        root_path
+        authenticated_root_path
     end
   end
   

@@ -1,11 +1,12 @@
 class RegistrationsController < Devise::RegistrationsController
+  before_filter :configure_permitted_parameters
 
   def new
     @plan = params[:plan]
     if @plan && ENV["ROLES"].include?(@plan) && @plan != "admin"
       super
     else
-      redirect_to root_path, :notice => 'Please select a subscription plan below.'
+      redirect_to unauthenticated_root_path, :notice => 'Please select a subscription plan below.'
     end
   end
 
@@ -29,6 +30,12 @@ class RegistrationsController < Devise::RegistrationsController
       flash.alert = 'Unable to update card.'
       render :edit
     end
+  end
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up).push(:name, :stripe_token, :coupon)
   end
 
   private

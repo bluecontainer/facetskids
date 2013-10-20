@@ -6,7 +6,7 @@ def create_visitor
 end
 
 def find_user
-  @user ||= User.first conditions: {:email => @visitor[:email]}
+  @user ||= User.find_by_email(@visitor[:email]).first
 end
 
 def create_unconfirmed_user
@@ -24,7 +24,8 @@ def create_user
 end
 
 def delete_user
-  @user ||= User.first conditions: {:email => @visitor[:email]}
+  #@user ||= User.first conditions: {:email => @visitor[:email]}
+  @user ||= User.find_by_email(@visitor[:email]).first
   @user.destroy unless @user.nil?
 end
 
@@ -136,7 +137,12 @@ end
 When /^I delete my account$/ do
   click_link "Edit account"
   click_link "Cancel my account"
-  page.driver.browser.switch_to.alert.accept
+  if page.driver.class == Capybara::Selenium::Driver
+    page.driver.browser.switch_to.alert.accept
+  elsif page.driver.class == Capybara::Webkit::Driver
+    sleep 1 # prevent test from failing by waiting for popup
+    page.driver.browser.accept_js_confirms
+  end
 end
 
 When /^I follow the subscribe for silver path$/ do
@@ -188,11 +194,11 @@ Then /^I should see a missing password message$/ do
 end
 
 Then /^I should see a missing password confirmation message$/ do
-  page.should have_content "doesn't match confirmation"
+  page.should have_content "doesn't match Password"
 end
 
 Then /^I should see a mismatched password message$/ do
-  page.should have_content "doesn't match confirmation"
+  page.should have_content "doesn't match Password"
 end
 
 Then /^I should see a missing subscription plan message$/ do

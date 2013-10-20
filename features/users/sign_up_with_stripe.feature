@@ -19,7 +19,8 @@ Feature: User signs up with stripe
     Then I select "5 - May" as the "month"
     And I select "2015" as the "year"
     When I press "Sign up"
-    Then I should be on the "content silver" page
+    Then I wait 10 seconds
+    And I should be on the "content silver" page
     And I should see a successful sign up message
 
   @javascript
@@ -34,7 +35,8 @@ Feature: User signs up with stripe
     Then I select "1 - January" as the "month"
     And I select "2016" as the "year"
     When I press "Sign up"
-    Then I should be on the new silver user registration page
+    Then I wait 10 seconds
+    And I should be on the new silver user registration page
     And I should see "Your card number is incorrect"
 
   @javascript
@@ -49,7 +51,8 @@ Feature: User signs up with stripe
     Then I select "10 - October" as the "month"
     And I select "2016" as the "year"
     When I press "Sign up"
-    Then I should be on the new silver user registration page
+    Then I wait 10 seconds
+    And I should be on the new silver user registration page
     And I should see "Your card's security code is invalid"
 
     @javascript
@@ -64,7 +67,8 @@ Feature: User signs up with stripe
       Then I select "10 - October" as the "month"
       And I select "2016" as the "year"
       When I press "Sign up"
-      Then I should be on the "user registration" page
+      Then I wait 10 seconds
+      And I should be on the "user registration" page
       And I should see "declined"
 
 

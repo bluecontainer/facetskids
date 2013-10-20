@@ -4,9 +4,11 @@ RailsStripeMembershipSaas::Application.routes.draw do
   get "content/silver"
   get "content/platinum"
   authenticated :user do
-    root :to => 'home#index'
+    root :to => 'home#index', as: :authenticated_root
   end
-  root :to => "home#index"
+  unauthenticated do
+    root :to => "home#index", as: :unauthenticated_root
+  end
   devise_for :users, :controllers => { :registrations => 'registrations' }
   devise_scope :user do
     put 'update_plan', :to => 'registrations#update_plan'
