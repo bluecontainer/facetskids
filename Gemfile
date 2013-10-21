@@ -5,6 +5,7 @@ ruby '2.0.0'
 gem 'rails', '4.0.0'
 gem 'protected_attributes'
 gem 'sqlite3'
+gem 'pg'
 gem 'sass-rails',   '~> 4.0.0'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.0.3'
@@ -29,3 +30,4 @@ gem "quiet_assets", ">= 1.0.2", :group => :development
 gem "figaro", ">= 0.6.3"
 gem "better_errors", ">= 0.7.2", :group => :development
 gem "binding_of_caller", ">= 0.7.1", :group => :development, :platforms => [:mri_19, :rbx]
+gem 'rails_12factor', group: :production
