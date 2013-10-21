@@ -4,7 +4,7 @@ ruby '2.0.0'
 
 gem 'rails', '4.0.0'
 gem 'protected_attributes'
-gem 'sqlite3'
+gem 'sqlite3', :group => [:development, :test]
 gem 'pg'
 gem 'sass-rails',   '~> 4.0.0'
 gem 'coffee-rails', '~> 4.0.0'
