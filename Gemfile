@@ -9,7 +9,10 @@ gem 'pg'
 gem 'sass-rails',   '~> 4.0.0'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.0.3'
+
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
+
 gem "rspec-rails", ">= 2.12.2", :group => [:development, :test]
 gem "database_cleaner", ">= 1.0.0.RC1", :group => :test
 gem "email_spec", ">= 1.4.0", :group => :test
@@ -19,7 +22,13 @@ gem "capybara", ">= 2.0.3", :group => :test
 gem "capybara-webkit", :group => :test
 gem "factory_girl_rails", ">= 4.2.0", :group => [:development, :test]
 gem "teaspoon", ">= 0.7.4", :group => [:development, :test, :production]
-gem "bootstrap-sass", ">= 2.3.2.0"
+#gem "bootstrap-sass", ">= 2.3.2.0"
+
+gem 'therubyracer', platforms: :ruby
+gem 'less-rails'
+gem 'twitter-bootstrap-rails'
+gem 'designmodo-flatuipro-rails'
+
 gem "devise", ">= 3.1.1"
 gem "cancan", ">= 1.6.9"
 gem "rolify", :github => "EppO/rolify"
