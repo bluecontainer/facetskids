@@ -24,7 +24,7 @@ Feature: Delete User
       Then I select "5 - May" as the "month"
       And I select "2015" as the "year"
       When I press "Sign up"
-      Then I wait 5 seconds
+      Then I wait 10 seconds
       And I should be on the "content silver" page
       And I should see a successful sign up message
       When I delete my account

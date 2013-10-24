@@ -13,6 +13,8 @@
   <%= f.input :email, :required => true %>
   <%= f.input :password, :required => true %>
   <%= f.input :password_confirmation, :required => true %>
+
+  <% if params[:plan] != 'alpha' %>
   <% if @user.stripe_token %>
     <p>Credit card acceptance is pending.</p>
   <% else %>
@@ -34,5 +36,6 @@
     </div>
   <% end %>
   <%= f.hidden_field :stripe_token %>
+  <% end %>
   <%= f.button :submit, 'Sign up', :class => 'btn-primary' %>
 <% end %>

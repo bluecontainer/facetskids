@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
   def update_stripe
     return if email.include?(ENV['ADMIN_EMAIL'])
     return if email.include?('@example.com') and not Rails.env.production?
+    return if roles.first.name == 'alpha'
     if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."

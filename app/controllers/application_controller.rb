@@ -9,6 +9,8 @@ class ApplicationController < ActionController::Base
     case current_user.roles.first.name
       when 'admin'
         users_path
+      when 'alpha'
+        content_alpha_path
       when 'silver'
         content_silver_path
       when 'gold'

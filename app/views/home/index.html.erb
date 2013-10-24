@@ -3,6 +3,16 @@
   <h3>Learn to build a successful subscription site.</h3>
 </div>
 <div class="row span8 plans">
+
+  <div class="span2 well">
+    <div class="plan"><h2>Alpha</h2></div>
+    <ul class="unstyled">
+      <li>One lesson a month</li>
+    </ul>
+    <h3>Free</h3>
+    <%= link_to 'Subscribe', new_user_registration_path(:plan => 'alpha'), :class => 'btn btn-primary' %> 
+  </div>
+ 
   <div class="span2 well">
     <div class="plan"><h2>Silver</h2></div>
     <ul class="unstyled">
