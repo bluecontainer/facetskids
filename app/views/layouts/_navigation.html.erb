@@ -1,26 +1,29 @@
+<!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <%= link_to image_tag("FACETS-KIDS-SIGNUP2a2_0017_Layer-15.png"), unauthenticated_root_path, :class => 'brand' %>
+            <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+            <div class="nav-collapse collapse">
+              <ul class="nav pull-right" style="">
 <% if user_signed_in? %>
-<%= link_to "Rails Stripe Membership Saas", authenticated_root_path, :class => 'brand' %>
+                <li><%= link_to 'Logout', destroy_user_session_path, :method => 'delete' %></li>
 <% else %>
-<%= link_to "Rails Stripe Membership Saas", unauthenticated_root_path, :class => 'brand' %>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" href="#" data-toggle="dropdown">Manage Account<strong class="caret"></strong></a>
+                  <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px; width: auto;">
+<%= simple_form_for(:user, :url => session_path(:user), :html => {:class => 'form-vertical' }) do |f| %>
+  <%= f.input :email, :autofocus => true, :placeholder => "Email", :label => false %>
+  <%= f.input :password, :placeholder => "Password", :label => false %>
+  <%= f.input :remember_me, :as => :boolean if Devise.mappings[:user].rememberable? %>
+  <%= f.button :submit, "Sign in", :class => 'btn-primary' %>
 <% end %>
-<ul class="nav">
-  <% if user_signed_in? %>
-    <li>
-    <%= link_to 'Logout', destroy_user_session_path, :method=>'delete' %>        
-    </li>
-  <% else %>
-    <li>
-    <%= link_to 'Login', new_user_session_path %>  
-    </li>
-  <% end %>
-  <% if user_signed_in? %>
-    <li>
-    <%= link_to 'Edit account', edit_user_registration_path %>
-    </li>
-    <% if current_user.has_role? :admin %>
-      <li>
-      <%= link_to 'Admin', users_path %>
-      </li>
-    <% end %>
-  <% end %>
-</ul>
+                  </div>
+                </li>
+<% end %>
+                <li><a href="#about">About</a></li>
+              </ul>
+            </div><!--/.nav-collapse -->
+

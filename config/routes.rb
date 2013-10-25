@@ -1,4 +1,5 @@
 RailsStripeMembershipSaas::Application.routes.draw do
+  get "flatuipro_demo/index"
   mount StripeEvent::Engine => '/stripe'
   get "content/alpha"
   get "content/gold"

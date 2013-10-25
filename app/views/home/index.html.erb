@@ -1,40 +1,66 @@
-<div id="welcome" class="hero-unit span7">
-  <h1>Membership Site</h1>
-  <h3>Learn to build a successful subscription site.</h3>
-</div>
-<div class="row span8 plans">
+    <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide">
 
-  <div class="span2 well">
-    <div class="plan"><h2>Alpha</h2></div>
-    <ul class="unstyled">
-      <li>One lesson a month</li>
-    </ul>
-    <h3>Free</h3>
-    <%= link_to 'Subscribe', new_user_registration_path(:plan => 'alpha'), :class => 'btn btn-primary' %> 
-  </div>
- 
-  <div class="span2 well">
-    <div class="plan"><h2>Silver</h2></div>
-    <ul class="unstyled">
-      <li>One lesson a month</li>
-    </ul>
-    <h3>$9/month</h3>
-    <%= link_to 'Subscribe', new_user_registration_path(:plan => 'silver'), :class => 'btn btn-primary' %> 
-  </div>
-  <div class="span2 well featured">
-    <div class="plan featured-plan"><h2>Gold</h2></div>
-    <ul class="unstyled">
-      <li>Ten lessons a month</li>
-    </ul>
-    <h3>$19/month</h3>
-    <%= link_to 'Subscribe', new_user_registration_path(:plan => 'gold'), :class => 'btn btn-primary' %> 
-  </div>
-  <div class="span2 well">
-    <div class="plan"><h2>Platinum</h2></div>
-    <ul class="unstyled">
-      <li>Thirty lessons a month</li>
-    </ul>
-    <h3>$29/month</h3>
-    <%= link_to 'Subscribe', new_user_registration_path(:plan => 'platinum'), :class => 'btn btn-primary' %> 
-  </div>
-</div>
+      <ol class="carousel-indicators middle">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+        
+      <div class="carousel-inner">
+
+        <div class="item active" style="background-color: #6d2970; background-image: url(images/FACETS-KIDS-SIGNUP2a2_0001_Layer-30.png); background-repeat: no-repeat; background-position: center">
+          <div class="container">
+            <div class="carousel-caption" style="margin: 25% auto;">
+              <h3>Why should I become a Facets Kids Pioneer?</h3>
+              <%= link_to 'Sign up', new_user_registration_path(:plan => 'silver'), :class => 'btn btn-large btn-primary' %> 
+            </div>
+          </div>
+        </div>
+
+        <div class="item" style="background-color: #ec1f27; background-image: url(images/FACETS-KIDS-SIGNUP2a2_0005_Layer-30.png); background-repeat: no-repeat; background-position: center">
+          <div class="container">
+            <div class="carousel-caption" style="margin: 35% auto;">
+              <h3>Foster Global Citizens</h3>
+              <p class="lead">Access our rapidly growing library of 300 kids films from around the world</p>
+              <a class="btn btn-large btn-primary" href="#">Sign up</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" style="background-color: #faca0a; background-image: url(images/FACETS-KIDS-SIGNUP2a2_0005_Layer-35.png); background-repeat: no-repeat; background-position: center">
+          <div class="container">
+            <div class="carousel-caption" style="margin: 35% auto;">
+              <h3>Instill Critical Thinking</h3>
+              <p class="lead">Empower kids to actively explore, experience and respond to independent films</p>
+              <p class="lead">Developed by educators to foster social emotional learning, and instill critical thinking</p>
+              <a class="btn btn-large btn-primary" href="#">Sign up</a>
+            </div>
+          </div>
+        </div>
+          
+      </div>
+        
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+        
+    </div>
+
+    <script>
+      !function ($) {
+        $(function(){
+          // carousel demo
+          $('#myCarousel').carousel({
+              interval: 0
+          })
+          
+          $('#myCarousel').bind('slid', function() {
+              $('body').css('background-color', $('.item.active').css('background-color'));
+          });
+          $('body').css('background-color', $('.item.active').css('background-color'));
+     
+        })
+      }(window.jQuery)
+    </script>
+  
