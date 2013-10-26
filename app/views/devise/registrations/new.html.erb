@@ -57,22 +57,22 @@
 <div class="row">
   <div class="offset1 span11" ng-app ng-controller="Ctrl">
 <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'card_form form-vertical' }) do |f| %>
-  <%= hidden_field_tag 'plan', params[:plan] %>
+  <%= hidden_field_tag 'plan', "{{plan}}" %>
   <input type="radio" name="planOptions" value="alpha" ng-model="plan">
   Free alpha account (through December)<br/>
   <input type="radio" name="planOptions" value="silver" ng-model="plan">
   Contribute $50 or more (one year subscription)
   <%= f.error_notification %>
   <%= display_base_errors resource %>
-  <%= f.input :email, :required => true %>
-  <%= f.input :password, :required => true %>
-  <%= f.input :password_confirmation, :required => true %>
-
+  <%= f.input :email, :required => true, :placeholder => "Email" %>
+  <%= f.input :password, :required => true, :placeholder => "Password" %>
+  <%= f.input :password_confirmation, :required => true, :placeholder => "Password again" %>
+  <%= f.input :child_age, :required => true, :placeholder => "Child's age" %>
   <% if @user.stripe_token %>
     <p>Credit card acceptance is pending.</p>
   <% else %>
     <div ng-show="plan == 'silver'">
-    <%= f.input :name, :autofocus => true %> 
+    <%= f.input :name, :autofocus => true %>
     <div class="field">
       <%= label_tag :card_number, "Credit Card Number" %>
       <%= text_field_tag :card_number, nil, name: nil %>
@@ -87,6 +87,8 @@
       <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%>
     </div>
     </div>
+  <%= f.input :age_acknowledgement, :required => true, label: false, inline_label: 'I am over 13 years old', input_html: { :data => {:toggle => 'checkbox'} } %>
+  <%= f.input :terms_acknowledgement, :required => true, label: false, inline_label: 'I have read and agree to the Privacy Policy and Terms and Conditions', input_html: { :data => {:toggle => 'checkbox'} } %>
   <%= f.hidden_field :stripe_token %>
   <% end %>
   <%= f.button :submit, 'Sign up', :class => 'btn-primary' %>

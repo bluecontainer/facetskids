@@ -17,7 +17,7 @@
 <%= simple_form_for(:user, :url => session_path(:user), :html => {:class => 'form-vertical' }) do |f| %>
   <%= f.input :email, :autofocus => true, :placeholder => "Email", :label => false %>
   <%= f.input :password, :placeholder => "Password", :label => false %>
-  <%= f.input :remember_me, :as => :boolean if Devise.mappings[:user].rememberable? %>
+  <%= f.input :remember_me, :as => :boolean, :label => false, :inline_label => 'Remember me', input_html: { :data => {:toggle => 'checkbox'} } if Devise.mappings[:user].rememberable? %>
   <%= f.button :submit, "Sign in", :class => 'btn-primary' %>
 <% end %>
                   </div>
