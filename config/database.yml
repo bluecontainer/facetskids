@@ -28,7 +28,7 @@ production:
   database: production_stripe
   pool: 5
   timeout: 5000
-  host: 192.168.1.168
+  #host: 192.168.1.168
 
 cucumber:
   <<: *test
