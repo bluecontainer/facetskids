@@ -3,7 +3,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def new
     @plan = params[:plan]
-    if @plan && ENV["ROLES"].include?(@plan) && @plan != "admin"
+    if (@plan.nil?) || (@plan && ENV["ROLES"].include?(@plan) && @plan != "admin")
       super
     else
       redirect_to unauthenticated_root_path, :notice => 'Please select a subscription plan below.'

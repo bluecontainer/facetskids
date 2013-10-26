@@ -11,6 +11,8 @@
 <% if user_signed_in? %>
                 <li><%= link_to 'Logout', destroy_user_session_path, :method => 'delete' %></li>
 <% else %>
+                <li><%= link_to 'Manage account', new_user_session_path %></li>
+<!--
                 <li class="dropdown">
                   <a class="dropdown-toggle" href="#" data-toggle="dropdown">Manage Account<strong class="caret"></strong></a>
                   <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px; width: auto;">
@@ -21,6 +23,7 @@
   <%= f.button :submit, "Sign in", :class => 'btn-primary' %>
 <% end %>
                   </div>
+-->
                 </li>
 <% end %>
                 <li><a href="#about">About</a></li>
