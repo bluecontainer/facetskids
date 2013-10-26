@@ -10,7 +10,17 @@
         
       <div class="carousel-inner">
 
-        <div class="item active" style="background-color: #6d2970; background-image: url(<%= image_path("FACETS-KIDS-SIGNUP2a2_0001_Layer-30.png")%>); background-repeat: no-repeat; background-position: center">
+        <div class="item active" style="background-color: #27b7eb; background-image: url(<%= image_path("FACETS-KIDS-SIGNUP2a2_0002_Group-1.png")%>); background-repeat: no-repeat; background-position: center; background-size: 40%">
+          <div class="container">
+            <div class="carousel-caption" style="margin: 45% auto;">
+              <h3>Become a Trailblazer!</h3>
+              <p class="lead">Download the Facets Kids app and introduce your kids to the best shorts and films from around the world.</p>
+              <%= link_to 'Sign up', new_user_registration_path(:plan => 'alpha'), :class => 'btn btn-large btn-primary' %> 
+            </div>
+          </div>
+        </div>
+
+        <div class="item" style="background-color: #6d2970; background-image: url(<%= image_path("FACETS-KIDS-SIGNUP2a2_0001_Layer-30.png")%>); background-repeat: no-repeat; background-position: center; background-size: 50%;">
           <div class="container">
             <div class="carousel-caption" style="margin: 25% auto;">
               <h3>Why should I become a Facets Kids Pioneer?</h3>

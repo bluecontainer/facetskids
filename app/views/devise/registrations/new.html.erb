@@ -1,14 +1,5 @@
 <% content_for :head do %>
   <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
-  <style>
-    body {
-      padding-top: 120px;
-      background-color: #27b7eb;
-    }
-    #wrap {
-      margin: 0 auto -160px;    
-    }
-  </style>
   <%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js" %>
   <script>
     function Ctrl($scope) {
@@ -21,9 +12,16 @@
   </script>
 <% end %>
 
+<div ng-app ng-controller="Ctrl" style="padding-top: 120px">
+
 <div class="row">
   <div class="offset1 span7">
+    <div ng-show="plan == 'alpha'">
     <h4>Sign up now to create an account and become a pioneer. We will email you when the app goes live in mid-November</h4>
+    </div>
+    <div ng-show="plan == 'silver'">
+    <h4>Help us build the app and inspire the creators of tomorrow</h4>
+    </div>
   </div>
 </div>
 
@@ -58,7 +56,7 @@
 -->
 
 <div class="row">
-  <div class="offset1 span11" ng-app ng-controller="Ctrl">
+  <div class="offset1 span11">
 <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'card_form form-vertical' }) do |f| %>
   <%= hidden_field_tag 'plan', "{{plan}}" %>
   <input type="radio" name="planOptions" value="alpha" ng-model="plan">
@@ -70,7 +68,7 @@
   <%= f.input :email, :required => true, :placeholder => "Email" %>
   <%= f.input :password, :required => true, :placeholder => "Password" %>
   <%= f.input :password_confirmation, :required => true, :placeholder => "Password again" %>
-  <%= f.input :child_age, :required => true, :placeholder => "Child's age" %>
+  <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 5..15, input_html: { class: "select-block mbl"} %>
   <% if @user.stripe_token %>
     <p>Credit card acceptance is pending.</p>
   <% else %>
@@ -97,4 +95,5 @@
   <%= f.button :submit, 'Sign up', :class => 'btn-primary' %>
 <% end %>
   </div>
+</div>
 </div>

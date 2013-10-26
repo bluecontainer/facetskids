@@ -5,10 +5,11 @@
     html,
     body {
       height: 100%;
+
     }
     body {
-      /*padding-bottom: 40px;*/
-      color: #5a5a5a;
+      background-color: #27b7eb; 
+      /*color: #5a5a5a;*/
     }
 
     #wrap {
