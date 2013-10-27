@@ -11,7 +11,7 @@ FacetsKids::Application.configure do
   config.action_controller.perform_caching = false
 
   # ActionMailer Config
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { :host => ENV["HOST"] }
   config.action_mailer.delivery_method = :smtp
   # change to true to allow email to be sent during development
   config.action_mailer.perform_deliveries = true
@@ -19,13 +19,13 @@ FacetsKids::Application.configure do
   config.action_mailer.default :charset => "utf-8"
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: 587,
+    address: ENV["SMTP_ADDRESS"],
+    port: ENV["SMTP_PORT"],
     domain: "example.com",
     authentication: "plain",
     enable_starttls_auto: true,
-    user_name: ENV["GMAIL_USERNAME"],
-    password: ENV["GMAIL_PASSWORD"]
+    user_name: ENV["MAIL_USERNAME"],
+    password: ENV["MAIL_PASSWORD"]
   }
 
 
