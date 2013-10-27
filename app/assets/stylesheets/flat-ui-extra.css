@@ -38,7 +38,9 @@
 .login-form {
   background-color: #edeff1;
   padding: 24px 23px 20px;
+  width: 210px;
   position: relative;
+  margin: 0 auto;
   border-radius: 6px;
 }
 login-form .control-group {

@@ -50,7 +50,6 @@
 
     <div id="main" role="main">
       <div class="container">
-        <%= render 'layouts/messages' %>
         <%= yield %>
       </div>
     </div>
@@ -60,9 +59,22 @@
   </div>
 
 
-  <div id="footer" align="center">
-    <p><a href="#">FAQ</a> | <a href="#">Privacy</a> | <a href="#">Terms</a> | <a href="#">About</a> | <a href="#">Contact</a></p>
+  <div class="bottom-menu" style="padding: 10px; margin-left: 25%; width: 50%;">
+    <div class="container">
+      <div class="row">
+        <div class="offset2 span6">
+          <ul class="bottom-links">
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 
   </body>
 </html>
+
+<% flash[:error] = flash[:errors] = flash[:notice] = nil %>

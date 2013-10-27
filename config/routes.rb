@@ -2,9 +2,7 @@ FacetsKids::Application.routes.draw do
   get "flatuipro_demo/index"
   mount StripeEvent::Engine => '/stripe'
   get "content/alpha"
-  get "content/gold"
   get "content/silver"
-  get "content/platinum"
   authenticated :user do
     root :to => 'home#index', as: :authenticated_root
   end

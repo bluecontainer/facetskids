@@ -116,15 +116,15 @@ describe User do
   describe "#update_plan" do
     before do
       @user = FactoryGirl.create(:user, email: "test@example.com")
-      @role1 = FactoryGirl.create(:role, name: "silver")
-      @role2 = FactoryGirl.create(:role, name: "gold")
+      @role1 = FactoryGirl.create(:role, name: "alpha")
+      @role2 = FactoryGirl.create(:role, name: "silver")
       @user.add_role(@role1.name)
     end
 
     it "updates a users role" do
-      @user.roles.first.name.should == "silver"
+      @user.roles.first.name.should == "alpha"
       @user.update_plan(@role2)
-      @user.roles.first.name.should == "gold"
+      @user.roles.first.name.should == "silver"
     end
 
     it "wont remove original role from database" do

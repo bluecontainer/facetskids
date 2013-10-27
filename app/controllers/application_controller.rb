@@ -13,10 +13,6 @@ class ApplicationController < ActionController::Base
         content_alpha_path
       when 'silver'
         content_silver_path
-      when 'gold'
-        content_gold_path
-      when 'platinum'
-        content_platinum_path
       else
         authenticated_root_path
     end

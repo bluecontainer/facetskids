@@ -21,7 +21,7 @@ FacetsKids::Application.configure do
   config.action_mailer.smtp_settings = {
     address: ENV["SMTP_ADDRESS"],
     port: ENV["SMTP_PORT"],
-    domain: "example.com",
+    #domain: "example.com",
     authentication: "plain",
     enable_starttls_auto: true,
     user_name: ENV["MAIL_USERNAME"],
