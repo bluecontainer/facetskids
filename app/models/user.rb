@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
       end
+
       if coupon.blank?
         customer = Stripe::Customer.create(
           :email => email,
@@ -59,9 +60,23 @@ class User < ActiveRecord::Base
       customer.description = name
       customer.save
     end
+
     self.last_4_digits = customer.cards.data.first["last4"]
     self.customer_id = customer.id
     self.stripe_token = nil
+
+    plan = Stripe::Plan.retrieve(roles.first.name)
+    unless plan.nil?
+      donation_charge = (donation_amt * 100) - plan.amount
+      if donation_charge > 0
+        Stripe::Charge.create(
+          :amount => donation_charge,
+          :currency => "usd",
+          :customer => customer_id
+        )
+      end  
+    end
+
   rescue Stripe::StripeError => e
     logger.error "Stripe Error: " + e.message
     errors.add :base, "#{e.message}."
