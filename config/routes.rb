@@ -9,7 +9,7 @@ FacetsKids::Application.routes.draw do
   unauthenticated do
     root :to => "home#index", as: :unauthenticated_root
   end
-  devise_for :users, :controllers => { :registrations => 'registrations' }
+  devise_for :users, :controllers => { :registrations => 'registrations', :invitations => 'invitations' }
   devise_scope :user do
     put 'update_plan', :to => 'registrations#update_plan'
     put 'update_card', :to => 'registrations#update_card'

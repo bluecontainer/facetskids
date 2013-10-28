@@ -4,7 +4,10 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :invitable
+
+  has_many :invitations, :class_name => self.to_s, :as => :invited_by
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token, :coupon, :child_age, :age_acknowledgement, :terms_acknowledgement, :donation_amt
@@ -29,7 +32,9 @@ class User < ActiveRecord::Base
   def update_stripe
     return if email.include?(ENV['ADMIN_EMAIL'])
     return if email.include?('@example.com') and not Rails.env.production?
+    return if roles.empty?
     return if roles.first.name == 'alpha'
+    logger.debug roles.to_json
     if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."

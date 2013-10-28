@@ -30,6 +30,7 @@ gem 'twitter-bootstrap-rails'
 gem 'designmodo-flatuipro-rails'
 
 gem "devise", ">= 3.1.1"
+gem "devise_invitable"
 gem "cancan", ">= 1.6.9"
 gem "rolify", :github => "EppO/rolify"
 gem "simple_form", ">= 3.0.0"

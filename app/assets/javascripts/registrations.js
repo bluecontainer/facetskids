@@ -5,7 +5,9 @@ $('.registrations').ready(function() {
         setupForm: function() {
           return $('.card_form').submit(function() {
             $('input[type=submit]').prop('disabled', true);
-            if ($('#card_number').length) {
+            //if ($('#card_number').length && $('#card_number').value() != "") {
+            if ($('#card_number').length && $('#card_number')[0].value != "") {
+            //if ($('#card_number').length) {
               subscription.processCard();
               return false;
             } else {
