@@ -20073,7 +20073,7 @@ $(function () {
 
   $(document).on('click.radio.data-api', '[data-toggle^=radio], .radio', function (e) {
     var $radio = $(e.target);
-    e && e.preventDefault() && e.stopPropagation();
+    //e && e.preventDefault() && e.stopPropagation();
     if (!$radio.hasClass('radio')) $radio = $radio.closest('.radio');
     $radio.find(':radio').radio('toggle');
   });
@@ -20887,7 +20887,7 @@ jQuery.externalScript = function(url, options) {
     }
   }
 })(jQuery);
-$('.registrations').ready(function() {
+$('.registrations, .invitations').ready(function() {
   $.externalScript('https://js.stripe.com/v1/').done(function(script, textStatus) {
       Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
       var subscription = {
