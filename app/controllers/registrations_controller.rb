@@ -1,19 +1,31 @@
 class RegistrationsController < Devise::RegistrationsController
   before_filter :configure_permitted_parameters
 
+  def after_sign_up_path_for(resource)
+    case current_user.roles.first.name
+      when 'alpha'
+        content_alpha_path
+      when 'silver'
+        content_silver_path
+    end
+  end
+
+  # GET /resource/sign_up
   def new
     @plan = params[:plan]
     if (@plan.nil?) || (@plan && ENV["ROLES"].include?(@plan) && @plan != "admin")
-      super
+      build_resource({})
+      if @plan.nil?
+        self.resource.plan = :alpha
+      else
+        self.resource.plan = @plan
+      end
+      
+      respond_with self.resource
     else
       redirect_to unauthenticated_root_path, :notice => 'Please select a subscription plan below.'
     end
   end
-
-      def clear_invitation
-        self.invitation_token = nil
-      end
-
 
   # POST /resource
   def create
@@ -30,15 +42,12 @@ class RegistrationsController < Devise::RegistrationsController
         respond_with resource, :location => after_inactive_sign_up_path_for(resource)
       end
     else
-      logger.debug resource.to_json
-      logger.debug resource.errors.to_json
+      resource.plan = params[:plan]
 
       original_resource = resource;
+
       resource = resource_class.find_by(email: sign_up_params["email"])
       if !resource.nil? && resource.invited_to_sign_up?
-
-        logger.debug resource.to_json
-        logger.debug "invited_to_sign_up? = #{resource.invited_to_sign_up?}"
 
         resource.assign_attributes(sign_up_params)
         resource.invitation_token = nil

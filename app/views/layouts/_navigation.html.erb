@@ -10,8 +10,8 @@
               <ul class="nav pull-right" style="">
 <% if user_signed_in? %>
                 <li><%= link_to 'Logout', destroy_user_session_path, :method => 'delete' %></li>
-<% else %>
-                <li><%= link_to 'Manage account', new_user_session_path %></li>
+<% end %>
+                <li><%= link_to 'Manage account', user_session_path %></li>
 <!--
                 <li class="dropdown">
                   <a class="dropdown-toggle" href="#" data-toggle="dropdown">Manage Account<strong class="caret"></strong></a>
@@ -25,7 +25,6 @@
                   </div>
 -->
                 </li>
-<% end %>
                 <li><a href="#about">About</a></li>
               </ul>
             </div><!--/.nav-collapse -->

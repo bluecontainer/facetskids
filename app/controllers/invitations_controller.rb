@@ -1,6 +1,14 @@
 class InvitationsController < Devise::InvitationsController
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
+  # GET /resource/invitation/accept?invitation_token=abcdef
+  def edit
+    resource.invitation_token = params[:invitation_token]
+    resource.plan = "alpha"
+    render :edit
+  end
+
+
   # PUT /resource/invitation
   def update
     logger.debug update_resource_params

@@ -10,8 +10,8 @@ class User < ActiveRecord::Base
   has_many :invitations, :class_name => self.to_s, :as => :invited_by
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token, :coupon, :child_age, :age_acknowledgement, :terms_acknowledgement, :donation_amt
-  attr_accessor :stripe_token, :coupon
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token, :coupon, :child_age, :age_acknowledgement, :terms_acknowledgement, :donation_amt, :plan
+  attr_accessor :stripe_token, :coupon, :plan
   before_save :update_stripe
   before_destroy :cancel_subscription
 

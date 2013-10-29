@@ -3,11 +3,7 @@
   <%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js" %>
   <script>
     function Ctrl($scope) {
-      <% if params[:plan] %>
-      $scope.plan = "<%= params[:plan] %>";
-      <% else %>
-      $scope.plan = "alpha";
-      <% end %>
+      $scope.plan = "<%= resource.plan %>";
     }
   </script>
 <% end %>
@@ -32,38 +28,11 @@
   </div>
 </div>
 
-<!--
-<div class="row">
-  <div class="offset1 span 11">
-    <form name="planForm" ng-app ng-controller="Ctrl">
-          <input type="radio" name="planOptions" value="alpha" ng-model="plan">
-          Free alpha account (through December)<br/>
-          <input type="radio" name="planOptions" value="pioneer" ng-model="plan">
-          Contribute $50 or more (one year subscription)
--->
-      <!--label class="radio">
-          <input type="radio" name="planOptions" value="alpha" data-toggle="radio" ng-model="plan">
-          Free alpha account (through December)
-      </label>
-      <label class="radio">
-          <input type="radio" name="planOptions" value="pioneer" data-toggle="radio" ng-model="plan">
-          Contribute $50 or more (one year subscription)
-      </label-->
-<!--
-    </form>
-  </div>
-</div>
--->
-
 <div class="row">
   <div class="offset1 span11">
 <%= simple_form_for(resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:class => 'card_form form-vertical', :method => :put}) do |f| %>
 
-  <input type="radio" name="plan" value="alpha" ng-model="plan">
-  Free alpha account (through December)<br/>
-  <input type="radio" name="plan" value="silver" ng-model="plan">
-  Contribute $50 or more (one year subscription)
-
+  <%= f.input :plan, as: :radio_buttons, label: false, collection: [ ["alpha","Free alpha account (through December)"], ["silver","Contribute $50 or more (one year subscription)"]], label_method: :last, value_method: :first, input_html: { "ng-model" => "plan", :data => {:toggle => 'radio'} } %>
   <%= f.error_notification %>
   <%= display_base_errors resource %>
 
@@ -73,10 +42,7 @@
   <%= f.input :password, :required => true, :placeholder => "Password", :autofocus => true %>
   <%= f.input :password_confirmation, :required => true, :placeholder => "Password again" %>
   <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 5..15, input_html: { class: "select-block mbl"} %>
-  <% if @user.stripe_token %>
-    <p>Credit card acceptance is pending.</p>
-  <% else %>
-    <div ng-show="plan == 'silver'">
+  <div ng-show="plan == 'silver'">
     <%= f.input :donation_amt, :placeholder => "Donation", collection: 50..200, input_html: { class: "select-block mbl"} %>
     <%= f.input :name %>
     <div class="field">
@@ -95,8 +61,8 @@
     </div>
   <%= f.input :age_acknowledgement, :required => true, label: false, inline_label: 'I am over 13 years old', input_html: { :data => {:toggle => 'checkbox'} } %>
   <%= f.input :terms_acknowledgement, :required => true, label: false, inline_label: 'I have read and agree to the Privacy Policy and Terms and Conditions', input_html: { :data => {:toggle => 'checkbox'} } %>
+  <%= hidden_field_tag "plan", "{{plan}}" %>
   <%= f.hidden_field :stripe_token %>
-  <% end %>
   <%= f.button :submit, 'Sign up', :class => 'btn-primary' %>
 <% end %>
   </div>
