@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h1>Message received at <%= @contact.received_at %></h1>
+    <p>
+      <%= "#{@contact.name} <#{@contact.email}>" %>
+    </p>
+    <p>
+      <%= @contact.message %>
+    </p>
+  </body>
+</html>

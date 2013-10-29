@@ -15,4 +15,6 @@ FacetsKids::Application.routes.draw do
     put 'update_card', :to => 'registrations#update_card'
   end
   resources :users
+
+  resources :contacts, only: [:new, :create]
 end

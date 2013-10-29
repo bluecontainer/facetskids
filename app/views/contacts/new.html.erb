@@ -1,0 +1,27 @@
+<div class="row" style="padding-top: 180px">
+  <div class="offset1 span8">
+    <%= render 'layouts/messages' %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="offset1 span4"> 
+    <h4>Give us a shout</h1>
+    <p>
+    Facets Kids<br/>
+    1517 W. Fullerton Ave<br/>
+    Chicago, IL, 60614<br/>
+    (773) 281-9075<br/>
+    facetskids@facets.org<br/>
+    </p>
+  </div>
+  <div class="span7">
+<%= simple_form_for(@contact, :html => {:class => "form-vertical"}) do |f| %>
+  <%= f.input :name, :required => true, :placeholder => "Name", :autofocus => true %>
+  <%= f.input :email, :required => true, :placeholder => "Email" %>
+  <%= f.input :message, as: :text, :required => true %>
+
+  <%= f.button :submit, 'Send Message', :class => 'btn-primary'  %>
+<% end %>
+  </div>
+</div>
