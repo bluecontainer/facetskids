@@ -1,8 +1,8 @@
 class ContactMailer < ActionMailer::Base
-  default :from => ENV["MAIL_SENDER"]
+  default :from => ENV["MAIL_FROM"]
   
   def new_contact(contact)
     @contact = contact
-    mail(:to => ENV["MAIL_SENDER"], :subject => "FacetsKids - Message from Contact Page")
+    mail(:to => ENV["CONTACT_MAIL_TO"], :subject => "FacetsKids - Message from Contact Page")
   end
 end
