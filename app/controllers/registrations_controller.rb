@@ -10,6 +10,10 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def after_invite_path_for(resource)
+    authenticated_root_path
+  end
+
   # GET /resource/sign_up
   def new
     @plan = params[:plan]
@@ -118,6 +122,19 @@ class RegistrationsController < Devise::RegistrationsController
       flash.alert = 'Unable to update card.'
       render :edit
     end
+  end
+
+  def add_invitations
+    @user = current_user
+    @user.invite_users(params[:email_invitations].split(","))
+
+    if resource.errors.empty?
+      set_flash_message :notice, :send_instructions, :email => self.resource.email if self.resource.invitation_sent_at
+      respond_with resource, :location => after_invite_path_for(resource)
+    else
+      respond_with_navigational(resource) { render :new }
+    end    
+    #respond_with resource, :location => after_invite_path_for(resource)
   end
 
   protected

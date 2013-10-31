@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   rolify
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -7,14 +8,20 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :invitable
 
-  has_many :invitations, :class_name => self.to_s, :as => :invited_by
+  #has_many :invitations, :class_name => self.to_s, :foreign_key => :invited_by_id
   has_and_belongs_to_many :mail_lists, :join_table => :users_mail_lists
 
+  validates :age_acknowledgement, presence: true
+  validates :terms_acknowledgement, presence: true
+
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token, :coupon, :child_age, :age_acknowledgement, :terms_acknowledgement, :donation_amt, :plan, :mail_list_ids
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token, :coupon, :child_age, :age_acknowledgement, :terms_acknowledgement, :donation_amt, :plan, :mail_list_ids, :skip_invitation
   attr_accessor :stripe_token, :coupon, :plan
+
   before_save :update_stripe
   before_destroy :cancel_subscription
+
+
 
   def has_credit_card?
     !customer_id.nil?
@@ -127,8 +134,11 @@ class User < ActiveRecord::Base
 
     if !mail_lists.include?(mail_list)
       self.mail_list_ids |= [mail_list.id]
-      #self.class.adapter.add(self, mail_list)
     end
     mail_list
+  end
+
+  def invite_users(invitation_emails)
+    invitation_emails.each { |x| User.invite!( {:email => x, :skip_invitation => true}, self) }
   end
 end

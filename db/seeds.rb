@@ -20,11 +20,11 @@ mail_list = MailList.find_or_create_by_name( :name => "research_invitations", :d
 puts 'mail list: ' << mail_list.name
 
 puts 'DEFAULT USERS'
-user = User.find_or_create_by_email :name => ENV['ADMIN_NAME'].dup, :email => ENV['ADMIN_EMAIL'].dup, :password => ENV['ADMIN_PASSWORD'].dup, :password_confirmation => ENV['ADMIN_PASSWORD'].dup
-puts 'user: ' << user.name
+user = User.find_or_create_by_email :name => ENV['ADMIN_NAME'].dup, :email => ENV['ADMIN_EMAIL'].dup, :password => ENV['ADMIN_PASSWORD'].dup, :password_confirmation => ENV['ADMIN_PASSWORD'].dup, :age_acknowledgement => true, :terms_acknowledgement => true
 user.add_role :admin
+puts 'user: ' << user.name
 
-user = User.find_or_create_by_email :name => 'Ben Spark', :email => 'ben@toca.com', :password => 'password', :password_confirmation => 'password', :child_age => 9
+user = User.find_or_create_by_email :name => 'Ben Spark', :email => 'ben@toca.com', :password => 'password', :password_confirmation => 'password', :child_age => 9, :age_acknowledgement => true, :terms_acknowledgement => true
 user.add_role :alpha
 user.add_mail_list :product_updates
 puts "user: #{user.name}"

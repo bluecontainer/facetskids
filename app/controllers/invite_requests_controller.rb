@@ -7,7 +7,11 @@ class InviteRequestsController < ApplicationController
     @inviterequest = InviteRequest.new(params[:invite_request])
     @inviterequest.received_at = Time.now.utc
     if @inviterequest.valid?
+
+      User.invite!({:email => @inviterequest.email })
+
       InviteRequestMailer.new_inviterequest(@inviterequest).deliver
+
       redirect_to unauthenticated_root_path, :notice => "Thank you so much for your interest in the Facets Kids streaming portal. We appreciate your pioneering spirit! We will notify you by email as soon as you can set up your free account."
     else
       render :new

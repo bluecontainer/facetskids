@@ -29,5 +29,8 @@ class ApplicationController < ActionController::Base
         authenticated_root_path
     end
   end
-  
+
+  def after_invite_path_for(resource)
+    authenticated_root_path
+  end
 end

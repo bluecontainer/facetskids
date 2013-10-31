@@ -22,7 +22,14 @@
 
 <div class="row" style="padding-top: 20px;">
   <div class="offset1 span8" style="top-padding: 10px;">
-  <input name="email_invitations" class="tagsinput tagsinput-primary" />
+
+    <%= simple_form_for(current_user, :as => :User, :url => add_invitations_path, :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
+      <%= f.error_notification %>
+      <%= display_base_errors current_user %>
+      <input name="email_invitations" class="tagsinput tagsinput-primary" />
+      <%= f.button :submit, 'Invite', :class => 'btn-primary' %>
+    <% end %>
   </div>
 </div>
+
 </div>
