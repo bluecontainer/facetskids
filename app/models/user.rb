@@ -15,7 +15,9 @@ class User < ActiveRecord::Base
   validates :terms_acknowledgement, presence: true
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token, :coupon, :child_age, :age_acknowledgement, :terms_acknowledgement, :donation_amt, :plan, :mail_list_ids, :skip_invitation
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
+                  :stripe_token, :coupon, :child_age, :age_acknowledgement, 
+                  :terms_acknowledgement, :donation_amt, :plan, :mail_list_ids, :skip_invitation
   attr_accessor :stripe_token, :coupon, :plan
 
   before_save :update_stripe
@@ -78,7 +80,7 @@ class User < ActiveRecord::Base
             Stripe::Charge.create(
               :amount => donation_charge,
               :currency => "usd",
-              :customer => customer_id
+              :customer => customer.id
             )
           end  
         end
