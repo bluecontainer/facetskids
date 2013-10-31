@@ -124,9 +124,12 @@ class RegistrationsController < Devise::RegistrationsController
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up).push(:name, :stripe_token, :coupon, :child_age, :age_acknowledgement, :terms_acknowledgement, :donation_amt)
+    devise_parameter_sanitizer.for(:account_update).push(:name, :mail_list_ids => [] )
   end
 
+
   private
+
   def build_resource(*args)
     super
     if params[:plan]

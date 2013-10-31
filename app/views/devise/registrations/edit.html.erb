@@ -1,51 +1,54 @@
 <% content_for :head do %>
   <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
 <% end %>
-<h2>Account</h2>
-<div id="stripe_error" class="alert alert-error" style="display:none" ></div>
-<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
-  <%= f.error_notification %>
-  <%= display_base_errors resource %>
-  <%= f.input :name, :autofocus => true %>
-  <%= f.input :email, :required => true %>
-  <%= f.input :password, :autocomplete => "off", :hint => "leave it blank if you don't want to change it", :required => false %>
-  <%= f.input :password_confirmation, :required => false %>
-  <%= f.input :current_password, :hint => "we need your current password to confirm your changes", :required => true %>
-  <%= f.button :submit, 'Update', :class => 'btn-primary' %>
-<% end %>
 
-<h3>Subscription Plan</h3>
-<p>
-  <%= @user.roles.first.name.titleize %>
-  <a data-toggle="modal" href="#plan-options" class="btn btn-mini" type="button">Change plan</a>
-</p>
-
-<h3>Card</h3>
-<p>
-  Using card ending with <%= @user.last_4_digits %>
-  <a data-toggle="modal" href="#card-data" class="btn btn-mini" type="button">Change card</a>
-</p>
-
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-mini' %></p>
-
-<div id="plan-options" class="modal" style="display: none;">
-  <%= simple_form_for resource, :as => resource_name, :url => update_plan_path, :html => {:method => :put, :class => 'form-horizontal' } do |f| %>
-    <div class="modal-header">
-      <a class="close" data-dismiss="modal">&#215;</a>
-      <h3>Change Plan</h3>
-    </div>
-    <div class="modal-body">
-      <%= f.input :role_ids, :collection => Role.all.delete_if {|i| i.name == 'admin'}, :as => :radio_buttons, :label_method => lambda {|t| t.name.titleize}, :label => false, :item_wrapper_class => 'inline' %>
-    </div>
-    <div class="modal-footer">
-      <%= f.submit "Change Plan", :class => "btn btn-primary" %>
-      <a class="btn" data-dismiss="modal" href="#">Close</a>
-    </div>
-  <% end %>
+<div class="row" style="padding-top: 120px;">
+  <div class="offset1">
+    <h4>Account</h4>
+  </div>
 </div>
 
+<div class="row">
+  <div class="offset1 span11">
+
+    <%= render 'layouts/messages' %>
+
+  </div>
+</div>
+
+<div class="row">
+    <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
+  <div class="offset1 span5">
+    <div id="stripe_error" class="alert alert-error" style="display:none" ></div>
+      <%= f.error_notification %>
+      <%= display_base_errors resource %>
+      <%= f.input :name, :autofocus => true %>
+      <%= f.input :email, :required => true %>
+      <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 5..15, input_html: { class: "select-block mbl"} %>
+      <%= f.input :password, :autocomplete => "off", :hint => "Leave it blank if you don't want to change it", :required => false %>
+      <%= f.input :password_confirmation, :required => false %>
+      <%= f.input :current_password, :hint => "We need your current password to confirm your changes", :required => true %>
+
+      <%= f.button :submit, 'Update', :class => 'btn-primary' %>
+  </div>
+  <div class="span6">
+      <%= f.association :mail_lists, label_method: :description, as: :check_boxes, input_html: { :data => {:toggle => 'checkbox'} } %>
+
+<% if @user.has_credit_card? %>
+      <br/>
+      <h4>Credit Card</h4>
+      <p>
+        Using card ending with <%= @user.last_4_digits %>
+        <a data-toggle="modal" href="#card-data" class="btn btn-mini" type="button">Change card</a>
+      </p>
+<% end %>
+
+  </div>
+
+    <% end %>
+</div>
+
+<% if @user.has_credit_card? %>
 <div id="card-data" class="modal" style="display: none;">
   <%= simple_form_for resource, :as => resource_name, :url => update_card_path, :html => {:method => :put, :class => 'form-horizontal card_form' } do |f| %>
     <div class="modal-header">
@@ -76,3 +79,4 @@
     </div>
   <% end %>
 </div>
+<% end %>

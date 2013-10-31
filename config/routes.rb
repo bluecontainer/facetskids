@@ -6,7 +6,7 @@ FacetsKids::Application.routes.draw do
   end
   unauthenticated do
     #root :to => "home#index", as: :unauthenticated_root
-    root :to => "invite_requests#new", as: :inviteonly_root
+    root :to => "invite_requests#new", as: :unauthenticated_root
   end
   devise_for :users, :controllers => { :registrations => 'registrations', :invitations => 'invitations' }
   devise_scope :user do

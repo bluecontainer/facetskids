@@ -10,8 +10,10 @@
               <ul class="nav pull-right" style="">
 <% if user_signed_in? %>
                 <li><%= link_to 'Logout', destroy_user_session_path, :method => 'delete' %></li>
-<% end %>
+                <li><%= link_to 'Manage account', edit_user_registration_path %></li>
+<% else %>
                 <li><%= link_to 'Manage account', user_session_path %></li>
+<% end %>
 <!--
                 <li class="dropdown">
                   <a class="dropdown-toggle" href="#" data-toggle="dropdown">Manage Account<strong class="caret"></strong></a>

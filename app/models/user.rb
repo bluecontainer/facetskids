@@ -8,12 +8,17 @@ class User < ActiveRecord::Base
          :invitable
 
   has_many :invitations, :class_name => self.to_s, :as => :invited_by
+  has_and_belongs_to_many :mail_lists, :join_table => :users_mail_lists
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token, :coupon, :child_age, :age_acknowledgement, :terms_acknowledgement, :donation_amt, :plan
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :stripe_token, :coupon, :child_age, :age_acknowledgement, :terms_acknowledgement, :donation_amt, :plan, :mail_list_ids
   attr_accessor :stripe_token, :coupon, :plan
   before_save :update_stripe
   before_destroy :cancel_subscription
+
+  def has_credit_card?
+    !customer_id.nil?
+  end
 
   def update_plan(role)
     self.role_ids = []
@@ -32,9 +37,10 @@ class User < ActiveRecord::Base
   def update_stripe
     return if email.include?(ENV['ADMIN_EMAIL'])
     return if email.include?('@example.com') and not Rails.env.production?
+
     return if roles.empty?
-    return if roles.first.name == 'alpha'
-    logger.debug roles.to_json
+    return if roles.first.name == "alpha"
+
     if customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
@@ -56,6 +62,21 @@ class User < ActiveRecord::Base
           :coupon => coupon
         )
       end
+
+      if !donation_amt.nil?
+        plan = Stripe::Plan.retrieve(roles.first.name)
+        unless plan.nil?
+          donation_charge = (donation_amt * 100) - plan.amount
+          if donation_charge > 0
+            Stripe::Charge.create(
+              :amount => donation_charge,
+              :currency => "usd",
+              :customer => customer_id
+            )
+          end  
+        end
+      end
+
     else
       customer = Stripe::Customer.retrieve(customer_id)
       if stripe_token.present?
@@ -69,18 +90,6 @@ class User < ActiveRecord::Base
     self.last_4_digits = customer.cards.data.first["last4"]
     self.customer_id = customer.id
     self.stripe_token = nil
-
-    plan = Stripe::Plan.retrieve(roles.first.name)
-    unless plan.nil?
-      donation_charge = (donation_amt * 100) - plan.amount
-      if donation_charge > 0
-        Stripe::Charge.create(
-          :amount => donation_charge,
-          :currency => "usd",
-          :customer => customer_id
-        )
-      end  
-    end
 
   rescue Stripe::StripeError => e
     logger.error "Stripe Error: " + e.message
@@ -113,4 +122,13 @@ class User < ActiveRecord::Base
     where("email = ?", email)
   end
 
+  def add_mail_list(mail_list_name)
+    mail_list = MailList.find_or_create_by( :name => mail_list_name.to_s)
+
+    if !mail_lists.include?(mail_list)
+      self.mail_list_ids |= [mail_list.id]
+      #self.class.adapter.add(self, mail_list)
+    end
+    mail_list
+  end
 end
