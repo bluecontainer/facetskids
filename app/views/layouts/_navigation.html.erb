@@ -10,24 +10,13 @@
               <ul class="nav pull-right" style="">
 <% if user_signed_in? %>
                 <li><%= link_to 'Logout', destroy_user_session_path, :method => 'delete' %></li>
-                <li><%= link_to 'Manage account', edit_user_registration_path %></li>
+                <li><%= link_to 'Manage my account', edit_user_registration_path %></li>
 <% else %>
-                <li><%= link_to 'Manage account', user_session_path %></li>
+                <li><%= link_to "Sign up", new_user_registration_path %></li>
+                <li><%= link_to 'Manage my account', user_session_path %></li>
 <% end %>
-<!--
-                <li class="dropdown">
-                  <a class="dropdown-toggle" href="#" data-toggle="dropdown">Manage Account<strong class="caret"></strong></a>
-                  <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px; width: auto;">
-<%= simple_form_for(:user, :url => session_path(:user), :html => {:class => 'form-vertical' }) do |f| %>
-  <%= f.input :email, :autofocus => true, :placeholder => "Email", :label => false %>
-  <%= f.input :password, :placeholder => "Password", :label => false %>
-  <%= f.input :remember_me, :as => :boolean, :label => false, :inline_label => 'Remember me', input_html: { :data => {:toggle => 'checkbox'} } if Devise.mappings[:user].rememberable? %>
-  <%= f.button :submit, "Sign in", :class => 'btn-primary' %>
-<% end %>
-                  </div>
--->
-                </li>
-                <li><a href="/content/about">About</a></li>
+               </li>
+                <li><%= link_to "About", content_about_path %></li>
               </ul>
             </div><!--/.nav-collapse -->
 
