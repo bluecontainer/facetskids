@@ -14,8 +14,11 @@
     <meta property="og:image"           content="<%= image_url 'seasons_of_love.jpg'  %>" />
     <meta property="og:description"     content="Facets Kids is a new streaming app that introduces kids to the best films and shorts from around the world. Free alpha version goes live in mid-November!" />
 
+    <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
+
     <%= stylesheet_link_tag "application", :media => "all" %>
     <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js" %>
     <%= csrf_meta_tags %>
     <%= yield(:head) %>
 
@@ -27,7 +30,7 @@
     <!-- Fav and touch icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-57-precomposed.png">
     <link rel="shortcut icon" href="http://getbootstrap.com/2.3.2/assets/ico/favicon.png">
   </head>

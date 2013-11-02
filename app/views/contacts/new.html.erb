@@ -11,15 +11,26 @@
     Facets Kids<br/>
     1517 W. Fullerton Ave<br/>
     Chicago, IL, 60614<br/>
-    (773) 281-9075<br/>
+    (773) 281-9075<br/><br/>
     facetskids@facets.org<br/>
     </p>
+<a href="#" 
+  onclick="
+    url = '<%= unauthenticated_root_url %>';
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url), 
+      'facebook-share-dialog', 
+      'width=626,height=436'); 
+    return false;">
+<%= image_tag "facebookicon.png" %> Post about Facet Kids on Facebook
+</a>
+ 
   </div>
-  <div class="span5">
+  <div class="span4">
 <%= simple_form_for(@contact, :html => {:class => "form-vertical"}) do |f| %>
   <%= f.input :name, :required => true, :placeholder => "Name", :autofocus => true %>
   <%= f.input :email, :required => true, :placeholder => "Email" %>
-  <%= f.input :message, as: :text, :required => true %>
+  <%= f.input :message, as: :text, :required => true, :input_html => { :style => "height: 100px; width: 100%;" } %>
 
   <%= f.button :submit, 'Send Message', :class => 'btn-primary'  %>
 <% end %>

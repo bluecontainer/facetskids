@@ -1,0 +1,46 @@
+
+<div style="padding-top: 140px;">
+
+<div class="row">
+  <div class="offset1 span8">
+    <h3>Thank you!</h3>
+    <p>
+    We will send your friends an email invitation to become pioneers and join Facets Kids.
+    </p>
+  </div>
+</div>
+
+<div class="row" style="padding-top: 20px;">
+  <div class="offset1 span8">
+    <p>Share your Discovery</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="offset1 span8">
+<a href="#" 
+  onclick="
+    url = '<%= unauthenticated_root_url %>';
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url), 
+      'facebook-share-dialog', 
+      'width=626,height=436'); 
+    return false;">
+<%= image_tag "facebookicon.png" %> Post about Facet Kids on Facebook
+</a>
+  </div>
+</div>
+
+<div class="row" style="padding-top: 20px">
+  <div class="offset1 span8">
+    <a href="http://www.facets.org">Facets Homepage</a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="offset1 span8">
+    <a href="http://www.facets.org/kids">Facets Children's Programs Homepage</a>
+  </div>
+</div>
+
+</div>

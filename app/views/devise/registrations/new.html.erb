@@ -1,12 +1,8 @@
-<% content_for :head do %>
-  <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
-  <%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js" %>
-  <script>
-    function Ctrl($scope) {
-      $scope.plan = "<%= resource.plan %>";
-    }
-  </script>
-<% end %>
+<script>
+  function Ctrl($scope) {
+    $scope.plan = "<%= resource.plan %>";
+  }
+</script>
 
 <div ng-app ng-controller="Ctrl" style="padding-top: 120px">
 
@@ -76,4 +72,6 @@
 
 <% end %>
   </div>
+</div>
+
 </div>
