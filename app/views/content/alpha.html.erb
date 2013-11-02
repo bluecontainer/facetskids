@@ -20,13 +20,21 @@
   </div>
 </div>
 
-<div class="row" style="padding-top: 20px;">
+<div class="row" style="padding-top: 10px;">
   <div class="offset1 span8" style="padding-top: 10px;">
-    Friends' emails:
-    <%= simple_form_for(current_user, :as => :User, :url => add_invitations_path, :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
+    <%= simple_form_for(current_user, :as => :user, :url => add_invitations_path, :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
       <%= f.error_notification %>
       <%= display_base_errors current_user %>
-      <input name="email_invitations" class="tagsinput tagsinput-primary" />
+      <%= f.input :name, :label => "Your name" %>
+
+      <div class="control-group string optional email_invitations">
+        <label class="string optional control-label" for="Email_invitations">Friends' emails</label>
+        <div class="controls">
+          <input name="email_invitations" id="Email_invitations" class="tagsinput tagsinput-primary" />
+        </div>
+      </div>
+      <!-- input name="email_invitations" id="Email_invitations" class="tagsinput tagsinput-primary" /-->
+
       <%= f.button :submit, 'Send Invitation', :class => 'btn-primary' %>
     <% end %>
   </div>

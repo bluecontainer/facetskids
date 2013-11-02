@@ -140,6 +140,14 @@ class User < ActiveRecord::Base
     mail_list
   end
 
+  def add_all_mail_lists
+    MailList.find(:all).each { |mail_list|
+      if !mail_lists.include?(mail_list)
+        self.mail_list_ids |= [mail_list.id]
+      end
+    }
+  end
+
   def invite_users(invitation_emails)
     invitation_emails.each { |x| User.invite!( {:email => x, :skip_invitation => true}, self) }
   end

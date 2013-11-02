@@ -9,10 +9,10 @@
 <div class="row">
   <div class="offset1 span7">
     <div ng-show="plan == 'alpha'">
-    <h4>Sign up now to create an account and become a pioneer. We will email you when the app goes live in mid-November</h4>
+    <p>Sign up now to create an account and become a pioneer. We will email you when the app goes live in mid-November.</p>
     </div>
     <div ng-show="plan == 'silver'">
-    <h4>Help us build the app and inspire the creators of tomorrow</h4>
+    <p>Help us build the app and inspire the creators of tomorrow.</p>
     </div>
   </div>
 </div>
@@ -23,6 +23,10 @@
     </div>
   </div>
 </div>
+
+<%= content_for(:the_links) do %>
+  I have read and agree to the <%= link_to "Privacy Policy", content_privacy_path %>
+<% end %>
 
 <div class="row">
   <div class="offset1 span11">
@@ -37,11 +41,11 @@
         <%= f.input :email, :required => true, :placeholder => "Email", :autofocus => true %>
         <%= f.input :password, :required => true, :placeholder => "Password" %>
         <%= f.input :password_confirmation, :required => true, :placeholder => "Password again" %>
-        <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 5..15, input_html: { class: "select-block mbl"} %>
+        <%= f.input :child_age, :required => true, :label => "Child's Age", :placeholder => "Child's age", collection: 5..15, input_html: { class: "select-block mbl"} %>
       </div>
       <div class="span5">
         <div ng-show="plan == 'silver'">
-        <%= f.input :donation_amt, :placeholder => "Donation", collection: 50..200, input_html: { class: "select-block mbl"} %>
+        <%= f.input :donation_amt, :label => "Donation Amount", :placeholder => "Donation", collection: (50..1000).step(10), input_html: { class: "select-block mbl"} %>
         <%= f.input :name %>
         <div class="field">
           <%= label_tag :card_number, "Credit Card Number" %>
@@ -63,7 +67,7 @@
     <div class="row">
       <div class="span12">  
         <%= f.input :age_acknowledgement, :required => true, label: false, inline_label: 'I am over 13 years old', input_html: { :data => {:toggle => 'checkbox'} } %>
-        <%= f.input :terms_acknowledgement, :required => true, label: false, inline_label: 'I have read and agree to the Privacy Policy and Terms and Conditions', input_html: { :data => {:toggle => 'checkbox'} } %>
+        <%= f.input :terms_acknowledgement, :required => true, label: false, :inline_label => content_for(:the_links), input_html: { :data => {:toggle => 'checkbox'} } %>
         <%= hidden_field_tag "plan", "{{plan}}" %>
         <%= f.hidden_field :stripe_token %>
         <%= f.button :submit, 'Sign up', :class => 'btn-primary' %>
