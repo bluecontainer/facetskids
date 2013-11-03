@@ -14,6 +14,10 @@ class RegistrationsController < Devise::RegistrationsController
     authenticated_root_path
   end
 
+  def after_update_path_for(resource)
+    edit_user_registration_path  
+  end
+
   # GET /resource/sign_up
   def new
     @plan = params[:plan]
