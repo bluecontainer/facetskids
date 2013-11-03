@@ -15,38 +15,6 @@
   </div>
 </div>
 
-<div class="row" style="padding-top: 20px;">
-  <div class="offset1 span8">
-    <p>Share your Discovery</p>
-    Invite your friends
-  </div>
-</div>
-
-<div class="row" style="padding-top: 20px;">
-  <div class="offset1 span8" style="padding-top: 10px;">
-    Friends' emails:
-    <%= simple_form_for(current_user, :as => :User, :url => add_invitations_path, :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
-      <%= f.error_notification %>
-      <%= display_base_errors current_user %>
-      <input name="email_invitations" class="tagsinput tagsinput-primary" />
-      <%= f.button :submit, 'Send Invitation', :class => 'btn-primary' %>
-    <% end %>
-  </div>
-</div>
-
-<div class="row" style="padding-top: 20px;">
-  <div class="offset1 span8">
-<a href="#" 
-  onclick="
-    url = 'http://facetskids-staging.herokuapp.com';
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url), 
-      'facebook-share-dialog', 
-      'width=626,height=436'); 
-    return false;">
-<%= image_tag "facebookicon.png" %> Post about Facet Kids on Facebook
-</a>
-  </div>
-</div>
+<%= render "layouts/share_with" %>
 
 </div>
