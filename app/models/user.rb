@@ -55,35 +55,42 @@ class User < ActiveRecord::Base
         raise "Stripe token not present. Can't create account."
       end
 
-      if coupon.blank?
-        customer = Stripe::Customer.create(
-          :email => email,
-          :description => name,
-          :card => stripe_token,
-          :plan => roles.first.name
-        )
-      else
-        customer = Stripe::Customer.create(
-          :email => email,
-          :description => name,
-          :card => stripe_token,
-          :plan => roles.first.name,
-          :coupon => coupon
-        )
-      end
+      if roles.first.name == "silver"
+        if donation_amt.present?
+          customer = Stripe::Customer.create(
+            :email => email,
+            :description => name,
+            :card => stripe_token
+          )
 
-      if !donation_amt.nil?
-        plan = Stripe::Plan.retrieve(roles.first.name)
-        unless plan.nil?
-          donation_charge = (donation_amt * 100) - plan.amount
+          donation_charge = donation_amt * 100
           if donation_charge > 0
             Stripe::Charge.create(
               :amount => donation_charge,
               :currency => "usd",
               :customer => customer.id
-            )
-          end  
-        end
+            )  
+          end
+        else
+          raise "Donation amount not present. Can't create account."
+        end 
+      else
+        if coupon.blank?
+          customer = Stripe::Customer.create(
+            :email => email,
+            :description => name,
+            :card => stripe_token,
+            :plan => roles.first.name
+          )
+        else
+          customer = Stripe::Customer.create(
+            :email => email,
+            :description => name,
+            :card => stripe_token,
+            :plan => roles.first.name,
+            :coupon => coupon
+          )
+        end  
       end
 
     else

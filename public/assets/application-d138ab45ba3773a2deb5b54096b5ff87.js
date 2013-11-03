@@ -21143,6 +21143,16 @@ $(function () {
   };
 
 }).call(this);
+(function() {
+  $(document).on('page:change', function() {
+    if (window._gaq != null) {
+      return _gaq.push(['_trackPageview']);
+    } else if (window.pageTracker != null) {
+      return pageTracker._trackPageview();
+    }
+  });
+
+}).call(this);
 // Some general UI pack related JS
 // Extend JS String with repeat method
 String.prototype.repeat = function(num) {
