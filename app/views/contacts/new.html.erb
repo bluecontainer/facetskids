@@ -18,7 +18,7 @@
     </p>
 <a href="#" 
   onclick="
-    url = '<%= unauthenticated_root_url %>';
+    url = '<%= "http://" + ENV["HOST"] %>';
     window.open(
       'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url), 
       'facebook-share-dialog', 
