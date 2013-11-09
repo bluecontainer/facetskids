@@ -43,7 +43,7 @@
         <%= f.input :email, :required => true, :placeholder => "Email", :autofocus => true %>
         <%= f.input :password, :required => true, :placeholder => "Password" %>
         <%= f.input :password_confirmation, :required => true, :placeholder => "Password again" %>
-        <%= f.input :child_age, :required => true, :label => "Child's Age", :placeholder => "Child's age", collection: 5..15, input_html: { class: "select-block mbl"} %>
+        <%= f.input :child_age, :required => true, :label => "Child's Age", :placeholder => "Child's age", collection: 2..15, input_html: { class: "select-block mbl"} %>
       </div>
       <div class="span5">
         <div ng-show="plan == 'silver'">
