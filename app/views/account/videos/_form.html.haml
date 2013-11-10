@@ -1,0 +1,27 @@
+= form_for [:account, video] do |f|
+  .input
+    = f.label :name, "Name:"
+    .text= f.text_field :name
+    .hint This name will appear under your video.
+    = errors video, :name
+  .input
+    = f.label :description, "Description:"
+    .text= f.text_area :description, size: "40x4"
+    = errors video, :description
+  .input
+    = f.label :encoding_input_url, "Video url:"
+    .text= f.text_field :encoding_input_url
+    = errors video, :encoding_input_url
+  .input
+    = f.label :preview, "Preview:"
+    .file= f.file_field :preview
+    .hint PNG and JPG are supported.
+    = errors video, :preview
+  .input
+    = f.label :screen_cap_time_code, "Screen capture timecodes:"
+    .text= f.text_field :screen_cap_time_code
+    = errors video, :screen_cap_time_code
+  = country_select("video", "origin_country_code", ["us", "fr", "de"], {iso_codes: true}, {:multiple => true})
+  .button
+    = f.submit 'Save'
+    = link_to 'Cancel', account_videos_path

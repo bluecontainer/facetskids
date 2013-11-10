@@ -10,14 +10,15 @@ class User < ActiveRecord::Base
 
   #has_many :invitations, :class_name => self.to_s, :foreign_key => :invited_by_id
   has_and_belongs_to_many :mail_lists, :join_table => :users_mail_lists
-
+  has_many :videos
+ 
   validates :age_acknowledgement, presence: true
   validates :terms_acknowledgement, presence: true
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
-                  :stripe_token, :coupon, :child_age, :age_acknowledgement, 
-                  :terms_acknowledgement, :donation_amt, :plan, :mail_list_ids, :skip_invitation
+  #attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
+  #                :stripe_token, :coupon, :child_age, :age_acknowledgement, 
+  #                :terms_acknowledgement, :donation_amt, :plan, :mail_list_ids, :skip_invitation
   attr_accessor :stripe_token, :coupon, :plan
 
   before_save :update_stripe

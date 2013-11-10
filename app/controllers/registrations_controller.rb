@@ -37,7 +37,13 @@ class RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    build_resource(sign_up_params)
+    build_resource(
+      sign_up_params.require(:user).permit(
+        :name, :email, :password, :password_confirmation, :remember_me,
+        :stripe_token, :coupon, :child_age, :age_acknowledgement,
+        :terms_acknowledgement, :donation_amt, :plan, :mail_list_ids, :skip_invitation
+      )
+    )
 
     if resource.save
       if resource.active_for_authentication?

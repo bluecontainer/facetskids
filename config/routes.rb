@@ -25,4 +25,14 @@ FacetsKids::Application.routes.draw do
   get "content/about"
   get "content/faq"
   get "content/privacy"
+
+
+  post '/videos/notifications', as: :notifications
+
+  resources :videos, only: [:index, :show]
+
+  namespace :account do
+    resources :videos, only: [:index, :new, :edit, :create, :update, :destroy]
+  end
+
 end

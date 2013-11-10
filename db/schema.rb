@@ -11,7 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131031085550) do
+ActiveRecord::Schema.define(version: 20131109235613) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "jobs", force: true do |t|
+    t.integer  "video_id"
+    t.integer  "zencoder_id"
+    t.string   "state"
+    t.json     "zencoder_response"
+    t.json     "zencoder_request"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "jobs", ["video_id"], name: "index_jobs_on_video_id", using: :btree
+  add_index "jobs", ["zencoder_id"], name: "index_jobs_on_zencoder_id", using: :btree
 
   create_table "mail_lists", force: true do |t|
     t.string   "name"
@@ -20,7 +36,20 @@ ActiveRecord::Schema.define(version: 20131031085550) do
     t.datetime "updated_at"
   end
 
-  add_index "mail_lists", ["name"], name: "index_mail_lists_on_name"
+  add_index "mail_lists", ["name"], name: "index_mail_lists_on_name", using: :btree
+
+  create_table "outputs", force: true do |t|
+    t.integer  "video_id"
+    t.integer  "zencoder_id"
+    t.string   "state"
+    t.string   "label"
+    t.json     "zencoder_response"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "outputs", ["video_id"], name: "index_outputs_on_video_id", using: :btree
+  add_index "outputs", ["zencoder_id"], name: "index_outputs_on_zencoder_id", using: :btree
 
   create_table "roles", force: true do |t|
     t.string   "name"
@@ -30,8 +59,8 @@ ActiveRecord::Schema.define(version: 20131031085550) do
     t.datetime "updated_at"
   end
 
-  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
-  add_index "roles", ["name"], name: "index_roles_on_name"
+  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
+  add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -62,22 +91,47 @@ ActiveRecord::Schema.define(version: 20131031085550) do
     t.string   "invited_by_type"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "users_mail_lists", id: false, force: true do |t|
     t.integer "user_id"
     t.integer "mail_list_id"
   end
 
-  add_index "users_mail_lists", ["user_id", "mail_list_id"], name: "index_users_mail_lists_on_user_id_and_mail_list_id"
+  add_index "users_mail_lists", ["user_id", "mail_list_id"], name: "index_users_mail_lists_on_user_id_and_mail_list_id", using: :btree
 
   create_table "users_roles", id: false, force: true do |t|
     t.integer "user_id"
     t.integer "role_id"
   end
 
-  add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
+  add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
+
+  create_table "videos", force: true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.text     "description"
+    t.string   "state"
+    t.string   "encoding_identifier"
+    t.string   "encoding_extension"
+    t.integer  "encoding_size"
+    t.string   "preview_identifier"
+    t.string   "preview_extension"
+    t.integer  "preview_size"
+    t.string   "encoding_input_url"
+    t.integer  "screen_cap_time_code",    array: true
+    t.integer  "duration_in_ms"
+    t.json     "zencoder_input_response"
+    t.string   "origin_country_code",     array: true
+    t.string   "audio_language_code",     array: true
+    t.string   "subtitle_language_code",  array: true
+    t.integer  "released_year"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "videos", ["user_id"], name: "index_videos_on_user_id", using: :btree
 
 end

@@ -1,0 +1,16 @@
+.grid-12
+  .video
+
+    %h1.name= @video.name
+    %p.description= @video.description
+
+    = image_tag @video.preview.url(:original)
+
+    - @video.encodings.each do |encoding|
+      .shadow.picture
+        = video_tag encoding, controls: true
+      %p= encoding
+
+    - @video.thumbnails.each do |thumbnail|
+      = image_tag thumbnail
+.clear
