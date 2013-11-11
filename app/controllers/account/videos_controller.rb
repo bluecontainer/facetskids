@@ -1,6 +1,6 @@
 class Account::VideosController < ApplicationController
-
   before_filter :authenticate_user!
+  load_and_authorize_resource
 
   respond_to :html
 
@@ -55,7 +55,7 @@ class Account::VideosController < ApplicationController
 
   # PUT /account/videos/1
   def update
-    @user = user
+    @user = current_user
     @video = @user.videos.find(params[:id])
     @video.attributes = params.require(:video).permit(:name, :description, :encoding, :preview)
     @video.save
@@ -65,7 +65,7 @@ class Account::VideosController < ApplicationController
 
   # DELETE /account/videos/1
   def destroy
-    @user = user
+    @user = current_user
     @video = @user.videos.find(params[:id])
     @video.destroy
 
