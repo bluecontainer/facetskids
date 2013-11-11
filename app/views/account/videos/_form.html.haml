@@ -1,4 +1,4 @@
-= form_for [:account, video] do |f|
+= simple_form_for [:account, video] do |f|
   .input
     = f.label :name, "Name:"
     .text= f.text_field :name
@@ -8,6 +8,8 @@
     = f.label :description, "Description:"
     .text= f.text_area :description, size: "40x4"
     = errors video, :description
+  = f.input :emotion_list, :as => :check_boxes, :collection => EmotionTag.all.map(&:name), input_html: { :data => {:toggle => 'checkbox'} }
+  = f.input :viewing_age_list, :as => :check_boxes, :collection => AgeRangeTag.all.map(&:name), input_html: { :data => {:toggle => 'checkbox'} }
   .input
     = f.label :encoding_input_url, "Video url:"
     .text= f.text_field :encoding_input_url

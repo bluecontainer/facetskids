@@ -5,6 +5,8 @@ class Video < ActiveRecord::Base
   has_one :job, dependent: :destroy
   has_many :outputs, dependent: :destroy
 
+  acts_as_taggable_on :emotions, :viewing_age
+
   validates_presence_of :name
   validates_presence_of :description
 

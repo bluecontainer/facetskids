@@ -38,7 +38,7 @@ class Account::VideosController < ApplicationController
   def create
     #@user = current_user
     #@video = @user.videos.new
-    @video.attributes = params.require(:video).permit(:name, :description, :encoding, :preview, :encoding_input_url, :screen_cap_time_code => [], :origin_country_code => [])
+    @video.attributes = params.require(:video).permit(:name, :description, :encoding, :preview, :encoding_input_url, :emotion_list => [], :viewing_age_list => [], :screen_cap_time_code => [], :origin_country_code => [])
 
     if @video.screen_cap_time_code.nil?
       @video.screen_cap_time_code = params[:video][:screen_cap_time_code].split(",") unless params[:video][:screen_cap_time_code].nil?

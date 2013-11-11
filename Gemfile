@@ -56,3 +56,4 @@ gem 'rails_12factor', group: :production
 
 gem "unicorn"
 
+gem "acts-as-taggable-on"
