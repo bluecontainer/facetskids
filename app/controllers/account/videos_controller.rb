@@ -1,5 +1,6 @@
 class Account::VideosController < ApplicationController
   before_filter :authenticate_user!
+  before_action :load_video, only: :create
   load_and_authorize_resource
 
   respond_to :html
@@ -29,9 +30,14 @@ class Account::VideosController < ApplicationController
   end
 
   # POST /account/videos
-  def create
+  def load_video
     @user = current_user
     @video = @user.videos.new
+  end
+
+  def create
+    #@user = current_user
+    #@video = @user.videos.new
     @video.attributes = params.require(:video).permit(:name, :description, :encoding, :preview, :encoding_input_url, :screen_cap_time_code => [], :origin_country_code => [])
 
     if @video.screen_cap_time_code.nil?

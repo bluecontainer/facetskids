@@ -8,7 +8,7 @@ class Video < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :description
 
-  validates_format_of :encoding_input_url, :with => URI::regexp(%w(http https ftp))
+  validates_format_of :encoding_input_url, :with => URI::regexp(%w(http https ftp)), :allow_blank => true
   
   scope :active, -> { where(state: 'finished') }
 
@@ -275,6 +275,8 @@ class Video < ActiveRecord::Base
   end
 
   def zencodeit_noupload
+    return if encoding_input_url.nil? || encoding_input_url.blank?
+
     self.encoding.identifier = Identifier.generate
     self.encoding.extension = File.extname(self.encoding_input_url)
 
