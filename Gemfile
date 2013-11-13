@@ -11,7 +11,10 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.0.3'
 
 gem 'haml-rails'
+
+gem 'countries'
 gem 'country_select'
+gem 'language_list'
 
 gem 'turbolinks'
 gem 'jquery-turbolinks'

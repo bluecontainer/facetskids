@@ -1,4 +1,5 @@
 class VideosController < ApplicationController
+  skip_before_filter :verify_authenticity_token, :only => [:notifications]
   before_filter :authenticate_user!, :except => [:notifications]  
   
   respond_to :html
@@ -28,7 +29,6 @@ class VideosController < ApplicationController
 
       @video = @job.video || @output.video
 
-      @video.zencoder_input_response = params[:input].to_json if @video.zencoder_input_response.nil?
       @video.refresh(@job, @output)
     end
 

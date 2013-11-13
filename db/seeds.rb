@@ -42,3 +42,11 @@ emotion_tags.each do |tag|
 end
 puts "Emotion Tags:"
 puts EmotionTag.all
+
+curated_video_list_tags = ["brand_new", "top_rated", "picks_for_me", "animation_antics"]
+curated_video_list_tags.each do |tag|
+  CuratedVideoListTag.new(:name => tag).save
+end
+puts "Curated Video List Tags:"
+puts CuratedVideoListTag.all
+

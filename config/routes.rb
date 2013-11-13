@@ -35,4 +35,13 @@ FacetsKids::Application.routes.draw do
     resources :videos, only: [:index, :new, :edit, :create, :update, :destroy]
   end
 
+  namespace :api do
+    devise_for :users, only: []
+    devise_scope :user do
+      post   'sign_in'  => 'sessions#create'
+      delete 'sign_out' => 'sessions#destroy'
+    end
+    resources :videos, only: [:index, :show, :create]
+  end
+
 end

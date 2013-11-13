@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131111170139) do
+ActiveRecord::Schema.define(version: 20131112210549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,8 +108,10 @@ ActiveRecord::Schema.define(version: 20131111170139) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.string   "authentication_token"
   end
 
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
@@ -140,12 +142,11 @@ ActiveRecord::Schema.define(version: 20131111170139) do
     t.string   "preview_extension"
     t.integer  "preview_size"
     t.string   "encoding_input_url"
-    t.integer  "screen_cap_time_code",    array: true
+    t.integer  "screen_cap_time_code",   array: true
     t.integer  "duration_in_ms"
-    t.json     "zencoder_input_response"
-    t.string   "origin_country_code",     array: true
-    t.string   "audio_language_code",     array: true
-    t.string   "subtitle_language_code",  array: true
+    t.string   "origin_country_code",    array: true
+    t.string   "audio_language_code",    array: true
+    t.string   "subtitle_language_code", array: true
     t.integer  "released_year"
     t.datetime "created_at"
     t.datetime "updated_at"

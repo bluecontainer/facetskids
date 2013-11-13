@@ -5,7 +5,7 @@ class Video < ActiveRecord::Base
   has_one :job, dependent: :destroy
   has_many :outputs, dependent: :destroy
 
-  acts_as_taggable_on :emotions, :viewing_age
+  acts_as_taggable_on :emotions, :viewing_age, :curated_video_lists
 
   validates_presence_of :name
   validates_presence_of :description
@@ -240,40 +240,14 @@ class Video < ActiveRecord::Base
     self.save
   end
 
-  #before_save :zencodeit_noupload, if: Proc.new { |video| video.encoding.changed? }
+  #before_save :zencodeit_withupload, if: Proc.new { |video| video.encoding.changed? }
   before_save :zencodeit_noupload, if: Proc.new { |video| video.encoding_input_url_changed? }
 
-  def zencodeit
+  def zencodeit_withupload
     input = self.encoding.url
     outputs = []
 
-    OUTPUTS.each do |style, options|
-      output = DEFAULTS
-      output = output.merge(options)
-      unless style == :thumbnails
-        output = output.merge(url: self.encoding.url(style))
-      else
-        output[:thumbnails][:base_url] = encoding_base_url(style)
-        output[:thumbnails][:times] = self.screen_cap_time_code
-      end
-      outputs << output
-    end
- 
-    response = Zencoder::Job.create({ input: input, outputs: outputs })
-
-    self.state = response.success? ? 'processing' : 'failed'
-    self.build_job(
-      zencoder_id: response.body['id'], 
-      zencoder_request: {input: input, outputs: outputs}, 
-      zencoder_response: response.body)
- 
-    if response.success?
-      response.body['outputs'].each do |output|
-        self.outputs.build(zencoder_id: output['id'], label: output['label'])
-      end
-    end
-
-    return response
+    return zencodeit(input, outputs)
   end
 
   def zencodeit_noupload
@@ -296,10 +270,13 @@ class Video < ActiveRecord::Base
     output = output.merge(transfer)
     outputs << output
 
+    return zencodeit(input, outputs)
+  end
+
+  def zencodeit(input, outputs)
     OUTPUTS.each do |style, options|
       output = DEFAULTS
       output = output.merge(options)
-      #output[:source] = "transfer"
       unless style == :thumbnails
         output = output.merge(url: self.encoding.url(style))
       else
@@ -327,6 +304,5 @@ class Video < ActiveRecord::Base
 
     return response
   end
-
 
 end
