@@ -271,7 +271,7 @@ namespace :filmdata do
         end
       end
 
-      if film_count == 1
+      if film_count >= 1 && film_count <= 10
         input_url = "ftp://" + ENV["VIDEO_SOURCE_USERNAME"] + ":" + ENV["VIDEO_SOURCE_PASSWORD"] + "@" + ENV["VIDEO_SOURCE_FTP_HOST"] + "/" + ENV["VIDEO_SOURCE_DIRECTORY"] + "/" + fields[14]
         puts input_url
         video.encoding_input_url = input_url
