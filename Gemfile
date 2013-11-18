@@ -50,6 +50,7 @@ gem 'attached'
 gem 'erroneous'
 gem 'zencoder'
 gem 'unf'
+gem 'aws-s3'
 
 gem "quiet_assets", ">= 1.0.2", :group => :development
 gem "figaro", ">= 0.6.3"

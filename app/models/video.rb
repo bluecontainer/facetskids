@@ -1,3 +1,5 @@
+require 'uri-s3'
+
 class Video < ActiveRecord::Base
 
   belongs_to :user
@@ -10,7 +12,7 @@ class Video < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :description
 
-  validates_format_of :encoding_input_url, :with => URI::regexp(%w(http https ftp)), :allow_blank => true
+  validates_format_of :encoding_input_url, :with => URI::regexp(%w(http https ftp s3)), :allow_blank => true
   
   scope :active, -> { where(state: 'finished') }
 
@@ -187,7 +189,8 @@ class Video < ActiveRecord::Base
 
   def encodings
     [
-      self.encoding.url(:original),
+      #self.encoding.url(:original),
+      #self.encoding_input_url,
       self.encoding.url(:webm),
       self.encoding.url(:mp4),
       self.encoding.url(:ogg),
@@ -260,15 +263,18 @@ class Video < ActiveRecord::Base
 
     outputs = []
 
-    #use zencoder to copy file from ftp to s3
-    transfer = {
-      label: 'transfer',
-      type: "transfer-only",
-      url: self.encoding.url
-    }
-    output = DEFAULTS
-    output = output.merge(transfer)
-    outputs << output
+    uri = URI(URI.encode(self.encoding_input_url))
+    unless uri.scheme == "s3"
+      #use zencoder to copy file from ftp to s3
+      transfer = {
+        label: 'transfer',
+        type: "transfer-only",
+        url: self.encoding.url
+      }
+      output = DEFAULTS
+      output = output.merge(transfer)
+      outputs << output
+    end
 
     return zencodeit(input, outputs)
   end
@@ -287,7 +293,6 @@ class Video < ActiveRecord::Base
     end
 
     request = { input: input, outputs: outputs }
-    logger.debug request
     response = Zencoder::Job.create(request)
 
     self.state = response.success? ? 'processing' : 'failed'

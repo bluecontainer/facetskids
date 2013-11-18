@@ -1,11 +1,76 @@
 require 'net/ftp'
+require 'net/http'
 
-def remote_size(ftp, idx)
-  begin
-    return ftp.size(idx)
-  rescue Exception
-    return 0
+def http_remote_size(connection, uri)
+  #puts uri
+  response = connection.request_head(uri.path)
+  return response['content-length'].to_i
+end
+
+def remote_size(connection, path)
+  if connection.is_a? Net::FTP
+    begin
+      return connection.size(path)
+    rescue Exception
+      return 0
+    end
+  else
+    if connection.is_a? Fog::Storage::AWS::Real
+      bucket = Attached::Attachment.options[:credentials]["bucket"]
+      return connection.head_object(bucket, path, options = {}).headers["Content-Length"].to_i
+    else
+      return 0
+    end
   end
+end
+
+def http_remote_init(uri)
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+  http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+  return http
+end
+
+def ftp_remote_init()
+  ftp = Net::FTP.new(ENV["VIDEO_SOURCE_FTP_HOST"])
+  ftp.login ENV["VIDEO_SOURCE_FTP_USERNAME"], ENV["VIDEO_SOURCE_FTP_PASSWORD"]
+  return ftp
+end
+
+def s3_remote_init()
+  connection = Fog::Storage.new({
+    :provider                 => 'AWS',
+    :aws_access_key_id        => ENV["AWS_ACCESS_KEY_ID"],
+    :aws_secret_access_key    => ENV["AWS_SECRET_ACCESS_KEY"]
+  })
+  return connection
+end
+
+def remote_init(type)
+  if type == :s3
+    return s3_remote_init
+  else
+    if type == :ftp
+      return ftp_remote_init
+    end
+  end
+
+  raise "Invalid remote type"
+end
+
+def remote_url(type, filename)
+  if type == :ftp
+    return "ftp://" + ENV["VIDEO_SOURCE_USERNAME"] + ":" + ENV["VIDEO_SOURCE_PASSWORD"] + "@" + ENV["VIDEO_SOURCE_FTP_HOST"] + "/" + ENV["VIDEO_SOURCE_DIRECTORY"] + "/" + filename
+  else
+    if type == :s3
+      bucket = Attached::Attachment.options[:credentials]["bucket"]
+      return "s3://" + bucket + "/" + ENV["VIDEO_SOURCE_DIRECTORY"] + "/" + filename
+    end
+  end
+end
+
+def data_file_open
+  return File.open("db/seeds/Films Acquired and Tagged.csv")
 end
 
 namespace :filmdata do
@@ -13,14 +78,14 @@ namespace :filmdata do
   desc 'verify your data'
   task 'verify' => :environment do
 
-    ftp = Net::FTP.new(ENV["VIDEO_SOURCE_FTP_HOST"])
-    ftp.login ENV["VIDEO_SOURCE_USERNAME"], ENV["VIDEO_SOURCE_PASSWORD"]
+    connection = remote_init(:s3)
+    #connection = remote_init("ftp")
 
     total_duration_seconds = 0
     filmcount = 0
     totalsize = 0
     header = true
-    file = File.open("db/seeds/Films Acquired and Tagged.csv")
+    file = data_file_open
     file.each do |line|
       if header
         header = false
@@ -36,7 +101,7 @@ namespace :filmdata do
 
         #check file exists
         filename = ENV["VIDEO_SOURCE_DIRECTORY"] + "/" + fields[14]
-        size = remote_size(ftp, filename)
+        size = remote_size(connection, filename)
         if size == 0
           error = "file missing (" + filename + ")"
           errors << error
@@ -44,7 +109,6 @@ namespace :filmdata do
         totalsize += size
 
         #check country is valid
-        #countries = fields[4].split(",")
         countries = fields[4].split /\s*,\s*/
         if countries.length == 0
           errors << "country missing"
@@ -144,7 +208,7 @@ namespace :filmdata do
         age14_ = fields[25].strip.downcase
         has_category = age2_4 == 'x' || age5_6 == 'x' || age7_8 == 'x' || age9_12 == 'x' || age13_14 == 'x' || age14_ == 'x'
         if !has_category
-          errors << "no category"
+          errors << "no age category"
         end
 
         #check for profile and that it is valid
@@ -152,7 +216,6 @@ namespace :filmdata do
         if profiles.length == 0
           errors << "profile missing"
         else
-          #valid_profiles = ["happy", "excited", "think", "scared", "care", "laugh"]
           valid_profiles = EmotionTag.all.map(&:name)
           if !(profiles - valid_profiles).empty?
             error = "unknown profile (" + profiles.to_s + ")"
@@ -164,7 +227,6 @@ namespace :filmdata do
         if lists.empty?
           errors << "list missing"
         else
-          #valid_lists = ["top_rated", "animation_antics", "picks_for_me", "brand_new"]
           valid_lists = CuratedVideoListTag.all.map(&:name)
           if !(lists - valid_lists).empty?
             error = "unknown list (" + lists.to_s + ")"
@@ -186,12 +248,45 @@ namespace :filmdata do
 
   end
 
+
+  task 'verify_load' => :environment do
+    header = true
+    film_count = 0
+    file = data_file_open
+    file.each do |line|
+      if header
+        header = false
+        next
+      end
+      film_count += 1
+    end
+
+    failed_videos = film_count - Video.active.length
+    raise "There are " + failed_videos.to_s + " failed videos" if failed_videos > 0
+
+    http = nil
+    Video.active.each do |video|
+      #puts video.encoding_input_url
+      video.encodings.each do |encoding|
+        #puts type + "," + encoding
+        uri = URI(URI.encode(encoding))
+        http = http_remote_init(uri) if http.nil?
+        if http_remote_size(http, uri) == 0
+          puts "FAILED - " + encoding
+        else
+          print "."
+        end
+      end
+    end
+  end
+
+
   task 'load' => ['verify'] do
 
     admin_user = User.find(1)
     header = true
     film_count = 0
-    file = File.open("db/seeds/Films Acquired and Tagged.csv")
+    file = data_file_open
     file.each do |line|
       if header
         header = false
@@ -271,13 +366,11 @@ namespace :filmdata do
         end
       end
 
-      if film_count >= 1 && film_count <= 10
-        input_url = "ftp://" + ENV["VIDEO_SOURCE_USERNAME"] + ":" + ENV["VIDEO_SOURCE_PASSWORD"] + "@" + ENV["VIDEO_SOURCE_FTP_HOST"] + "/" + ENV["VIDEO_SOURCE_DIRECTORY"] + "/" + fields[14]
-        puts input_url
-        video.encoding_input_url = input_url
-      end
+      input_url = remote_url(:s3, fields[14])
+      puts input_url
+      video.encoding_input_url = input_url
 
-      video.save
+      #video.save!
       print "."
     end
   end

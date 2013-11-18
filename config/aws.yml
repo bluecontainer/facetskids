@@ -7,9 +7,9 @@ development:
   <<: *defaults
 
 test:
-  bucket: zencodeit-test
+  bucket: facetskids-test
   <<: *defaults
 
 production:
-  bucket: zencodeit-production
+  bucket: facetskids
   <<: *defaults

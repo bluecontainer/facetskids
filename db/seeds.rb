@@ -29,7 +29,7 @@ user.add_role :alpha
 user.add_mail_list :product_updates
 puts "user: #{user.name}"
 
-age_range_tags = ["2-4","5-6","7-8","9-12","13-14","14+"]
+age_range_tags = ["2_4","5_6","7_8","9_12","13_14","14+"]
 age_range_tags.each do |tag|
   AgeRangeTag.new(:name => tag).save
 end
