@@ -11,6 +11,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.0.3'
 
 gem 'haml-rails'
+gem 'jbuilder'
 
 gem 'countries'
 gem 'country_select'
@@ -60,4 +61,5 @@ gem 'rails_12factor', group: :production
 
 gem "unicorn"
 
-gem "acts-as-taggable-on"
+#gem "acts-as-taggable-on", :path => '~/acts-as-taggable-on'
+gem "acts-as-taggable-on", :github => 'bluecontainer/acts-as-taggable-on'

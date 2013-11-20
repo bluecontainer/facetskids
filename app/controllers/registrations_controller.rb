@@ -157,7 +157,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up).push(:name, :stripe_token, :coupon, :child_age, :age_acknowledgement, :terms_acknowledgement, :donation_amt)
-    devise_parameter_sanitizer.for(:account_update).push(:name, :mail_list_ids => [] )
+    devise_parameter_sanitizer.for(:account_update).push(:name, :child_age, :email, :mail_list_ids => [] )
   end
 
 

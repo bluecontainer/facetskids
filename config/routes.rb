@@ -42,6 +42,7 @@ FacetsKids::Application.routes.draw do
       delete 'sign_out' => 'sessions#destroy'
     end
     resources :videos, only: [:index, :show, :create]
+    put 'videos/:id/tag', :to => 'videos#tag'
   end
 
 end

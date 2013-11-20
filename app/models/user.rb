@@ -11,9 +11,11 @@ class User < ActiveRecord::Base
          :token_authenticatable,
          :invitable
 
-  #has_many :invitations, :class_name => self.to_s, :foreign_key => :invited_by_id
+  has_many :invitations, :class_name => self.to_s, :foreign_key => :invited_by_id
   has_and_belongs_to_many :mail_lists, :join_table => :users_mail_lists
   has_many :videos
+
+  acts_as_tagger
  
   validates :age_acknowledgement, presence: true
   validates :terms_acknowledgement, presence: true

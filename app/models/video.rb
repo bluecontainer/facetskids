@@ -7,7 +7,7 @@ class Video < ActiveRecord::Base
   has_one :job, dependent: :destroy
   has_many :outputs, dependent: :destroy
 
-  acts_as_taggable_on :emotions, :viewing_age, :curated_video_lists
+  acts_as_taggable_on :emotions, :viewing_age, :curated_video_lists, :ratings
 
   validates_presence_of :name
   validates_presence_of :description
@@ -310,4 +310,11 @@ class Video < ActiveRecord::Base
     return response
   end
 
+  #def as_json(options = { })
+    # just in case someone says as_json(nil) and bypasses
+    # our default...
+  #  super((options || { }).merge({
+  #      :methods => [:emotion_list]
+  #  }))
+  #end
 end

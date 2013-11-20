@@ -3,10 +3,10 @@ module Api
     respond_to :json
     before_action :default_json
 
-    def current_user
-      return nil unless params[:auth_token]
-      User.find_by authentication_token: params[:auth_token]
-    end
+    #def current_user
+    #  return nil unless params[:auth_token]
+    #  User.find_by authentication_token: params[:auth_token]
+    #end
 
     protected
 

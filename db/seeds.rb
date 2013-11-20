@@ -50,3 +50,10 @@ end
 puts "Curated Video List Tags:"
 puts CuratedVideoListTag.all
 
+rating_tags = ["1_star", "2_star", "3_star", "4_star", "5_star"]
+rating_tags.each do |tag|
+  RatingTag.new(:name => tag).save
+end
+puts "Rating Tags:"
+puts RatingTag.all
+
