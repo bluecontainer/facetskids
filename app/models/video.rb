@@ -217,7 +217,6 @@ class Video < ActiveRecord::Base
   end
 
   def encoding_base_url(style)
-    logger.debug self.encoding.url(style)
     uri = URI(self.encoding.url(style))
     uri.scheme + "://" + uri.host + File.dirname(uri.path) + "/"
   end

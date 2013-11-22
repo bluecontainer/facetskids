@@ -12,8 +12,11 @@ class User < ActiveRecord::Base
          :invitable
 
   has_many :invitations, :class_name => self.to_s, :foreign_key => :invited_by_id
+  belongs_to :invited_by, :class_name => self.to_s
+
   has_and_belongs_to_many :mail_lists, :join_table => :users_mail_lists
-  has_many :videos
+
+  has_many :owned_videos, :class_name => :Video
 
   acts_as_tagger
  

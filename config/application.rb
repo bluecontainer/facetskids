@@ -18,6 +18,13 @@ end
 module FacetsKids
   class Application < Rails::Application
 
+    config.middleware.insert_before Warden::Manager, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :put, :options]
+      end
+    end
+
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
       

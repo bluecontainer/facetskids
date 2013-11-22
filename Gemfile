@@ -60,6 +60,7 @@ gem "binding_of_caller", ">= 0.7.1", :group => :development, :platforms => [:mri
 gem 'rails_12factor', group: :production
 
 gem "unicorn"
+gem "rack-cors", :require => 'rack/cors'
 
 #gem "acts-as-taggable-on", :path => '~/acts-as-taggable-on'
 gem "acts-as-taggable-on", :github => 'bluecontainer/acts-as-taggable-on'

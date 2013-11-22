@@ -9,6 +9,8 @@ module Api
       elsif params[:emotion_list]
         @all_videos = Video.tagged_with(age_tag).tagged_with(params[:emotion_list], :any => true)
         @videos = Video.find_by_sql(Video.tagged_with(params[:emotion_list], :owned_by => current_user).union(@all_videos).to_sql)
+      elsif params[:curated_video_list]
+        @videos = Video.tagged_with(age_tag).tagged_with(params[:curated_video_list], :any => true)
       else
         @videos = Video.tagged_with(age_tag)
       end
