@@ -17,16 +17,14 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :mail_lists, :join_table => :users_mail_lists
 
   has_many :owned_videos, :class_name => :Video
+  has_many :user_video_views
+  has_many :viewed_videos, :source => :video, :through => :user_video_views
 
   acts_as_tagger
  
   validates :age_acknowledgement, presence: true
   validates :terms_acknowledgement, presence: true
 
-  # Setup accessible (or protected) attributes for your model
-  #attr_accessible :name, :email, :password, :password_confirmation, :remember_me, 
-  #                :stripe_token, :coupon, :child_age, :age_acknowledgement, 
-  #                :terms_acknowledgement, :donation_amt, :plan, :mail_list_ids, :skip_invitation
   attr_accessor :stripe_token, :coupon, :plan
 
   before_save :update_stripe
@@ -143,7 +141,7 @@ class User < ActiveRecord::Base
     destroy
   end
 
-  def self.find_by_email(email)
+  def find_by_email(email)
     where("email = ?", email)
   end
 

@@ -9,6 +9,9 @@ class Video < ActiveRecord::Base
 
   acts_as_taggable_on :emotions, :viewing_age, :curated_video_lists, :ratings
 
+  has_many :user_video_views
+  has_many :viewing_users, :source => :user, :through => :user_video_views
+
   validates_presence_of :name
   validates_presence_of :description
 

@@ -34,6 +34,20 @@ module Api
       end
     end
 
+    def mark
+      if params[:view_id] && params[:marker]
+        @view = UserVideoView.find(params[:view_id])
+        @view.current_marker_seconds = params[:marker]
+        @view.duration_seconds = @view.duration_seconds + params[:interval].to_i if params[:interval]
+        @view.save!
+      elsif params[:id]
+        marker = params[:marker]
+        duration = 0
+        duration = marker if marker
+        @view = (current_user.user_video_views.create({:video => Video.find(params[:id]), :current_marker_seconds => marker, :duration_seconds => duration}))
+      end
+    end
+
     private
     def age_tag
       child_age = current_user.child_age

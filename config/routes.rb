@@ -43,6 +43,7 @@ FacetsKids::Application.routes.draw do
     end
     resources :videos, only: [:index, :show, :create]
     put 'videos/:id/tag', :to => 'videos#tag'
+    put 'videos/:id/mark', :to => 'videos#mark'
   end
 
 end
