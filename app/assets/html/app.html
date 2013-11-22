@@ -1,0 +1,266 @@
+<!DOCTYPE HTML>
+<html lang="en-US" ng-app="angularjs-starter">
+    <head>
+      <title>FacetsKids</title>
+      <meta http-equiv="x-ua-compatible" content="IE=edge" />
+      <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-touch-fullscreen" content="yes">
+
+
+      <link rel="stylesheet" type="text/css" href="snap.css" />
+      <link rel="stylesheet" type="text/css" href="app.css" />
+
+      <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+
+      <style>
+        @media screen and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
+          .imageContainer {
+            position: relative;
+            width: 983px;
+            /*height: 768px;*/
+            border: 1px solid red;
+            padding-left: 40px;
+          }
+
+          .navContainer {
+            position:relative;
+            width: 983px;
+            height: 98px;
+            border: 1px solid green;
+            padding-left: 212px;
+          }
+        }
+
+        @media screen and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+          .imageContainer {
+            position: relative;
+            width: 727px;
+            /*height: 1024px;*/
+            border: 1px solid red;
+            padding-left: 40px;
+          }
+        }
+        
+        .navContainer div {
+          position: relative;
+          outline: 1px dashed #000;
+          display: inline-block;
+          height: 96px;
+          width: 96px;
+        }
+
+        .navContainer img {
+          width: 96px;
+          height: 96px;
+        }
+
+        svg path {
+            fill: white;
+        }
+
+        .imageContainer div {
+          position: relative;
+          background: #ccc;
+          outline: 1px dashed #000;
+          display: inline-block;
+          width: 227px;
+          height: 200px;
+          margin-left: 2px;
+          margin-right: 2px;
+          margin-bottom: 40px;
+        }
+        .imageContainer img {
+          width: 227px;
+          height: 170px;
+        }
+
+        .imageContainer span.title {
+          position: absolute; 
+          bottom: 0; 
+          left: 0;
+          font-size: 9pt;
+          font-weight: bold;
+        }
+
+        .imageContainer span.info {
+          font-size: 16pt;
+          font-weight: bold;
+          font-family: 'modern_pictogramsnormal';
+          margin-left: 10px;
+        }
+
+        .detailContainer {
+          position: relative;
+          background-color: white;
+          outline: 1px dashed #000;
+          width: 306px;
+          height: 472px;
+        }
+
+        .scrollable {
+          -webkit-overflow-scrolling: touch;
+          overflow-y:hidden;
+        }
+      </style>
+
+
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
+      <script type="text/javascript" src="http://code.angularjs.org/1.0.8/angular-resource.js"></script>
+      <script type="text/javascript" src="app.js"></script> 
+ 
+    </head>
+
+    <body>
+      <div class="snap-drawers">
+          <div>
+              <div class="detailContainer"> 
+                 Video Detail 
+              </div>
+          </div>
+          <div class="snap-drawer snap-drawer-right"></div>
+      </div>
+      
+      <div id="content" class="snap-content" ng-controller="MainCtrl">
+        <div class="navContainer">
+          <div>
+            <a href="" ng-click="result.emotion = 'happy'"><img src="happy.1.svg" class="svg"></a>
+          </div>
+          <div>
+            <a href="" ng-click="result.emotion = 'excited'"><img src="excited.1.svg" class="svg"></a>
+          </div>
+          <div>
+            <a href="" ng-click="result.emotion = 'scared'"><img src="scared.1.svg" class="svg"></a>
+          </div>
+          <div>
+            <a href="" ng-click="result.emotion = 'think'"><img src="think.1.svg" class="svg"></a>
+          </div>
+          <div>
+            <a href="" ng-click="result.emotion = 'laugh'"><img src="laugh.1.svg" class="svg"></a>
+          </div>
+          <div>
+            <a href="" ng-click="result.emotion = 'care'"><img src="care.1.svg" class="svg"></a>
+          </div>
+{{result.emotion}}
+        </div>
+        <div id="wrapper" class="imageContainer">
+          <div ng-repeat="video in result.videos">
+            <a href="" ng-click="videoPlayer('{{video.video_url}}')"><img ng-src="{{video.thumbnails[0]}}"/></a>
+            <span class="title">{{video.name}}<span class="info">=</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div style="position: absolute; left: -2000px;">
+        <video id="myVideo" controls="false" preload="false" width="634" height="264">
+        </video>
+      </div>
+
+      <script type="text/javascript">
+        var currentTime = 0;
+
+        function videoPlayer(url) {
+          //return function() {
+            $('video').get(0).src = url;
+            $('video').get(0).load();
+          //};
+        };
+
+        $(function(){
+          //$('#fs3').bind('click', videoPlayer("https://facetskids.s3.amazonaws.com/videos/encodings/8fa9f4c9-50d0-4749-b021-bb86f4d1773f/hls2040/hls2040.m3u8"));
+
+          var myVideo = $('video').get(0);
+
+          myVideo.addEventListener('progress', function() {
+            //not applicable to hls video
+            console.log("progress");
+            console.log(this.buffered.end(0));
+            //var endBuf = this.buffered.end(0);
+            //console.log(this.duration);
+            //var soFar = parseInt(((endBuf / this.duration) * 100));
+            //console.log(soFar);
+            //document.getElementById("loadStatus").innerHTML =  soFar + '%';
+          }, false);
+
+          myVideo.addEventListener('canplaythrough', function() {
+            console.log("canplaythrough");
+          }, false);
+
+          myVideo.addEventListener('loadedmetadata', function() {
+            console.log("loadedmetadata");
+            console.log(this.duration);
+          }, false);
+          myVideo.addEventListener('loadeddata', function() {
+            console.log("loadeddata");
+            this.currentTime = currentTime;
+            this.webkitEnterFullscreen();
+          }, false);
+
+          myVideo.addEventListener("timeupdate", function() {
+            currentTime = this.currentTime;
+          }, false);
+
+          myVideo.addEventListener('webkitbeginfullscreen', function() {
+            console.log("webkitbeginfullscreen");
+            this.play();
+          }, false);
+          myVideo.addEventListener('webkitendfullscreen', function() {
+            console.log("webkitendfullscreen");
+          }, false);
+          myVideo.addEventListener('error', function() {
+            console.log("error");
+          }, false);
+        });
+
+      </script>
+
+      <script type="text/javascript" src="snap.js"></script>
+      <script type="text/javascript">
+        var snapper = new Snap({
+          element: document.getElementById('content'),
+          maxPosition: 306,
+          disable: 'right'
+        });
+      </script>
+      <script type="text/javascript" src="app.js"></script>
+
+      <script type="text/javascript">
+        $('.imageContainer img').on("click", function() {
+          snapper.open('left');
+        }); 
+
+        /*
+         * Replace all SVG images with inline SVG
+         */
+        $('img.svg').each(function(){
+            var $img = jQuery(this);
+            var imgID = $img.attr('id');
+            var imgClass = $img.attr('class');
+            var imgURL = $img.attr('src');
+
+            jQuery.get(imgURL, function(data) {
+              // Get the SVG tag, ignore the rest
+              var $svg = jQuery(data).find('svg');
+
+              // Add replaced image's ID to the new SVG
+              if(typeof imgID !== 'undefined') {
+                 $svg = $svg.attr('id', imgID);
+              }
+              // Add replaced image's classes to the new SVG
+              if(typeof imgClass !== 'undefined') {
+                  $svg = $svg.attr('class', imgClass+' replaced-svg');
+              }
+
+              // Remove any invalid XML tags as per http://validator.w3.org
+              $svg = $svg.removeAttr('xmlns:a');
+
+              // Replace image with new SVG
+              $img.replaceWith($svg);
+            }, 'xml');
+        });
+      </script>
+
+    </body>
+</html>
+

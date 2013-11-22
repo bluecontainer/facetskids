@@ -24,6 +24,10 @@ module Api
       respond_with Video.create(params.require(:video).permit(:name, :description, :emotion_list => [], :viewing_age_list => []))
     end
 
+    def counts
+      @counts = Video.tagged_with(age_tag).all_tag_counts.map{ |x| {:name=>x.name, :type=>x.type, :count=>x.count} }
+    end
+
     def tag
       @video = Video.find(params[:id])
       if params[:emotion_list]

@@ -41,6 +41,7 @@ FacetsKids::Application.routes.draw do
       post   'sign_in'  => 'sessions#create'
       delete 'sign_out' => 'sessions#destroy'
     end
+    get 'videos/counts', :to => 'videos#counts'
     resources :videos, only: [:index, :show, :create]
     put 'videos/:id/tag', :to => 'videos#tag'
     put 'videos/:id/mark', :to => 'videos#mark'
