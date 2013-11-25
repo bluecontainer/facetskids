@@ -6,12 +6,10 @@ module Api
     def index
       if params[:ids]
         @videos = Video.tagged_with(age_tag).find(params[:ids].split(","))
-      elsif params[:emotion_list]
-        @all_videos = Video.tagged_with(age_tag).tagged_with(params[:emotion_list], :any => true)
-        @videos = Video.find_by_sql(Video.tagged_with(params[:emotion_list], :owned_by => current_user).union(@all_videos).to_sql)
-      elsif params[:curated_video_list]
-        @videos = Video.tagged_with(age_tag).tagged_with(params[:curated_video_list], :any => true)
-      else
+      elsif params[:tag_list]
+        @all_videos = Video.tagged_with(age_tag).tagged_with(params[:tag_list], :any => true)
+        @videos = Video.find_by_sql(Video.tagged_with(params[:tag_list], :owned_by => current_user).union(@all_videos).to_sql)
+     else
         @videos = Video.tagged_with(age_tag)
       end
     end
