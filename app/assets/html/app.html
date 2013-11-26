@@ -7,6 +7,21 @@
       <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
       <meta name="apple-mobile-web-app-capable" content="yes">
       <meta name="apple-touch-fullscreen" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+      <!-- iPad Portrait -->
+      <link href="http://placehold.it/768x1004.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+      <!-- iPad Landscape -->
+      <link href="http://placehold.it/1024x748.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+      <!-- iPad Portrait (Retina) -->
+      <link href="http://placehold.it/1536x2008.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+      <!-- iPad Landscape (Retina) -->
+      <link href="http://placehold.it/2048x1496.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+
+      <!--
+      <link rel="apple-touch-icon" sizes="72x72" href="touch-icon-ipad-144.png" />
+      -->
+      <link rel="apple-touch-icon" sizes="144x144" href="touch-icon-ipad-144.jpg" />
 
       <!--link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" /-->
       <link href="/assets/application.css" media="all" rel="stylesheet" />
@@ -43,7 +58,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="brand" href="/"><img alt="Facets kids signup2a2 0017 layer 15" src="/assets/FACETS-KIDS-SIGNUP2a2_0017_Layer-15.png"></a>
+            <a class="brand" href="" ng-click="result.selected_emotion='home'"><img alt="Facets kids signup2a2 0017 layer 15" src="/assets/FACETS-KIDS-SIGNUP2a2_0017_Layer-15.png"></a>
             <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
             <div class="nav-collapse collapse">
               <ul class="nav pull-right" style="">
@@ -104,13 +119,28 @@
             <a href="" ng-click="result.selected_emotion = 'care'"><img src="care.1.svg" class="svg"></a>
           </div>
         </div-->
+        <div class = 'slider'>
+          <div class = 'slide'>
 
-        <!--div id="wrapper" class="imageContainer">
-          <div ng-repeat="video in result.videos">
-            <a href="" onclick="videoPlayer('{{video.video_url}}');" ng-click="result.selected_video = video"><img ng-src="{{video.thumbnails[0]}}"/></a>
-            <span class="title">{{video.name}}<span class="info">=</span></span>
-          </div>
-        </div-->
+            <div ng-repeat="tag in result.curated_tag_list"  ng-class-odd="'iosSliderColorOdd'" ng-class-even="'iosSliderColorEven'" ng-if="result.selected_emotion == 'home'">
+              <div class="listTitle">{{tag.label}}</div>
+              <div class="iosSlider" iosslider data-snap-ignore="true">
+                <div class="slider">  
+                  <div class="slide" slide ng-repeat="video in result.videos[tag.name]">
+                    <img ng-src="{{video.thumbnails[0]}}">
+                    <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span>{{video.name}}</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div id="wrapper" class="imageContainer" ng-if="result.selected_emotion != 'home'">
+              <div ng-repeat="video in result.videos[result.selected_emotion]">
+                <a href="" ng-click="result.selectVideo(video); videoPlayer('{{video.video_url}}');"><img ng-src="{{video.thumbnails[0]}}"/></a>
+                <span class="title">{{video.name}}<span class="info">=</span></span>
+              </div>
+            </div>
 
         <!--div class="iosSlider" iosslider>
           <div class="slider">  
@@ -122,25 +152,8 @@
         </div-->
 
 
-        <!--div class = 'iosSliderVertical'-->
-          <div class = 'slider'>
-            <div class = 'slide'>
-
-        <div ng-repeat="tag in result.curated_tag_list"  ng-class-odd="'iosSliderColorOdd'" ng-class-even="'iosSliderColorEven'">
-          <div class="listTitle">{{tag.label}}</div>
-          <div class="iosSlider" iosslider data-snap-ignore="true">
-            <div class="slider">  
-              <div class="slide" slide ng-repeat="video in result.videos[tag.name]">
-                <img ng-src="{{video.thumbnails[0]}}">
-                <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span>{{video.name}}</span></a>
-              </div>
-            </div>
           </div>
         </div>
-
-            </div>
-          </div>
-        <!--/div-->
 
       </div>
 

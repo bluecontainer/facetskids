@@ -9,7 +9,7 @@ app.controller('MainCtrl', function($scope, TagListService) {
   console.log("MainCtrl controller");
 
   $scope.$watch('result.selected_emotion', function(newValue, oldValue) {
-    //console.log('result.selected_emotion changed - ' + newValue);
+    console.log('result.selected_emotion changed - ' + newValue);
     if (newValue != oldValue) {
       requestVideoList(newValue);
       //var videos = EmotionListService.query({emotion: newValue}, function() {
@@ -24,9 +24,8 @@ app.controller('MainCtrl', function($scope, TagListService) {
   $scope.result.selected_video = null;
   $scope.result.videos = {};
 
-  $scope.result.selected_emotion = "happy";
-  requestVideoList($scope.result.selected_emotion);
-
+  $scope.result.selected_emotion = "home";
+  //requestVideoList($scope.result.selected_emotion);
   $scope.result.curated_tag_list = [{name: "top_rated", label: "Top Rated"}, {name: "brand_new", label: "Brand New"}, {name: "picks_for_me", label: "Picks For Me"}, {name: "animation_antics", label: "Animation Antics"}];
   $scope.result.curated_tag_list.map ( function(item) {
     requestVideoList(item.name);
@@ -53,11 +52,13 @@ app.controller('MainCtrl', function($scope, TagListService) {
   //  $scope.result.videos[$scope.result.selected_emotion] = videos;
   //});
   function requestVideoList(tag) {
-    var videos = TagListService.query({tag: tag}, function() {
-      //console.log("TagListService.query callback");
-      //console.log(videos);
-      $scope.result.videos[tag] = videos;
-    });
+    if (tag != 'home') {
+      var videos = TagListService.query({tag: tag}, function() {
+        console.log("TagListService.query callback");
+        console.log(videos);
+        $scope.result.videos[tag] = videos;
+      });
+    }
   }
 });
 

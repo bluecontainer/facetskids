@@ -237,10 +237,11 @@
         @media screen and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
           .imageContainer {
             position: relative;
-            width: 983px;
+            width: 985px;
             /*height: 768px;*/
-            border: 1px solid red;
+            /*border: 1px solid red;*/
             padding-left: 40px;
+            background: #27b7eb;
           }
 
           .navContainer {
@@ -291,11 +292,11 @@
 
         .imageContainer div {
           position: relative;
-          background: #ccc;
-          outline: 1px dashed #000;
+          /*background: #ccc;*/
+          /*outline: 1px dashed #000;*/
           display: inline-block;
-          width: 227px;
-          height: 200px;
+          width: 229px;
+          height: 202px;
           margin-left: 2px;
           margin-right: 2px;
           margin-bottom: 40px;
@@ -311,6 +312,7 @@
           left: 0;
           font-size: 9pt;
           font-weight: bold;
+          font-family: 'Lato'
         }
 
         .imageContainer span.info {
