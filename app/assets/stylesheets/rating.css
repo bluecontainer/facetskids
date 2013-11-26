@@ -1,0 +1,13 @@
+.entypo-star:before {
+  font-family: entypo;
+  font-size: 4em;
+  content: '\2605';
+  color: gold;
+}
+
+.entypo-star-empty:before {
+  font-family: entypo;
+  font-size: 4em;
+  content: '\2606';
+}
+

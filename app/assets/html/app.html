@@ -8,7 +8,8 @@
       <meta name="apple-mobile-web-app-capable" content="yes">
       <meta name="apple-touch-fullscreen" content="yes">
 
-      <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+      <!--link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" /-->
+      <link href="/assets/application.css" media="all" rel="stylesheet" />
       <link rel="stylesheet" type="text/css" href="snap.css" />
       <link rel="stylesheet" type="text/css" href="app.css" />
 
@@ -16,24 +17,74 @@
       <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.js"></script>
       <script type="text/javascript" src="http://code.angularjs.org/1.2.0/angular-resource.js"></script>
       <script type="text/javascript" src="jquery.iosslider.js"></script>
+      <script type='text/javascript' src='jquery.iosslider-vertical.js'></script>
       <script type="text/javascript" src="app.js"></script>
-      <!--script type="text/javascript" src="angular.common.js"></script-->
- 
+      <script type='text/javascript' src='fastclick.js'></script> 
+
+      <style>
+        body {
+          height: 100%;
+          overflow: hidden;
+        }
+     </style> 
     </head>
 
     <body ng-controller="MainCtrl">
+
+    <div class="navbar-wrapper">
+      <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
+      <!--div class="container"-->
+
+        <div class="navbar">
+          <div class="navbar-inner">
+            <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="/"><img alt="Facets kids signup2a2 0017 layer 15" src="/assets/FACETS-KIDS-SIGNUP2a2_0017_Layer-15.png"></a>
+            <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+            <div class="nav-collapse collapse">
+              <ul class="nav pull-right" style="">
+
+                <li><a href="" ng-click="result.selected_emotion = 'happy'"><img src="happy.1.svg" class="svg"></a></li>
+                <li><a href="" ng-click="result.selected_emotion = 'excited'"><img src="excited.1.svg" class="svg"></a></li>
+
+                <li><a href="" ng-click="result.selected_emotion = 'scared'"><img src="scared.1.svg" class="svg"></a></li>
+
+                <li><a href="" ng-click="result.selected_emotion = 'think'"><img src="think.1.svg" class="svg"></a></li>
+
+                <li><a href="" ng-click="result.selected_emotion = 'laugh'"><img src="laugh.1.svg" class="svg"></a></li>
+
+                <li><a href="" ng-click="result.selected_emotion = 'care'"><img src="care.1.svg" class="svg"></a></li>
+                <li><a data-method="delete" href="/users/sign_out" rel="nofollow">Log out</a></li>
+              </ul>
+            </div><!--/.nav-collapse -->
+
+  
+          </div><!-- /.navbar-inner -->
+        </div><!-- /.navbar -->
+
+      <!--/div--> <!-- /.container -->
+    </div>
+
+
       <div class="snap-drawers">
           <div>
-              <div class="detailContainer"> 
-                 {{result.selected_video.name}}
-                 {{result.selected_video.video_url}}
+              <div class="detailContainer">
+                 <img ng-src="{{result.selected_video.thumbnails[0]}}" style="width: 288px; height: 215px; margin: 5px 9px 0px 9px;"/>
+                 <div class="hilight">
+                   {{result.selected_video.name}}
+                 </div>
+                 {{result.selected_video.description}}
               </div>
           </div>
           <div class="snap-drawer snap-drawer-right"></div>
       </div>
       
-      <div id="content" class="snap-content">
-        <div class="navContainer">
+      <div id="content" class="snap-content iosSliderVertical">
+        <!--div class="navContainer">
           <div>
             <a href="" ng-click="result.selected_emotion = 'happy'"><img src="happy.1.svg" class="svg"></a>
           </div>
@@ -52,7 +103,7 @@
           <div>
             <a href="" ng-click="result.selected_emotion = 'care'"><img src="care.1.svg" class="svg"></a>
           </div>
-        </div>
+        </div-->
 
         <!--div id="wrapper" class="imageContainer">
           <div ng-repeat="video in result.videos">
@@ -61,32 +112,42 @@
           </div>
         </div-->
 
-        <div class="iosSlider" iosslider>
+        <!--div class="iosSlider" iosslider>
           <div class="slider">  
             <div class="slide" slide ng-repeat="video in result.videos[result.selected_emotion]">
               <img ng-src="{{video.thumbnails[0]}}">
-              <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><strong>{{video.name}}</strong></a>
+              <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span>{{video.name}}</span></a>
             </div>
           </div>
-        </div>
+        </div-->
 
-        <div ng-repeat="tag in result.curated_tag_list">
-          <div class="iosSlider" iosslider>
+
+        <!--div class = 'iosSliderVertical'-->
+          <div class = 'slider'>
+            <div class = 'slide'>
+
+        <div ng-repeat="tag in result.curated_tag_list"  ng-class-odd="'iosSliderColorOdd'" ng-class-even="'iosSliderColorEven'">
+          <div class="listTitle">{{tag.label}}</div>
+          <div class="iosSlider" iosslider data-snap-ignore="true">
             <div class="slider">  
-              <div class="slide" slide ng-repeat="video in result.videos[tag]">
+              <div class="slide" slide ng-repeat="video in result.videos[tag.name]">
                 <img ng-src="{{video.thumbnails[0]}}">
-                <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><strong>{{video.name}}</strong></a>
+                <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span>{{video.name}}</span></a>
               </div>
             </div>
           </div>
         </div>
 
+            </div>
+          </div>
+        <!--/div-->
+
       </div>
 
-      <div style="position: absolute; left: -2000px;">
-        <video id="myVideo" controls="false" preload="false" width="634" height="264">
-        </video>
-      </div>
+    <div style="position: absolute; left: -2000px;">
+      <video id="myVideo" controls="false" preload="false" width="634" height="264">
+      </video>
+    </div>
 
       <script type="text/javascript">
         var currentTime = 0;
@@ -152,8 +213,23 @@
           element: document.getElementById('content'),
           maxPosition: 306,
           disable: 'right',
-          touchToDrag: false,
+          touchToDrag: true,
           hyperextensible: false
+        });
+
+        $(document).ready(function() {
+          $('.iosSliderVertical').iosSliderVertical({
+            elasticPullResistance: 0.9,
+            slideStartVelocityThreshold: 5,
+          });
+        });
+
+        $(document).bind('touchmove', function(e) {
+          e.preventDefault();
+        });
+
+        $(function() {
+          FastClick.attach(document.body);
         });
       </script>
       <script type="text/javascript" src="app.js"></script>
@@ -171,6 +247,7 @@
             var imgID = $img.attr('id');
             var imgClass = $img.attr('class');
             var imgURL = $img.attr('src');
+            var imgStyle = $img.attr('style');
 
             jQuery.get(imgURL, function(data) {
               // Get the SVG tag, ignore the rest
@@ -178,11 +255,14 @@
 
               // Add replaced image's ID to the new SVG
               if(typeof imgID !== 'undefined') {
-                 $svg = $svg.attr('id', imgID);
+                $svg = $svg.attr('id', imgID);
               }
               // Add replaced image's classes to the new SVG
               if(typeof imgClass !== 'undefined') {
-                  $svg = $svg.attr('class', imgClass+' replaced-svg');
+                $svg = $svg.attr('class', imgClass+' replaced-svg');
+              }
+              if (typeof imgStyle !== 'undefined') {
+                $svg = $svg.attr('style', imgStyle);
               }
 
               // Remove any invalid XML tags as per http://validator.w3.org
@@ -196,4 +276,3 @@
 
     </body>
 </html>
-

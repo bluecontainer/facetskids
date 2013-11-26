@@ -27,9 +27,9 @@ app.controller('MainCtrl', function($scope, TagListService) {
   $scope.result.selected_emotion = "happy";
   requestVideoList($scope.result.selected_emotion);
 
-  $scope.result.curated_tag_list = ["top_rated", "brand_new", "picks_for_me", "animation_antics"];
+  $scope.result.curated_tag_list = [{name: "top_rated", label: "Top Rated"}, {name: "brand_new", label: "Brand New"}, {name: "picks_for_me", label: "Picks For Me"}, {name: "animation_antics", label: "Animation Antics"}];
   $scope.result.curated_tag_list.map ( function(item) {
-    requestVideoList(item);
+    requestVideoList(item.name);
   });
 
   $scope.result.selectVideo = function(video) {
@@ -66,12 +66,13 @@ app.directive('iosslider', ['$parse', function($parse) {
 
   var defaultOptions = {
         desktopClickDrag: true,
-    		snapToChildren: true,
-    		//infiniteSlider: true,
-    		//autoSlide: true,
-    		scrollbar: true,
-                scrollbarHide: false,
-    		keyboardControls: true    
+  	snapToChildren: true,
+    	//infiniteSlider: true,
+    	//autoSlide: true,
+    	//scrollbar: true,
+        //scrollbarHide: false,
+    	keyboardControls: true,
+        elasticPullResistance: 0.9
   };
   
   return {

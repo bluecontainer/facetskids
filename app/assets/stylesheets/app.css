@@ -20,6 +20,19 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'entypo';
+    src: url('entypo.eot');
+    src: url('entypo.eot?#iefix') format('embedded-opentype'),
+         url('entypo.woff') format('woff'),
+         url('entypo.ttf') format('truetype'),
+         url('entypo.svg#entypo') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@import url(http://fonts.googleapis.com/css?family=Lato:400,700);
+
 /* Show "Left" drawer for the "Right" drawer in the demo */
 .snapjs-right .snap-drawer-left {
 	display: block;
@@ -35,7 +48,7 @@
 /* Show the "Drag" background in the demo */
 #content {
 	/*background: #BFC7D8 url(drag.png) center 75% no-repeat;*/
-	background: #BFC7D8;
+	/*background: #BFC7D8;*/
 }
 
 /* Demo toolbar styles */
@@ -167,16 +180,18 @@
 
 /* Default demo styles */
 .snap-content {
-  background: #BFC7D8;
+  /*background: #BFC7D8;*/
+  padding-top: 120px;
 }
 
 .snap-drawers {
-  background: #323949;
+  /*background: #323949;*/
+  padding-top: 120px;
 }
 
 .snap-drawer {
-	background: #323949;
-	color: #eee;
+  /*background: #323949;*/
+  color: #eee;
 }
 
 .snap-drawer h3 {
@@ -271,7 +286,7 @@
         }
 
         svg path {
-            fill: white;
+            fill: #526476;
         }
 
         .imageContainer div {
@@ -308,9 +323,31 @@
         .detailContainer {
           position: relative;
           background-color: white;
-          outline: 1px dashed #000;
+          /*outline: 1px dashed #000;*/
           width: 306px;
           height: 472px;
+        }
+
+        .hilight {
+          background-color: rgba(0,0,0,0.65);
+          position: absolute;
+          height: 40px;
+          width: 278px;
+          font-family: 'Lato', sans-serif;
+          font-size: 10pt;
+          color: #FFF;
+          /*bottom: 0px;*/
+          padding: 0px 5px 0px 5px;
+          top: 185px;
+          left: 9px;
+          z-index: 1;
+        }
+
+        .detailContainer img {
+          width: 288px; 
+          height: 215px; 
+          margin: 5px 9px 0px 9px;
+          z-index: 1;
         }
 
         .scrollable {
@@ -319,8 +356,14 @@
         }
 
 
-
-
+.listTitle {
+  margin-left: 40px;
+  padding-top: 3px; 
+  color: white;
+  font-family: 'Lato', sans-serif;
+  font-weight: 600;
+  font-size: 13pt;
+}
 
 .iosSlider {
     /* required */
@@ -329,6 +372,14 @@
     left: 0;
     overflow: hidden;
     height: 200px;
+}
+
+.iosSliderColorOdd {
+  background-color: #27b7eb;
+}
+
+.iosSliderColorEven {
+  background-color: #028abc;
 }
 
 /* slider */
@@ -344,23 +395,58 @@
     float: left;
 
     /* optional */
-    width: 206px;
+    width: 208px;
     height: 100%;
-    padding: 3px;
-    background: white;
-    text-align: center;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 7px;
+    /*background: white;*/
+    /*text-align: center;*/
+    /*outline: 1px dashed #000;*/
 }
 
 .iosSlider .slider .slide img {
     display: block;
     width: 206px;
     height: 155px;
-    margin: 0 auto;
+    /*margin: 10px auto;*/
 }
 
-.iosSlider .slider .slide strong {
+.iosSlider .slider .slide span {
     margin: 0 auto;
-    display: inline-block;
-    height: 50px;
-    background: #ccc;
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    font-size: 9pt;
+    color: white;
+    /*margin-top: 7px;*/
+    /*display: inline-block;*/
+    /*height: 50px;*/
+    /*background: #ccc;*/
 }
+
+.iosSliderVertical {
+    /* required */
+    position: relative;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    
+    width: 1024px;
+    height: 430px;
+}
+
+/* slider */
+.iosSliderVertical > .slider {
+    /* required */
+    width: 100%;
+    height: 100%;
+}
+
+/* slide */
+.iosSliderVertical > .slider > .slide {
+    /* required */
+    float: left;
+    width: 1024px;
+}
+
+
