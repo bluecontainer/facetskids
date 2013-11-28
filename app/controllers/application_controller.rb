@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
   end
 
   def can_run_app?
-    return true
+    #return true
     @user_agent = UserAgent.parse(request.user_agent)
     #check if an iPad
     if @user_agent.platform == "iPad"

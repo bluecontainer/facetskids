@@ -9,6 +9,8 @@
 
   <%= f.input :password, :label => false, :placeholder => "Password", input_html: { class: "login-field" } %>
 
+  <%= f.input :remember_me, :as => :hidden, :input_html => { :value => "1"} if devise_mapping.rememberable? %>
+
   <%= f.button :submit, "Login", :class => "btn btn-primary btn-lg btn-block" %>
 <% end %>
 

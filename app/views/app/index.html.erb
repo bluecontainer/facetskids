@@ -12,33 +12,55 @@
           <div class="snap-drawer snap-drawer-right"></div>
       </div>
       
-      <div id="content" class="snap-content iosSliderVertical">
-        <div class = 'slider'>
-          <div class = 'slide'>
+      <div id="content" class="snap-content iosSliderVertical" iosvslider>
+        <!--div class="iosSliderVertical" iosvslider-->
+        <div class='slider'>
 
-            <div ng-repeat="tag in result.curated_tag_list"  ng-class-odd="'iosSliderColorOdd'" ng-class-even="'iosSliderColorEven'" ng-if="result.selected_emotion == 'home'">
+          <!--div ng-repeat="tag in result.selected_tags"-->
+          <!--div class='slide' vslide ng-if="result.selected_emotion=='home'"-->
+          <!--div class='slide' vslide-->
+          <!--div class="slide"-->
+
+          <div ng-if="result.selected_emotion=='home'">
+            <div ng-repeat="tag in result.curated_tag_list"  ng-class-odd="'iosSliderColorOdd'" ng-class-even="'iosSliderColorEven'">
+
+          <div class="slide" vslide>
               <div class="listTitle">{{tag.label}}</div>
               <div class="iosSlider" iosslider data-snap-ignore="true">
                 <div class="slider">  
                   <div class="slide" slide ng-repeat="video in result.videos[tag.name]">
                     <img ng-src="{{video.thumbnails[0]}}">
-                    <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span>{{video.name}}</span></a>
+                    <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span class="movieTitle">{{video.name}}</span></a>
                   </div>
                 </div>
               </div>
-            </div>
-
-
-            <div id="wrapper" class="imageContainer" ng-if="result.selected_emotion != 'home'">
-              <div ng-repeat="video in result.videos[result.selected_emotion]">
-                <a href="" ng-click="result.selectVideo(video); videoPlayer('{{video.video_url}}');"><img ng-src="{{video.thumbnails[0]}}"/></a>
-                <span class="title">{{video.name}}<span class="info">=</span></span>
-              </div>
-            </div>
-
           </div>
-        </div>
+            </div>
+          </div>
 
+          <!--/div-->
+
+          <!--div class="slide" vslide ng-if="result.selected_emotion!='home'"-->
+          <!--div class="slide" vslide-->
+          <div ng-if="result.selected_emotion!='home'">
+
+            <div class="slide" vslide>
+            <div id="wrapper" class="imageContainer">
+              <ul class="thumbnails">
+                <li class="span3" ng-repeat="video in result.videos[result.selected_emotion]">
+                  <div class="thumbnail" data-snap-ignore="true">
+                    <a href="" ng-click="result.selectVideo(video); videoPlayer('{{video.video_url}}');"><img ng-src="{{video.thumbnails[0]}}"/></a>
+                    <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span class="movieTitle">{{video.name}}</span></a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            </div>
+          </div>
+
+          <!--/div-->
+        </div>
+        <!--/div-->
       </div>
 
     <div style="position: absolute; left: -2000px;">
@@ -61,10 +83,13 @@
 
 
         $(document).ready(function() {
+          console.log("document ready - previous constructor");
+         /* 
           $('.iosSliderVertical').iosSliderVertical({
             elasticPullResistance: 0.9,
             slideStartVelocityThreshold: 5,
           });
+          */
         });
 
         $(document).bind('touchmove', function(e) {

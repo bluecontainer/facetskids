@@ -243,8 +243,6 @@
           .imageContainer {
             position: relative;
             width: 985px;
-            /*height: 768px;*/
-            /*border: 1px solid red;*/
             padding-left: 40px;
             background: #27b7eb;
           }
@@ -267,14 +265,12 @@
             height: 500px;
           }
 
-
         }
 
         @media screen and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
           .imageContainer {
             position: relative;
             width: 727px;
-            /*height: 1024px;*/
             border: 1px solid red;
             padding-left: 40px;
           }
@@ -304,8 +300,6 @@
 
         .imageContainer div {
           position: relative;
-          /*background: #ccc;*/
-          /*outline: 1px dashed #000;*/
           display: inline-block;
           width: 229px;
           height: 202px;
@@ -318,15 +312,6 @@
           height: 170px;
         }
 
-        .imageContainer span.title {
-          position: absolute; 
-          bottom: 0; 
-          left: 0;
-          font-size: 9pt;
-          font-weight: bold;
-          font-family: 'Lato'
-        }
-
         .imageContainer span.info {
           font-size: 16pt;
           font-weight: bold;
@@ -337,15 +322,14 @@
         .detailContainer {
           position: relative;
           background-color: white;
-          /*outline: 1px dashed #000;*/
           width: 306px;
           height: 472px;
         }
 
         .hilight {
-          background-color: rgba(0,0,0,0.65);
+          background-color: rgba(0,0,0,0.5);
           position: absolute;
-          height: 40px;
+          height: 30px;
           width: 278px;
           font-family: 'Lato', sans-serif;
           font-size: 10pt;
@@ -364,6 +348,10 @@
           z-index: 1;
         }
 
+        .thumbnail {
+          border: none;
+        }
+
         .scrollable {
           -webkit-overflow-scrolling: touch;
           overflow-y:hidden;
@@ -377,6 +365,14 @@
   font-family: 'Lato', sans-serif;
   font-weight: 600;
   font-size: 13pt;
+}
+
+.movieTitle {
+    margin: 0 auto;
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    font-size: 9pt;
+    color: white;
 }
 
 .iosSlider {
@@ -396,14 +392,12 @@
   background-color: #028abc;
 }
 
-/* slider */
 .iosSlider .slider {
     /* required */
     width: 100%;
     height: 100%;
 }
 
-/* slide */
 .iosSlider .slider .slide {
     /* required */
     float: left;
@@ -426,38 +420,26 @@
     /*margin: 10px auto;*/
 }
 
-.iosSlider .slider .slide span {
-    margin: 0 auto;
-    font-family: 'Lato', sans-serif;
-    font-weight: 600;
-    font-size: 9pt;
-    color: white;
-    /*margin-top: 7px;*/
-    /*display: inline-block;*/
-    /*height: 50px;*/
-    /*background: #ccc;*/
-}
-
 .iosSliderVertical {
     /* required */
     position: relative;
     top: 0;
     left: 0;
     overflow: hidden;
+    background-color: #27b7eb; 
 }
 
-/* slider */
 .iosSliderVertical > .slider {
     /* required */
     width: 100%;
     height: 100%;
 }
 
-/* slide */
 .iosSliderVertical > .slider > .slide {
     /* required */
     float: left;
     width: 1024px;
+    height: 100%;
 }
 
 
