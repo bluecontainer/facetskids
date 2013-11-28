@@ -4,19 +4,37 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
+<% if in_app? && user_signed_in? %>
+            <%= image_tag("FACETS-KIDS-SIGNUP2a2_0017_Layer-15.png", :class => 'brand', :"ng-click" => "result.selected_emotion = 'home'") %>
+<% elsif in_app? %>
+            <%= image_tag("FACETS-KIDS-SIGNUP2a2_0017_Layer-15.png", :class => 'brand') %>
+<% else %>
             <%= link_to image_tag("FACETS-KIDS-SIGNUP2a2_0017_Layer-15.png"), unauthenticated_root_path, :class => 'brand' %>
+<% end %>
             <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
             <div class="nav-collapse collapse">
+<% if in_app? && user_signed_in? %>
+              <ul class="nav pull-left" style="">
+                <li><a href="" ng-click="result.selected_emotion = 'happy'"><img src="<%=image_path('happy.1.svg')%>" class="svg"></a></li>
+                <li><a href="" ng-click="result.selected_emotion = 'excited'"><img src="<%=image_path('excited.1.svg')%>" class="svg"></a></li>
+                <li><a href="" ng-click="result.selected_emotion = 'scared'"><img src="<%=image_path('scared.1.svg')%>" class="svg"></a></li>
+                <li><a href="" ng-click="result.selected_emotion = 'think'"><img src="<%=image_path('think.1.svg')%>" class="svg"></a></li>
+                <li><a href="" ng-click="result.selected_emotion = 'laugh'"><img src="<%=image_path('laugh.1.svg')%>" class="svg"></a></li>
+                <li><a href="" ng-click="result.selected_emotion = 'care'"><img src="<%=image_path('care.1.svg')%>" class="svg"></a></li>
+              </ul>
+              <ul class="nav pull-right">
+                <li><%= link_to "&#59201".html_safe, destroy_user_session_path, :method => 'delete', :style => "font-family: entypo; font-size: 6em; padding-top: 30px;" %></li>
+              </ul>
+<% elsif !in_app? %>
               <ul class="nav pull-right" style="">
-<% if user_signed_in? %>
+  <% if user_signed_in? %>
                 <li><%= link_to 'Log out', destroy_user_session_path, :method => 'delete' %></li>
-                <li><%= link_to 'Manage my account', edit_user_registration_path %></li>
-<% else %>
+  <% else %>
                 <li><%= link_to "Sign up", new_user_registration_path %></li>
-                <li><%= link_to 'Manage my account', user_session_path %></li>
-<% end %>
-               </li>
+  <% end %>
+                <li><%= link_to 'Manage my account', edit_user_registration_path %></li>
                 <li><%= link_to "About", content_faq_path %></li>
               </ul>
+<% end %>
             </div><!--/.nav-collapse -->
 

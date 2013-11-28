@@ -64,3 +64,5 @@ gem "rack-cors", :require => 'rack/cors'
 
 #gem "acts-as-taggable-on", :path => '~/acts-as-taggable-on'
 gem "acts-as-taggable-on", :github => 'bluecontainer/acts-as-taggable-on'
+
+gem "useragent"

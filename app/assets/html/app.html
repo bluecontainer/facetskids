@@ -28,13 +28,14 @@
       <link rel="stylesheet" type="text/css" href="snap.css" />
       <link rel="stylesheet" type="text/css" href="app.css" />
 
-      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+      <script type="text/javascript" src="/assets/application.js"></script>
+      <!--script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script-->
       <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.js"></script>
       <script type="text/javascript" src="http://code.angularjs.org/1.2.0/angular-resource.js"></script>
-      <script type="text/javascript" src="jquery.iosslider.js"></script>
-      <script type='text/javascript' src='jquery.iosslider-vertical.js'></script>
-      <script type="text/javascript" src="app.js"></script>
-      <script type='text/javascript' src='fastclick.js'></script> 
+      <!--script type="text/javascript" src="jquery.iosslider.js"></script>
+      <script type='text/javascript' src='jquery.iosslider-vertical.js'></script-->
+      <script type="text/javascript" src="/assets/app.js"></script>
+      <!--script type='text/javascript' src='fastclick.js'></script--> 
 
       <style>
         body {
@@ -162,7 +163,7 @@
       </video>
     </div>
 
-      <script type="text/javascript">
+      <!--script type="text/javascript">
         var currentTime = 0;
 
         function videoPlayer(url) {
@@ -218,9 +219,9 @@
           }, false);
         });
 
-      </script>
+      </script-->
 
-      <script type="text/javascript" src="snap.js"></script>
+      <!--script type="text/javascript" src="snap.js"></script-->
       <script type="text/javascript">
         var snapper = new Snap({
           element: document.getElementById('content'),
@@ -229,6 +230,11 @@
           touchToDrag: true,
           hyperextensible: false
         });
+
+        $('.imageContainer img').on("click", function() {
+          snapper.open('left');
+        }); 
+
 
         $(document).ready(function() {
           $('.iosSliderVertical').iosSliderVertical({
@@ -245,13 +251,9 @@
           FastClick.attach(document.body);
         });
       </script>
-      <script type="text/javascript" src="app.js"></script>
+      <!--script type="text/javascript" src="app.js"></script-->
 
       <script type="text/javascript">
-        $('.imageContainer img').on("click", function() {
-          snapper.open('left');
-        }); 
-
         /*
          * Replace all SVG images with inline SVG
          */

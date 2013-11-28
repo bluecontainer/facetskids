@@ -23,4 +23,9 @@
 //= require flatuipro
 //= require bootstrap
 //= require turbolinks
-//= require_tree .
+//= require analytics
+//= require jquery.externalscript
+//= require jquery.readyselector
+//= require jquery.mobile.custom.min
+//= require fastclick
+//= require registrations

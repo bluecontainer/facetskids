@@ -1,5 +1,21 @@
-<script>
-  var page_url_fragment = window.location.pathname + window.location.search;
-  ga('create', '<%= ENV["GA_TRACKING_ID"] %>', '<%= ENV["HOST"] %>');
-  ga('send', 'pageview', page_url_fragment);
-</script>
+  <div class="bottom-menu" style="padding: 10px; margin-left: 25%; width: 50%;">
+    <div class="container">
+      <div class="row">
+        <div class="offset2 span6">
+          <ul class="bottom-links">
+            <li><a href="/content/faq">FAQs</a></li>
+            <li><a href="/content/privacy">Privacy</a></li>
+            <li><a href="/content/about">About Facets</a></li>
+            <li><a href="<%= new_contact_path %>">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    var page_url_fragment = window.location.pathname + window.location.search;
+    ga('create', '<%= ENV["GA_TRACKING_ID"] %>', '<%= ENV["HOST"] %>');
+    ga('send', 'pageview', page_url_fragment);
+  </script>

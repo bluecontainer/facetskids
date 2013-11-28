@@ -1,6 +1,14 @@
+require "useragent" 
+
 class SessionsController < Devise::SessionsController
-  
+ 
+  def new
+    @user_agent = UserAgent.parse(request.user_agent) 
+    super
+  end
+ 
   def create
+
     if request.xhr?
       logger.debug "create"
       resource = warden.authenticate!(:scope => resource_name, :recall => "sessions#failure")

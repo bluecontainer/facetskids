@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en-US" ng-app="facetsKidsApp">
+  <head>
+      <title>FacetsKids</title>
+
+      <meta http-equiv="x-ua-compatible" content="IE=edge" />
+      <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-touch-fullscreen" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+      <!-- iPad Portrait  http://placehold.it/768x1004.png-->
+      <link href="<%=image_path('ipad.768.port.png')%>" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+      <!-- iPad Landscape  http://placehold.it/1024x748.png" -->
+      <link href="<%=image_path('ipad.1024.land.png')%>" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+      <!-- iPad Portrait (Retina)  http://placehold.it/1536x2008.png-->
+      <link href="<%=image_path('ipad.ret.1536.port.png')%>" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+      <!-- iPad Landscape (Retina)  http://placehold.it/2048x1496.png-->
+      <link href="<%=image_path('ipad.ret.2048.land.png')%>" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+
+      <!--
+      <link rel="apple-touch-icon" sizes="72x72" href="touch-icon-ipad-144.png" />
+      -->
+      <link rel="apple-touch-icon" sizes="144x144" href="<%=image_path('touch-icon-ipad-144.jpg')%>" />
+
+      <%= stylesheet_link_tag "application", :media => "all", 'data-turbolinks-track' => true %>
+      <%= stylesheet_link_tag "app", :media => "all", 'data-turbolinks-track' => true %>
+
+      <%= javascript_include_tag "application", 'data-turbolinks-track' => true %>
+      <%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js" %>
+      <%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-resource.min.js" %>
+      <%= javascript_include_tag "app", 'data-turbolinks-track' => true %>
+
+      <%= csrf_meta_tags %>
+
+      <style>
+        body {
+          height: 100%;
+          overflow: hidden;
+        }
+     </style> 
+  </head>
+
+  <body ng-controller="MainCtrl">
+
+    <div class="navbar-wrapper">
+      <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
+      <!--div class="container"-->
+
+        <div class="navbar">
+          <div class="navbar-inner">
+            <%= render 'layouts/navigation' %>
+         </div>
+        </div>
+
+      <!--/div--> <!-- /.container -->
+    </div>
+
+    <%= yield %>
+
+  </body>
+</html>

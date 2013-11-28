@@ -35,6 +35,8 @@ FacetsKids::Application.routes.draw do
     resources :videos, only: [:index, :new, :edit, :create, :update, :destroy]
   end
 
+  get 'app', :to => 'app#index'
+
   namespace :api do
     devise_for :users, only: []
     devise_scope :user do

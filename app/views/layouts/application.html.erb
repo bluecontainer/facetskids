@@ -18,7 +18,7 @@
 
     <%= stylesheet_link_tag "application", :media => "all", 'data-turbolinks-track' => true %>
     <%= javascript_include_tag "application", 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js" %>
+    <%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js" %>
     <%= csrf_meta_tags %>
     <%= yield(:head) %>
 
@@ -75,23 +75,9 @@
 
   </div>
 
-
-  <div class="bottom-menu" style="padding: 10px; margin-left: 25%; width: 50%;">
-    <div class="container">
-      <div class="row">
-        <div class="offset2 span6">
-          <ul class="bottom-links">
-            <li><a href="/content/faq">FAQs</a></li>
-            <li><a href="/content/privacy">Privacy</a></li>
-            <li><a href="/content/about">About Facets</a></li>
-            <li><a href="<%= new_contact_path %>">Contact Us</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <% if !in_app? %>
   <%= render 'layouts/footer' %>
+  <% end %>
 
   </body>
 </html>
