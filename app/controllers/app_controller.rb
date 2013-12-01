@@ -2,7 +2,9 @@ class AppController < ApplicationController
   #before_filter :authenticate_user!
 
   def index
-    if can_run_app?
+    force_run_app(params[:force])
+
+    if can_run_app? 
       authenticate_user!
     else
       if can_install_app?

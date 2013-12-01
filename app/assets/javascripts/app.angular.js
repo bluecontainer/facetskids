@@ -3,25 +3,18 @@ angular.module('tagListService', ['ngResource'])
   return $resource('/api/videos?tag_list=:tag');
 });
 
-var app = angular.module('facetsKidsApp', ['tagListService']);
+var app = angular.module('facetsKidsApp', ['tagListService', 'facetsKids.rating', 'facetsKids.videoplayer']);
 
 app.controller('MainCtrl', function($scope, TagListService) {
   console.log("MainCtrl controller");
 
-  $scope.$watch('result.selected_emotion', function(newValue, oldValue) {
-    console.log('result.selected_emotion changed - ' + newValue);
-    if (newValue != oldValue) {
-      getVideoList(newValue);
-      //var videos = EmotionListService.query({emotion: newValue}, function() {
-      //  console.log("JsonServer.query callback update");
-      //  console.log(videos);
-      //  $scope.result.videos[newValue] = videos;
-      //});
-    }
-  });
+  $scope.rate = 1;
+  $scope.max = 5;
+  $scope.isReadonly = false;
 
   $scope.result = new Object;
   $scope.result.selected_video = null;
+  $scope.result.play_video = null;
   $scope.result.videos = {};
 
   $scope.result.selected_emotion = "home";
@@ -36,6 +29,12 @@ app.controller('MainCtrl', function($scope, TagListService) {
     //console.log('selectVideo');
     //console.log(video);
     $scope.result.selected_video = video;
+  }
+  
+  $scope.result.playVideo = function(video) {
+    console.log("playVideo");
+    console.log(video);
+    $scope.result.play_video = video;
   }
 
   $scope.result.getVideoList = getVideoList;
@@ -64,6 +63,20 @@ app.controller('MainCtrl', function($scope, TagListService) {
       });
     }
   }
+
+  $scope.$watch('result.selected_emotion', function(newValue, oldValue) {
+    console.log('result.selected_emotion changed - ' + newValue);
+    if (newValue != oldValue) {
+      getVideoList(newValue);
+      //var videos = EmotionListService.query({emotion: newValue}, function() {
+      //  console.log("JsonServer.query callback update");
+      //  console.log(videos);
+      //  $scope.result.videos[newValue] = videos;
+      //});
+    }
+  });
+
+
 });
 
 app.directive('iosslider', ['$parse', function($parse) {  

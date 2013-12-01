@@ -8,6 +8,11 @@ class ApplicationController < ActionController::Base
     redirect_to authenticated_root_path, :alert => exception.message
   end
 
+  def initialize
+    @force = false
+    super
+  end
+
   def after_sign_in_path_for(resource)
     default_path = authenticated_root_path
     default_path = app_path if in_app?
@@ -44,8 +49,12 @@ class ApplicationController < ActionController::Base
     return @user_agent.platform == "iPad"
   end
 
+  def force_run_app(force)
+    @force = force
+  end
+
   def can_run_app?
-    #return true
+    return true if @force
     @user_agent = UserAgent.parse(request.user_agent)
     #check if an iPad
     if @user_agent.platform == "iPad"

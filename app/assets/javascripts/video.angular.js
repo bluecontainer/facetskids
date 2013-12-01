@@ -1,56 +1,60 @@
-        var currentTime = 0;
 
-        function videoPlayer(url) {
-          console.log(url);
-          //return function() {
-            $('video').get(0).src = url;
-            $('video').get(0).load();
-          //};
-        };
+angular.module('facetsKids.videoplayer', [])
 
-        $(function(){
-          var myVideo = $('video').get(0);
-          console.log(myVideo);
+.directive('videoplayer', function () {
+  return {
+    restrict: 'EA',
 
-          myVideo.addEventListener('progress', function() {
-            //not applicable to hls video
-            console.log("progress");
-            console.log(this.buffered.end(0));
-            //var endBuf = this.buffered.end(0);
-            //console.log(this.duration);
-            //var soFar = parseInt(((endBuf / this.duration) * 100));
-            //console.log(soFar);
-            //document.getElementById("loadStatus").innerHTML =  soFar + '%';
-          }, false);
+    controller: function($scope) {
+      console.log("videoplayer controller");
+      this.currentTime = 0;
+    },
 
-          myVideo.addEventListener('canplaythrough', function() {
-            console.log("canplaythrough");
-          }, false);
+    templateUrl: '/assets/video.html',
+    replace: true,
 
-          myVideo.addEventListener('loadedmetadata', function() {
-            console.log("loadedmetadata");
-            console.log(this.duration);
-          }, false);
-          myVideo.addEventListener('loadeddata', function() {
-            console.log("loadeddata");
-            this.currentTime = currentTime;
-            this.webkitEnterFullscreen();
-          }, false);
+    link: function(scope, elem, attrs) {
+      console.log("videoplayer link");
+      console.log(attrs);     
+      scope.videoElem = elem.children()[0];
 
-          myVideo.addEventListener("timeupdate", function() {
-            currentTime = this.currentTime;
-          }, false);
+      function play(url) {
+        console.log("play: " + url);
+        scope.videoElem.src = url;
+        console.log(scope.videoElem);
+        scope.videoElem.load();
+      }
 
-          myVideo.addEventListener('webkitbeginfullscreen', function() {
-            console.log("webkitbeginfullscreen");
-            this.play();
-          }, false);
-          myVideo.addEventListener('webkitendfullscreen', function() {
-            console.log("webkitendfullscreen");
-          }, false);
-          myVideo.addEventListener('error', function() {
-            console.log("error");
-          }, false);
-        });
+      scope.$watch(attrs.src, function(value) {
+        console.log("videoplayer watch");
+        if (value) {
+          console.log(value);
+          play(value.video_url);
+        }
+      })
 
+      scope.videoElem.addEventListener('loadeddata', function() {
+        console.log("loadeddata");
+        this.currentTime = scope.currentTime;
+        this.webkitEnterFullscreen();
+      }, false);
+
+      scope.videoElem.addEventListener("timeupdate", function() {
+        scope.currentTime = this.currentTime;
+      }, false);
+
+      scope.videoElem.addEventListener('webkitbeginfullscreen', function() {
+        console.log("webkitbeginfullscreen");
+        this.play();
+      }, false); 
+    
+      scope.videoElem.addEventListener("ended", function() {
+        console.log("ended");
+        this.webkitExitFullscreen();
+      }, false);
+
+    }
+  };
+});
  
+

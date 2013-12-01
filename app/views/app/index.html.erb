@@ -1,19 +1,33 @@
 
       <div class="snap-drawers">
           <div>
-              <div class="detailContainer">
-                 <img ng-src="{{result.selected_video.thumbnails[0]}}" style="width: 288px; height: 215px; margin: 5px 9px 0px 9px;"/>
-                 <div class="hilight">
-                   {{result.selected_video.name}}
-                 </div>
-                 {{result.selected_video.description}}
+            <div class="detailContainer">
+              <a href="" ng-click="result.playVideo(result.selected_video);"><img ng-src="{{result.selected_video.thumbnails[0]}}" style="width: 288px; height: 215px; margin: 5px 9px 0px 9px;"/></a>
+              <div class="hilight">
+                {{result.selected_video.name}}
               </div>
+              <div style="margin: 5px 9px 0px 9px;">
+                {{result.selected_video.description}}
+              </div>
+            </div>
+            <div class="ratingContainer">
+              <div style="margin: 0px 9px 0px 9px;">
+                <rating value="rate" max="max" readonly="isReadonly" state-on="'entypo-star'" state-off="'entypo-star-empty'"></rating>
+              </div>
+            </div>
+            <div class="tagContainer">
+              <img src="<%=image_path('happy.svg')%>" class="svg">
+              <img src="<%=image_path('excited.svg')%>" class="svg">
+              <img src="<%=image_path('scared.svg')%>" class="svg">
+              <img src="<%=image_path('think.svg')%>" class="svg">
+              <img src="<%=image_path('laugh.svg')%>" class="svg">
+              <img src="<%=image_path('care.svg')%>" class="svg">
+            </div>
           </div>
           <div class="snap-drawer snap-drawer-right"></div>
       </div>
       
       <div id="content" class="snap-content iosSliderVertical" iosvslider>
-        <!--div class="iosSliderVertical" iosvslider-->
         <div class='slider'>
 
           <!--div ng-repeat="tag in result.selected_tags"-->
@@ -24,17 +38,18 @@
           <div ng-if="result.selected_emotion=='home'">
             <div ng-repeat="tag in result.curated_tag_list"  ng-class-odd="'iosSliderColorOdd'" ng-class-even="'iosSliderColorEven'">
 
-          <div class="slide" vslide>
-              <div class="listTitle">{{tag.label}}</div>
-              <div class="iosSlider" iosslider data-snap-ignore="true">
-                <div class="slider">  
-                  <div class="slide" slide ng-repeat="video in result.videos[tag.name]">
-                    <img ng-src="{{video.thumbnails[0]}}">
-                    <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span class="movieTitle">{{video.name}}</span></a>
+              <div class="slide" vslide>
+                <div class="listTitle">{{tag.label}}</div>
+                <div class="iosSlider" iosslider data-snap-ignore="true">
+                  <div class="slider">  
+                    <div class="slide" slide ng-repeat="video in result.videos[tag.name]">
+                      <a href="" ng-click="result.playVideo(video);"><img ng-src="{{video.thumbnails[0]}}"></a>
+                      <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span class="movieTitle">{{video.name}}</span></a>
+                    </div>
                   </div>
                 </div>
               </div>
-          </div>
+
             </div>
           </div>
 
@@ -49,7 +64,7 @@
               <ul class="thumbnails">
                 <li class="span3" ng-repeat="video in result.videos[result.selected_emotion]">
                   <div class="thumbnail" data-snap-ignore="true">
-                    <a href="" ng-click="result.selectVideo(video); videoPlayer('{{video.video_url}}');"><img ng-src="{{video.thumbnails[0]}}"/></a>
+                    <a href="" ng-click="result.selectVideo(video);"><img ng-src="{{video.thumbnails[0]}}"/></a>
                     <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span class="movieTitle">{{video.name}}</span></a>
                   </div>
                 </li>
@@ -60,13 +75,13 @@
 
           <!--/div-->
         </div>
-        <!--/div-->
       </div>
 
-    <div style="position: absolute; left: -2000px;">
-      <video id="myVideo" controls="false" preload="false" width="634" height="264">
-      </video>
-    </div>
+      <!--div style="position: absolute; left: -2000px;">
+        <video id="myVideo" controls="false" preload="false" width="634" height="264">
+        </video>
+      </div-->
+      <videoplayer src="result.play_video"></videoplayer>
 
       <script type="text/javascript">
         var snapper = new Snap({
@@ -83,7 +98,7 @@
 
 
         $(document).ready(function() {
-          console.log("document ready - previous constructor");
+         //console.log("document ready - previous constructor");
          /* 
           $('.iosSliderVertical').iosSliderVertical({
             elasticPullResistance: 0.9,

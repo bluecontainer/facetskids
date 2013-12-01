@@ -1,5 +1,6 @@
 /*
  *= require snap
+ *= require rating
  *= require_self
 */
 
@@ -294,8 +295,17 @@
           height: 96px;
         }
 
-        svg path {
-            fill: #526476;
+        .navContainer svg path {
+          fill: #526476;
+        }
+
+        .tagContainer svg {
+          width: 80px;
+          height: 80px;
+          padding: 0px 8px 0px 8px;
+        }
+        .tagContainer svg path {
+          fill: white;
         }
 
         .imageContainer div {
@@ -323,7 +333,21 @@
           position: relative;
           background-color: white;
           width: 306px;
-          height: 472px;
+          height: 360px;
+        }
+
+        .ratingContainer {
+          position: relative;
+          background-color: white;
+          width: 306px;
+          height: 65px;
+        }
+
+        .tagContainer {
+          position: relative;
+          background-color: #526476;
+          width: 306px;
+          height: 150px;
         }
 
         .hilight {

@@ -46,7 +46,8 @@ FacetsKids::Application.routes.draw do
     get 'videos/counts', :to => 'videos#counts'
     resources :videos, only: [:index, :show, :create]
     put 'videos/:id/tag', :to => 'videos#tag'
-    put 'videos/:id/mark', :to => 'videos#mark'
+    post 'videos/:id/mark', :to => 'videos#create_save_mark'
+    get 'videos/:id/mark', :to => 'videos#get_mark'
   end
 
 end

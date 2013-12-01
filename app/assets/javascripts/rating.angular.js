@@ -1,4 +1,4 @@
-angular.module('ui.bootstrap.rating', [])
+angular.module('facetsKids.rating', [])
 
 .constant('ratingConfig', {
   max: 5,
@@ -68,7 +68,7 @@ angular.module('ui.bootstrap.rating', [])
       onLeave: '&'
     },
     controller: 'RatingController',
-    templateUrl: 'rating.html',
+    templateUrl: '/assets/rating.html',
     replace: true
   };
 });

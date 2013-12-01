@@ -36,18 +36,40 @@ module Api
       end
     end
 
-    def mark
-      if params[:view_id] && params[:marker]
+    def create_save_mark
+      if params[:view_id] && params[:current_marker_seconds]
         @view = UserVideoView.find(params[:view_id])
-        @view.current_marker_seconds = params[:marker]
-        @view.duration_seconds = @view.duration_seconds + params[:interval].to_i if params[:interval]
-        @view.save!
+        if @view
+          @view.current_marker_seconds = params[:current_marker_seconds]
+          duration_seconds = 0
+          duration_seconds = @view.duration_seconds if @view.duration_seconds
+          @view.duration_seconds = duration_seconds + params[:interval].to_i if params[:interval] 
+          @view.save!
+        end
       elsif params[:id]
-        marker = params[:marker]
+        marker = params[:current_marker_seconds]
         duration = 0
         duration = marker if marker
-        @view = (current_user.user_video_views.create({:video => Video.find(params[:id]), :current_marker_seconds => marker, :duration_seconds => duration}))
+        @view = (current_user.user_video_views.create({:video_id => params[:id], :current_marker_seconds => marker, :duration_seconds => duration}))
       end
+
+      render :mark
+    end
+
+    def get_mark
+      @view = nil
+      if params[:id]
+        last_user_video_view = current_user.user_video_views.where(:video_id => params[:id]).order(created_at: :desc).first
+        if !last_user_video_view.nil?
+          if last_user_video_view.current_marker_seconds
+            if last_user_video_view.current_marker_seconds < (last_user_video_view.video.duration_in_ms/1000 - 30)
+              @view = last_user_video_view
+            end
+          end
+        end
+      end
+
+      render :mark
     end
 
     private
