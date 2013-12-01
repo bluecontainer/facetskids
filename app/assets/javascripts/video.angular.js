@@ -10,7 +10,7 @@ angular.module('facetsKids.videoplayer', [])
       this.currentTime = 0;
     },
 
-    templateUrl: '/assets/video.html',
+    template: '<div style="position: absolute; left: -2000px;"><video controls="false" preload="false" width="634" height="264"/></div>',
     replace: true,
 
     link: function(scope, elem, attrs) {

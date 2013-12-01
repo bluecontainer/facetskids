@@ -68,7 +68,7 @@ angular.module('facetsKids.rating', [])
       onLeave: '&'
     },
     controller: 'RatingController',
-    templateUrl: '/assets/rating.html',
+    template:  '<span ng-mouseleave="reset()"><span ng-repeat="r in range" ng-mouseenter="enter($index + 1)" ng-click="rate($index + 1)" ng-class="$index < val && (r.stateOn || \'icon-star\') || (r.stateOff || \'icon-star-empty\')"></span></span>',
     replace: true
   };
 });
