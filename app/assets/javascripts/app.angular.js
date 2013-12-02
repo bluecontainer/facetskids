@@ -1,9 +1,5 @@
-angular.module('tagListService', ['ngResource'])
-.factory('TagListService', function($resource) {
-  return $resource('/api/videos?tag_list=:tag');
-});
 
-var app = angular.module('facetsKidsApp', ['tagListService', 'facetsKids.rating', 'facetsKids.videoplayer']);
+var app = angular.module('facetsKidsApp', ['facetsKids.tagListService', 'facetsKids.rating', 'facetsKids.videoplayer']);
 
 app.controller('MainCtrl', function($scope, TagListService) {
   console.log("MainCtrl controller");
@@ -34,6 +30,8 @@ app.controller('MainCtrl', function($scope, TagListService) {
   $scope.result.playVideo = function(video) {
     console.log("playVideo");
     console.log(video);
+    $scope.result.play_video = null;
+    $scope.$apply();
     $scope.result.play_video = video;
   }
 

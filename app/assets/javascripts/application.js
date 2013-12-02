@@ -29,3 +29,4 @@
 //= require jquery.mobile.custom.min
 //= require fastclick
 //= require registrations
+//= require angular

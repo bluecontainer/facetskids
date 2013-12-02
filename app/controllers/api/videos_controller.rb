@@ -36,7 +36,7 @@ module Api
       end
     end
 
-    def create_save_mark
+    def save_marker
       if params[:view_id] && params[:current_marker_seconds]
         @view = UserVideoView.find(params[:view_id])
         if @view
@@ -46,17 +46,29 @@ module Api
           @view.duration_seconds = duration_seconds + params[:interval].to_i if params[:interval] 
           @view.save!
         end
-      elsif params[:id]
+  
+        if @view.nil? 
+          render :json => { :error => 'not found' }, :status => 422 
+        else
+          render :mark
+        end
+        #view_updated = UserVideoView.where(:id => params[:view_id]).update_all(:current_marker_seconds => params[:current_marker_seconds])
+        #render :json => {} if view_updated == 1
+        #render :json => { :error => 'not found'}, :status => 422 if view_updated == 0
+
+      elsif params[:video_id]
         marker = params[:current_marker_seconds]
         duration = 0
         duration = marker if marker
-        @view = (current_user.user_video_views.create({:video_id => params[:id], :current_marker_seconds => marker, :duration_seconds => duration}))
-      end
+        @view = (current_user.user_video_views.create({:video_id => params[:video_id], :current_marker_seconds => marker, :duration_seconds => duration}))
 
-      render :mark
+        render :mark
+      elsif
+        render :json => { :error => 'missing parameters'}, :status => 422 
+      end
     end
 
-    def get_mark
+    def get_marker
       @view = nil
       if params[:id]
         last_user_video_view = current_user.user_video_views.where(:video_id => params[:id]).order(created_at: :desc).first
@@ -69,7 +81,11 @@ module Api
         end
       end
 
-      render :mark
+      if @view.nil?
+        render :json => { :error => 'not found' }, :status => 422 if @view.nil?
+      else
+        render :mark
+      end
     end
 
     private

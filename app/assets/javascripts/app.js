@@ -12,6 +12,9 @@
 //
 //= require jquery.iosslider.min
 //= require jquery.iosslider-vertical.min
+//= require angular-resource
+//= require ng-rails-csrf
+//= require api.angular
 //= require rating.angular
 //= require video.angular
 //= require app.angular

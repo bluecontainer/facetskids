@@ -27,3 +27,4 @@
 #= require support/sinon
 #= require support/chai
 #= require support/chai_helper.js
+#= require angular-mocks

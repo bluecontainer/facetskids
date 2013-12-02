@@ -22,6 +22,8 @@ gem 'jquery-turbolinks'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'angularjs-rails'
+gem 'ng-rails-csrf'
 
 gem "rspec-rails", ">= 2.12.2", :group => [:development, :test]
 gem "database_cleaner", ">= 1.0.0.RC1", :group => :test
@@ -31,7 +33,7 @@ gem "launchy", ">= 2.2.0", :group => :test
 gem "capybara", ">= 2.0.3", :group => :test
 gem "capybara-webkit", :group => :test
 gem "factory_girl_rails", ">= 4.2.0", :group => [:development, :test]
-gem "teaspoon", ">= 0.7.4", :group => [:development, :test, :production]
+gem "teaspoon", ">= 0.7.7", :group => [:development, :test, :production]
 
 gem 'therubyracer', platforms: :ruby
 gem 'less-rails'
