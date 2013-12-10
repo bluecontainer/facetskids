@@ -37,13 +37,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    build_resource(
-      sign_up_params.require(:user).permit(
-        :name, :email, :password, :password_confirmation, :remember_me,
-        :stripe_token, :coupon, :child_age, :age_acknowledgement,
-        :terms_acknowledgement, :donation_amt, :plan, :mail_list_ids, :skip_invitation
-      )
-    )
+    build_resource(sign_up_params)
 
     if resource.save
       if resource.active_for_authentication?
@@ -156,7 +150,7 @@ class RegistrationsController < Devise::RegistrationsController
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up).push(:name, :stripe_token, :coupon, :child_age, :age_acknowledgement, :terms_acknowledgement, :donation_amt)
+    devise_parameter_sanitizer.for(:sign_up).push(:name, :stripe_token, :coupon, :child_age, :age_acknowledgement, :terms_acknowledgement, :donation_amt, :plan)
     devise_parameter_sanitizer.for(:account_update).push(:name, :child_age, :email, :mail_list_ids => [] )
   end
 

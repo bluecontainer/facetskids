@@ -155,7 +155,7 @@ class User < ActiveRecord::Base
   end
 
   def add_all_mail_lists
-    MailList.find(:all).each { |mail_list|
+    MailList.all.each { |mail_list|
       if !mail_lists.include?(mail_list)
         self.mail_list_ids |= [mail_list.id]
       end
