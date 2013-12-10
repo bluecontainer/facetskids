@@ -26,14 +26,21 @@ module Api
       @counts = Video.tagged_with(age_tag).all_tag_counts.map{ |x| {:name=>x.name, :type=>x.type, :count=>x.count} }
     end
 
-    def tag
+    def save_tags
       @video = Video.find(params[:id])
-      if params[:emotion_list]
-        current_user.tag(@video, :with => params[:emotion_list], :on => :emotions)
+      current_user.tag(@video, :with => params[:user_emotion_list], :on => :emotions)
+      if params[:user_rating]
+        current_user.tag(@video, :with => params[:user_rating], :on => :ratings)
       end
-      if params[:rating]
-        current_user.tag(@video, :with => params[:rating], :on => :ratings)
-      end
+
+      render :video_tags
+    end
+
+    def get_tags
+      @video = Video.find(params[:id])
+      #@user_emotions = @video.owned_tags_on(current_user, :emotions).map(&:name)
+      #@user_rating = @video.owned_tags_on(current_user, :ratings).first.name
+      render :video_tags
     end
 
     def save_marker

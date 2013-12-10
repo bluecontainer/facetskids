@@ -10,19 +10,22 @@
                 {{result.selected_video.description}}
               </div>
             </div>
+
             <div class="ratingContainer">
               <div style="margin: 0px 9px 0px 9px;">
-                <rating value="rate" max="max" readonly="isReadonly" state-on="'entypo-star'" state-off="'entypo-star-empty'"></rating>
+                <rating value="selected.user_rating" max="5" readonly="false" state-on="'entypo-star'" state-off="'entypo-star-empty'"></rating>
               </div>
             </div>
-            <div class="tagContainer">
-              <img src="<%=image_path('happy.svg')%>" class="svg">
-              <img src="<%=image_path('excited.svg')%>" class="svg">
-              <img src="<%=image_path('scared.svg')%>" class="svg">
-              <img src="<%=image_path('think.svg')%>" class="svg">
-              <img src="<%=image_path('laugh.svg')%>" class="svg">
-              <img src="<%=image_path('care.svg')%>" class="svg">
+
+            <div class="tagContainer" svgbuttongroup tag-list="selected.user_emotion_list" multiple="true">
+              <svgbutton src="<%=image_path('happy.svg')%>" value="happy"></svgbutton>
+              <svgbutton src="<%=image_path('excited.svg')%>" value="excited"></svgbutton>
+              <svgbutton src="<%=image_path('scared.svg')%>" value="scared"></svgbutton>
+              <svgbutton src="<%=image_path('think.svg')%>" value="think"></svgbutton>
+              <svgbutton src="<%=image_path('laugh.svg')%>" value="laugh"></svgbutton>
+              <svgbutton src="<%=image_path('care.svg')%>" value="care"></svgbutton>
             </div>
+          
           </div>
           <div class="snap-drawer snap-drawer-right"></div>
       </div>
@@ -35,7 +38,7 @@
           <!--div class='slide' vslide-->
           <!--div class="slide"-->
 
-          <div ng-if="result.selected_emotion=='home'">
+          <div ng-if="selected.emotion.length == 0">
             <div ng-repeat="tag in result.curated_tag_list"  ng-class-odd="'iosSliderColorOdd'" ng-class-even="'iosSliderColorEven'">
 
               <div class="slide" vslide>
@@ -43,7 +46,7 @@
                 <div class="iosSlider" iosslider data-snap-ignore="true">
                   <div class="slider">  
                     <div class="slide" slide ng-repeat="video in result.videos[tag.name]">
-                      <a href="" ng-click="result.playVideo(video);"><img ng-src="{{video.thumbnails[0]}}"></a>
+                      <a href="" onclick="snapper.open('left');" ng-click="result.playVideo(video);"><img ng-src="{{video.thumbnails[0]}}"></a>
                       <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span class="movieTitle">{{video.name}}</span></a>
                     </div>
                   </div>
@@ -57,12 +60,12 @@
 
           <!--div class="slide" vslide ng-if="result.selected_emotion!='home'"-->
           <!--div class="slide" vslide-->
-          <div ng-if="result.selected_emotion!='home'">
+          <div ng-if="selected.emotion.length > 0">
 
             <div class="slide" vslide>
             <div id="wrapper" class="imageContainer">
               <ul class="thumbnails">
-                <li class="span3" ng-repeat="video in result.videos[result.selected_emotion]">
+                <li class="span3" ng-repeat="video in result.videos[selected.emotion[0]]">
                   <div class="thumbnail" data-snap-ignore="true">
                     <a href="" ng-click="result.selectVideo(video);"><img ng-src="{{video.thumbnails[0]}}"/></a>
                     <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span class="movieTitle">{{video.name}}</span></a>
@@ -77,10 +80,6 @@
         </div>
       </div>
 
-      <!--div style="position: absolute; left: -2000px;">
-        <video id="myVideo" controls="false" preload="false" width="634" height="264">
-        </video>
-      </div-->
       <videoplayer src="result.play_video"></videoplayer>
 
       <script type="text/javascript">
@@ -96,17 +95,6 @@
           snapper.open('left');
         }); 
 
-
-        $(document).ready(function() {
-         //console.log("document ready - previous constructor");
-         /* 
-          $('.iosSliderVertical').iosSliderVertical({
-            elasticPullResistance: 0.9,
-            slideStartVelocityThreshold: 5,
-          });
-          */
-        });
-
         $(document).bind('touchmove', function(e) {
           e.preventDefault();
         });
@@ -116,39 +104,4 @@
         });
       </script>
 
-      <script type="text/javascript">
-        /*
-         * Replace all SVG images with inline SVG
-         */
-        $('img.svg').each(function(){
-            var $img = jQuery(this);
-            var imgID = $img.attr('id');
-            var imgClass = $img.attr('class');
-            var imgURL = $img.attr('src');
-            var imgStyle = $img.attr('style');
-
-            jQuery.get(imgURL, function(data) {
-              // Get the SVG tag, ignore the rest
-              var $svg = jQuery(data).find('svg');
-
-              // Add replaced image's ID to the new SVG
-              if(typeof imgID !== 'undefined') {
-                $svg = $svg.attr('id', imgID);
-              }
-              // Add replaced image's classes to the new SVG
-              if(typeof imgClass !== 'undefined') {
-                $svg = $svg.attr('class', imgClass+' replaced-svg');
-              }
-              if (typeof imgStyle !== 'undefined') {
-                $svg = $svg.attr('style', imgStyle);
-              }
-
-              // Remove any invalid XML tags as per http://validator.w3.org
-              $svg = $svg.removeAttr('xmlns:a');
-
-              // Replace image with new SVG
-              $img.replaceWith($svg);
-            }, 'xml');
-        });
-      </script>
 

@@ -17,6 +17,7 @@
 //= require api.angular
 //= require rating.angular
 //= require video.angular
+//= require svginline.angular
 //= require app.angular
 //= require app.jquery
 //= require snap

@@ -5,7 +5,7 @@
               <span class="icon-bar"></span>
             </button>
 <% if in_app? && user_signed_in? %>
-            <%= image_tag("FACETS-KIDS-SIGNUP2a2_0017_Layer-15.png", :class => 'brand', :"ng-click" => "result.selected_emotion = 'home'") %>
+            <%= image_tag("FACETS-KIDS-SIGNUP2a2_0017_Layer-15.png", :class => 'brand', :"ng-click" => "selected.emotion = []") %>
 <% elsif in_app? %>
             <%= image_tag("FACETS-KIDS-SIGNUP2a2_0017_Layer-15.png", :class => 'brand') %>
 <% else %>
@@ -14,13 +14,13 @@
             <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
             <div class="nav-collapse collapse">
 <% if in_app? && user_signed_in? %>
-              <ul class="nav pull-left" style="">
-                <li><a href="" ng-click="result.selected_emotion = 'happy'"><img src="<%=image_path('happy.1.svg')%>" class="svg"></a></li>
-                <li><a href="" ng-click="result.selected_emotion = 'excited'"><img src="<%=image_path('excited.1.svg')%>" class="svg"></a></li>
-                <li><a href="" ng-click="result.selected_emotion = 'scared'"><img src="<%=image_path('scared.1.svg')%>" class="svg"></a></li>
-                <li><a href="" ng-click="result.selected_emotion = 'think'"><img src="<%=image_path('think.1.svg')%>" class="svg"></a></li>
-                <li><a href="" ng-click="result.selected_emotion = 'laugh'"><img src="<%=image_path('laugh.1.svg')%>" class="svg"></a></li>
-                <li><a href="" ng-click="result.selected_emotion = 'care'"><img src="<%=image_path('care.1.svg')%>" class="svg"></a></li>
+              <ul class="nav pull-left" style="" svgbuttongroup tag-list="selected.emotion" multiple="false">
+                <li><svgbutton src="<%=image_path('happy.1.svg')%>" value="happy"></svgbutton></li>
+                <li><svgbutton src="<%=image_path('excited.1.svg')%>" value="excited"></svgbutton></li>
+                <li><svgbutton src="<%=image_path('scared.1.svg')%>" value="scared"></svgbutton></li>
+                <li><svgbutton src="<%=image_path('think.1.svg')%>" value="think"></svgbutton></li>
+                <li><svgbutton src="<%=image_path('laugh.1.svg')%>" value="laugh"></svgbutton></li>
+                <li><svgbutton src="<%=image_path('care.1.svg')%>" value="care"></svgbutton></li>
               </ul>
               <ul class="nav pull-right">
                 <li><%= link_to "&#59201".html_safe, destroy_user_session_path, :method => 'delete', :style => "font-family: entypo; font-size: 6em; padding-top: 30px;" %></li>

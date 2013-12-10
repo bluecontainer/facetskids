@@ -8,4 +8,9 @@ angular.module('facetsKids.videoMarkerService', ['ngResource', 'ng-rails-csrf'])
   return $resource('/api/videos/:video_id/mark');
 });
 
+angular.module('facetsKids.videoTaggingService', ['ngResource', 'ng-rails-csrf'])
+.factory('VideoTaggingService', function($resource) {
+  return $resource('/api/videos/:id/tags', {id: '@id'});
+});
+
 

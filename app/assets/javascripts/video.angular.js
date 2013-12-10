@@ -1,17 +1,15 @@
 
 angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
 
-.directive('videoplayer', function () {
+.directive('videoplayer', function ($log) {
   return {
     restrict: 'EA',
 
     controller: function($scope, VideoMarkerService) {
-      console.log("videoplayer controller");
+      $log.debug("videoplayer controller");
       $scope.currentTime = 0;
       $scope.currentVideo = null;
       $scope.currentView = null;
-      console.log("service");
-      console.log(VideoMarkerService);
       $scope.videoMarkerService = VideoMarkerService;
     },
 
@@ -19,54 +17,50 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
     replace: true,
 
     link: function(scope, elem, attrs) {
-      console.log("videoplayer link");
-      console.log(attrs.src);     
+      $log.debug("videoplayer link");
+      $log.debug(attrs.src);     
       scope.videoElem = elem.children()[0];
 
       function play(url) {
-        console.log("play: " + url);
+        $log.debug("play: " + url);
         scope.videoElem.src = url;
-        console.log(scope.videoElem);
         scope.videoElem.load();
       }
 
       scope.$watch(attrs.src, function(value) {
-        console.log("videoplayer watch");
+        $log.debug("videoplayer watch");
         if (value) {
-          console.log(value);
+          $log.debug(value);
           scope.currentTime = 0;
           scope.currentVideo = value;
           scope.currentView = null;
 
-          console.log(scope);
-          console.log(scope.videoMarkerService);
-          console.log(scope.currentVideo);
           scope.videoMarkerService.get({video_id: scope.currentVideo.id})
             .$promise.then(
               //success
               function( data ){
-                console.log("existing marker");
-                console.log(data);
+                $log.debug("existing marker");
+                $log.debug(data);
 
                 scope.currentTime = data.current_marker_seconds;
                 play(scope.currentVideo.video_url);
 
                 new_marker = new scope.videoMarkerService({video_id: scope.currentVideo.id, current_marker_seconds: data.current_marker_seconds});
                 new_marker.$save(function(u){
-                  console.log(u);
+                  $log.debug(u);
                   scope.currentView = u;
                 });
               },
               //error
               function( error ){
-                console.log("no existing marker");
-                console.log(error);
+                $log.debug("no existing marker");
+                $log.debug(error);
 
                 play(scope.currentVideo.video_url);
 
                 new_marker = new scope.videoMarkerService({video_id: scope.currentVideo.id});
                 new_marker.$save(function(u){
-                  console.log(u);
+                  $log.debug(u);
                   scope.currentView = u;
                 });
               }
@@ -75,7 +69,7 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
       })
 
       scope.videoElem.addEventListener('loadeddata', function() {
-        console.log("loadeddata");
+        $log.debug("loadeddata");
         this.currentTime = scope.currentTime;
         this.webkitEnterFullscreen();
       }, false);
@@ -83,29 +77,29 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
       scope.videoElem.addEventListener("timeupdate", function() {
         scope.currentTime = this.currentTime;
         if (scope.currentView) {
-          console.log(scope.currentView.current_marker_seconds);
+          $log.debug(scope.currentView.current_marker_seconds);
           if (Math.abs(this.currentTime - scope.currentView.current_marker_seconds) >= 10) {
             scope.currentView.current_marker_seconds = Math.floor(this.currentTime);
-            console.log("update marker");
+            $log.debug("update marker");
             scope.currentView.$save(function(u) {
-              console.log("update marker done");
-              console.log(u);
+              $log.debug("update marker done");
+              $log.debug(u);
             });
           }
         }
       }, false);
 
       scope.videoElem.addEventListener('webkitbeginfullscreen', function() {
-        console.log("webkitbeginfullscreen");
+        $log.debug("webkitbeginfullscreen");
         this.play();
       }, false); 
 
       scope.videoElem.addEventListener('webkitendfullscreen', function() {
-        console.log("webkitendfullscreen");
+        $log.debug("webkitendfullscreen");
       }, false); 
     
       scope.videoElem.addEventListener("ended", function() {
-        console.log("ended");
+        $log.debug("ended");
         this.webkitExitFullscreen();
       }, false);
 

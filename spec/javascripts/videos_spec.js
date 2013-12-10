@@ -1,11 +1,51 @@
 #= require app
 
+describe("VideoTaggingService:", function() {
+  var videoTaggingService, $rootScope, $httpBackend;
+
+  beforeEach(function() {
+    module("facetsKids.videoTaggingService");
+    inject(function(VideoTaggingService) {
+      videoTaggingService = VideoTaggingService;
+    });
+  });
+  beforeEach(inject(function(_$compile_, _$rootScope_, _$httpBackend_){
+    // The injector unwraps the underscores (_) from around the parameter names when matching
+    $compile = _$compile_;
+    $rootScope = _$rootScope_;
+    $httpBackend = _$httpBackend_;
+  }));
+
+  it('gets existing tags', function() {
+    var fixture = {id:1,user_emotion_list:["happy"],user_rating:"1_star"};
+    var fixture_response = {id:1,user_emotion_list:["happy"],user_rating:"2_star"};
+
+    expect(videoTaggingService).to.be.defined;
+
+    $httpBackend.expectGET('/api/videos/1/tags');
+    $httpBackend.whenGET('/api/videos/1/tags').respond(fixture);
+    $httpBackend.expectPOST('/api/videos/1/tags');
+    $httpBackend.whenPOST('/api/videos/1/tags').respond(fixture_response);
+ 
+    var tagging = videoTaggingService.get({id: 1}, function() {
+       expect(tagging.id).to.equal(1);
+       expect(tagging.user_rating).to.equal("1_star");
+       tagging.user_rating = "2_star";
+       tagging.$save(function(u){
+         expect(u.user_rating).to.equal("2_star");
+       });
+    });
+    $httpBackend.flush();
+  });
+
+
+});
 
 describe("VideoMarkerService:", function() {
   var videoMarkerService, $rootScope, $httpBackend;
 
   beforeEach(function() {
-    module("videoMarkerService");
+    module("facetsKids.videoMarkerService");
     inject(function(VideoMarkerService) {
       videoMarkerService = VideoMarkerService;
     });
@@ -77,7 +117,7 @@ describe("TagListService:", function() {
   var tagListService, $rootScope, $httpBackend;
 
   beforeEach(function() {
-    module("tagListService");
+    module("facetsKids.tagListService");
     inject(function(TagListService) {
       tagListService = TagListService;
     });

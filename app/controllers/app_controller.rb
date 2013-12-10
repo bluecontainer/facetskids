@@ -21,5 +21,10 @@ class AppController < ApplicationController
     return UserAgent.parse(request.user_agent).version.to_s.match(/^\D*(\d)/).captures.first.to_i
   end
 
-  helper_method :client_platform_version
+  def inline_svg(file)
+    file = File.open("app/assets/images/#{file}", "rb")
+    file.read
+  end
+
+  helper_method :client_platform_version, :inline_svg
 end

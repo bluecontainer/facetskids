@@ -304,9 +304,19 @@
           height: 80px;
           padding: 0px 8px 0px 8px;
         }
-        .tagContainer svg path {
+        .tagContainer a.off svg path {
           fill: white;
         }
+        .tagContainer a.on svg path {
+          fill: gold;
+        }
+        .nav a.off svg path {
+          fill: black;
+        }
+        .nav a.on svg path {
+          fill: #ec1f27;
+        }
+
 
         .imageContainer div {
           position: relative;
