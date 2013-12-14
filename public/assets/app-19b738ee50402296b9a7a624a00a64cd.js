@@ -757,9 +757,13 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
 
     controller: function($scope, VideoMarkerService) {
       $log.debug("videoplayer controller");
-      $scope.currentTime = 0;
+      $scope.startTime = 0;
       $scope.currentVideo = null;
       $scope.currentView = null;
+      $scope.paused = false;
+      $scope.seeked = false;
+      $scope.timeupdate = false;
+      $scope.playing = false;
       $scope.videoMarkerService = VideoMarkerService;
     },
 
@@ -768,22 +772,26 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
 
     link: function(scope, elem, attrs) {
       $log.debug("videoplayer link");
-      $log.debug(attrs.src);     
+      $log.debug(attrs.src);
       scope.videoElem = elem.children()[0];
 
-      function play(url) {
-        $log.debug("play: " + url);
-        scope.videoElem.src = url;
-        scope.videoElem.load();
-      }
-
-      scope.$watch(attrs.src, function(value) {
-        $log.debug("videoplayer watch");
-        if (value) {
-          $log.debug(value);
-          scope.currentTime = 0;
-          scope.currentVideo = value;
+      function play(video) {
+        $log.debug("play: " + video.video_url);
+        if (video.video_url == scope.videoElem.src && scope.paused) {
+          $log.debug("resuming");
+          scope.paused = false;
+          scope.videoElem.webkitEnterFullscreen();
+        } else {
+          $log.debug"loading");
+          scope.startTime = 0;
+          scope.currentVideo = video;
           scope.currentView = null;
+          scope.paused = false;
+          scope.seeked = false;
+          scope.timeupdate = false;
+          scope.playing = false;
+          scope.videoElem.src = video.video_url;
+          scope.videoElem.load();
 
           scope.videoMarkerService.get({video_id: scope.currentVideo.id})
             .$promise.then(
@@ -792,8 +800,7 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
                 $log.debug("existing marker");
                 $log.debug(data);
 
-                scope.currentTime = data.current_marker_seconds;
-                play(scope.currentVideo.video_url);
+                scope.startTime = data.current_marker_seconds;
 
                 new_marker = new scope.videoMarkerService({video_id: scope.currentVideo.id, current_marker_seconds: data.current_marker_seconds});
                 new_marker.$save(function(u){
@@ -806,8 +813,6 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
                 $log.debug("no existing marker");
                 $log.debug(error);
 
-                play(scope.currentVideo.video_url);
-
                 new_marker = new scope.videoMarkerService({video_id: scope.currentVideo.id});
                 new_marker.$save(function(u){
                   $log.debug(u);
@@ -816,21 +821,32 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
               }
             );
         }
-      })
+      }
+      scope.play = play;
 
-      scope.videoElem.addEventListener('loadeddata', function() {
-        $log.debug("loadeddata");
-        this.currentTime = scope.currentTime;
+      scope.videoElem.addEventListener('canplaythrough', function() {
+        $log.info('canplaythrough: ' + scope.startTime.toString());
         this.webkitEnterFullscreen();
       }, false);
 
+      scope.videoElem.addEventListener('loadeddata', function() {
+        $log.info("loadeddata: " + scope.startTime.toString());
+      }, false);
+
+      scope.videoElem.addEventListener("seeked", function() {
+        $log.info("seeked");
+      }, false);
       scope.videoElem.addEventListener("timeupdate", function() {
-        scope.currentTime = this.currentTime;
         if (scope.currentView) {
+          if (scope.startTime > 0 && !scope.seeked && scope.playing) {
+            $log.info("timeupdate: seeking to startTime: " + scope.startTime.toString());
+            this.currentTime = scope.startTime;
+            scope.seeked = true;
+          }
           $log.debug(scope.currentView.current_marker_seconds);
           if (Math.abs(this.currentTime - scope.currentView.current_marker_seconds) >= 10) {
             scope.currentView.current_marker_seconds = Math.floor(this.currentTime);
-            $log.debug("update marker");
+            $log.debug("update marker: " + scope.currentView.current_marker_seconds.toString());
             scope.currentView.$save(function(u) {
               $log.debug("update marker done");
               $log.debug(u);
@@ -840,19 +856,39 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
       }, false);
 
       scope.videoElem.addEventListener('webkitbeginfullscreen', function() {
-        $log.debug("webkitbeginfullscreen");
+        $log.info("webkitbeginfullscreen: " + scope.startTime.toString());
         this.play();
       }, false); 
 
       scope.videoElem.addEventListener('webkitendfullscreen', function() {
-        $log.debug("webkitendfullscreen");
+        $log.info("webkitendfullscreen");
+        this.pause();
       }, false); 
-    
-      scope.videoElem.addEventListener("ended", function() {
-        $log.debug("ended");
-        this.webkitExitFullscreen();
+
+      scope.videoElem.addEventListener('playing', function() {
+        $log.info("playing: " + scope.startTime.toString());
+        scope.playing = true;
+        if (scope.startTime > 0 && scope.timeupdate && !scope.seeked) {
+          $log.info("playing: seeking to startTime: " + scope.startTime.toString());
+          this.currentTime = scope.startTime;
+          scope.seeked = true;
+        }
       }, false);
 
+      scope.videoElem.addEventListener('play', function() {
+        $log.info("play");
+        scope.paused = false;
+      }, false);
+
+      scope.videoElem.addEventListener('pause', function() {
+        $log.info("pause");
+        scope.paused = true;
+      }, false);
+
+      scope.videoElem.addEventListener("ended", function() {
+        $log.info("ended");
+        this.webkitExitFullscreen();
+      }, false);
     }
   };
 });
@@ -929,7 +965,7 @@ angular.module('facetsKids.svginline', [])
 
 ;
 
-var app = angular.module('facetsKidsApp', ['facetsKids.tagListService','facetsKids.videoTaggingService','facetsKids.rating','facetsKids.videoplayer','facetsKids.svginline']);
+var app = angular.module('facetsKidsApp', ['facetsKids.tagListService','facetsKids.videoTaggingService','facetsKids.videoplayer','facetsKids.rating','facetsKids.svginline']);
 
 app.config(function($logProvider){
   $logProvider.debugEnabled(false);
@@ -963,15 +999,14 @@ app.controller('MainCtrl', function($scope, $log, TagListService, VideoTaggingSe
 
     selectVideo(video);
 
-    $scope.result.play_video = null;
-    $scope.$apply();
     $scope.result.play_video = video;
+    $scope.play(video);    
   }
 
   $scope.result.getVideoList = getVideoList;
 
   function selectVideo(video) {
-    $log.debug('selectVideo');
+    $log.info('selectVideo');
 
     if ($scope.user_rating_watcher) {
       $scope.user_rating_watcher();
