@@ -1,5 +1,5 @@
 
-var app = angular.module('facetsKidsApp', ['facetsKids.tagListService','facetsKids.videoTaggingService','facetsKids.rating','facetsKids.videoplayer','facetsKids.svginline']);
+var app = angular.module('facetsKidsApp', ['facetsKids.tagListService','facetsKids.videoTaggingService','facetsKids.videoplayer','facetsKids.rating','facetsKids.svginline']);
 
 app.config(function($logProvider){
   $logProvider.debugEnabled(false);
@@ -33,15 +33,14 @@ app.controller('MainCtrl', function($scope, $log, TagListService, VideoTaggingSe
 
     selectVideo(video);
 
-    $scope.result.play_video = null;
-    $scope.$apply();
     $scope.result.play_video = video;
+    $scope.play(video);    
   }
 
   $scope.result.getVideoList = getVideoList;
 
   function selectVideo(video) {
-    $log.debug('selectVideo');
+    $log.info('selectVideo');
 
     if ($scope.user_rating_watcher) {
       $scope.user_rating_watcher();
