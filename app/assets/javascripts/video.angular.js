@@ -32,7 +32,7 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
           scope.paused = false;
           scope.videoElem.webkitEnterFullscreen();
         } else {
-          $log.debug"loading");
+          $log.debug("loading");
           scope.startTime = 0;
           scope.currentVideo = video;
           scope.currentView = null;
