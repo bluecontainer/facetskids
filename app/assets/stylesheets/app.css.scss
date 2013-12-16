@@ -248,14 +248,6 @@
             background: #27b7eb;
           }
 
-          .navContainer {
-            position:relative;
-            width: 810px;
-            height: 98px;
-            border: 1px solid green;
-            padding-left: 212px;
-          }
-
           .iosSlider {
             width: 984px;
             margin-left: 40px;
@@ -266,6 +258,20 @@
             height: 500px;
           }
 
+          .navbar .nav > li.tag {
+            padding-top: 10px;
+          }
+
+          .navbar .nav > li svg {
+            width: 60px;
+            height: 80px;
+          }
+
+          .navbar .nav .logout {
+            font-family: entypo; 
+            font-size: 2em; 
+            padding-top: 15px;
+          }
         }
 
         @media screen and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
@@ -280,43 +286,35 @@
             width: 729px;
             padding-left: 40px;
           }
-        }
-        
-        .navContainer div {
-          position: relative;
-          outline: 1px dashed #000;
-          display: inline-block;
-          height: 96px;
-          width: 96px;
+
+          .iosSliderVertical {
+            width: 768px;
+            height: 756px;
+          }
+
+          .navbar .nav > li.tag {
+            padding-top: 20px;
+          }
+
+          .navbar .nav > li svg {
+            width: 45px;
+            height: 60px;
+          }
+
+          .navbar .nav .logout {
+            font-family: entypo; 
+            font-size: 2em; 
+            padding-top: 15px;
+          }
+ 
         }
 
-        .navContainer img {
-          width: 96px;
-          height: 96px;
-        }
-
-        .navContainer svg path {
-          fill: #526476;
-        }
-
-        .tagContainer svg {
-          width: 80px;
-          height: 80px;
-          padding: 0px 8px 0px 8px;
-        }
-        .tagContainer a.off svg path {
-          fill: white;
-        }
-        .tagContainer a.on svg path {
-          fill: gold;
-        }
         .nav a.off svg path {
           fill: black;
         }
         .nav a.on svg path {
           fill: #ec1f27;
         }
-
 
         .imageContainer div {
           position: relative;
@@ -360,6 +358,19 @@
           height: 150px;
         }
 
+        .tagContainer svg {
+          width: 80px;
+          height: 80px;
+          padding: 0px 8px 0px 8px;
+        }
+        
+        .tagContainer a.off svg path {
+          fill: white;
+        }
+        .tagContainer a.on svg path {
+          fill: gold;
+        }
+ 
         .hilight {
           background-color: rgba(0,0,0,0.5);
           position: absolute;
