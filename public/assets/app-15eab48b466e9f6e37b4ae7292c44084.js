@@ -826,7 +826,9 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
 
       scope.videoElem.addEventListener('canplaythrough', function() {
         $log.info('canplaythrough: ' + scope.startTime.toString());
-        this.webkitEnterFullscreen();
+        if (!scope.paused) {
+          this.webkitEnterFullscreen();
+        }
       }, false);
 
       scope.videoElem.addEventListener('loadeddata', function() {
@@ -1006,7 +1008,7 @@ app.controller('MainCtrl', function($scope, $log, TagListService, VideoTaggingSe
   $scope.result.getVideoList = getVideoList;
 
   function selectVideo(video) {
-    $log.info('selectVideo');
+    $log.debug('selectVideo');
 
     if ($scope.user_rating_watcher) {
       $scope.user_rating_watcher();
@@ -1080,8 +1082,16 @@ app.controller('MainCtrl', function($scope, $log, TagListService, VideoTaggingSe
       getVideoList(newValue);
     }
   });
-
 });
+
+app.directive('repeatLastNotifier', ['$log', function($log) {
+  return function(scope, element, attrs) {
+    $log.debug("repeatLastNotifier");
+    if (scope.$last){
+      scope.$emit('repeatLastNotifier');
+    }
+  };
+}]);
 
 app.directive('iosslider', ['$parse', '$log', function($parse, $log) {  
 
@@ -1173,7 +1183,7 @@ app.directive('iosvslider', ['$parse', '$log', function($parse, $log) {
       }
     },
 
-    link: function(scope, elem, attrs) {
+    link: function(scope, elem, attrs, ctrl) {
       $log.debug("iosvslider link");
 
       var myOptions = $parse(attrs.slider)(scope),
@@ -1184,6 +1194,12 @@ app.directive('iosvslider', ['$parse', '$log', function($parse, $log) {
       scope.$on('$destroy', function() {
         $log.debug("iosvslider scope destroy");
       });
+
+      scope.$parent.$on('repeatLastNotifier', function(event){
+        $log.debug("repeatLastNotifier received in iosvslider");
+        ctrl.updateSlide();
+      });
+ 
     }
   }
 }])
