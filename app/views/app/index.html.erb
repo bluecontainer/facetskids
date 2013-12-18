@@ -33,11 +33,6 @@
       <div id="content" class="snap-content iosSliderVertical" iosvslider>
         <div class='slider'>
 
-          <!--div ng-repeat="tag in result.selected_tags"-->
-          <!--div class='slide' vslide ng-if="result.selected_emotion=='home'"-->
-          <!--div class='slide' vslide-->
-          <!--div class="slide"-->
-
           <div ng-if="selected.emotion.length == 0">
             <div ng-repeat="tag in result.curated_tag_list"  ng-class-odd="'iosSliderColorOdd'" ng-class-even="'iosSliderColorEven'">
 
@@ -56,27 +51,26 @@
             </div>
           </div>
 
-          <!--/div-->
-
-          <!--div class="slide" vslide ng-if="result.selected_emotion!='home'"-->
-          <!--div class="slide" vslide-->
           <div ng-if="selected.emotion.length > 0">
 
             <div class="slide" vslide>
-            <div id="wrapper" class="imageContainer">
-              <ul class="thumbnails">
-                <li class="span3" ng-repeat="video in result.videos[selected.emotion[0]]">
-                  <div class="thumbnail" data-snap-ignore="true">
-                    <a href="" ng-click="result.selectVideo(video);"><img ng-src="{{video.thumbnails[0]}}"/></a>
-                    <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span class="movieTitle">{{video.name}}</span></a>
-                  </div>
-                </li>
-              </ul>
-            </div>
+              <div id="wrapper" class="imageContainer">
+                <div ng-repeat="video in result.videos[selected.emotion[0]]" repeat-last-notifier data-snap-ignore="true">
+                  <a href="" ng-click="result.playVideo(video);"><img ng-src="{{video.thumbnails[0]}}"/></a>
+                  <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span class="movieTitle">{{video.name}}</span></a>
+                </div>
+                <!--ul class="thumbnails">
+                  <li class="span3" ng-repeat="video in result.videos[selected.emotion[0]]">
+                    <div class="thumbnail" data-snap-ignore="true">
+                      <a href="" ng-click="result.selectVideo(video);"><img ng-src="{{video.thumbnails[0]}}"/></a>
+                      <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span class="movieTitle">{{video.name}}</span></a>
+                    </div>
+                  </li>
+                </ul-->
+              </div>
             </div>
           </div>
 
-          <!--/div-->
         </div>
       </div>
 
@@ -90,10 +84,6 @@
           touchToDrag: true,
           hyperextensible: false
         });
-
-        $('.imageContainer img').on("click", function() {
-          snapper.open('left');
-        }); 
 
         $(document).bind('touchmove', function(e) {
           e.preventDefault();

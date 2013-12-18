@@ -76,7 +76,9 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
 
       scope.videoElem.addEventListener('canplaythrough', function() {
         $log.info('canplaythrough: ' + scope.startTime.toString());
-        this.webkitEnterFullscreen();
+        if (!scope.paused) {
+          this.webkitEnterFullscreen();
+        }
       }, false);
 
       scope.videoElem.addEventListener('loadeddata', function() {
