@@ -1,5 +1,5 @@
 
-var app = angular.module('facetsKidsApp', ['facetsKids.tagListService','facetsKids.videoTaggingService','facetsKids.videoplayer','facetsKids.rating','facetsKids.svginline']);
+var app = angular.module('facetsKidsApp', ['facetsKids.tagListService','facetsKids.videoTaggingService','facetsKids.videoplayer','facetsKids.rating','facetsKids.svginline', 'facetsKids.marquee']);
 
 app.config(function($logProvider){
   $logProvider.debugEnabled(false);

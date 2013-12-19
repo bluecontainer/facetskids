@@ -14,10 +14,12 @@
 //= require jquery.iosslider-vertical.min
 //= require angular-resource
 //= require ng-rails-csrf
+//= require app.prototype
 //= require api.angular
 //= require rating.angular
 //= require video.angular
 //= require svginline.angular
+//= require marquee.angular
 //= require app.angular
 //= require app.jquery
 //= require snap

@@ -244,7 +244,7 @@
           .imageContainer {
             position: relative;
             width: 985px;
-            padding-left: 40px;
+            padding-left: 45px;
             background: #27b7eb;
           }
 
@@ -277,8 +277,7 @@
         @media screen and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
           .imageContainer {
             position: relative;
-            width: 727px;
-            border: 1px solid red;
+            width: 729px;
             padding-left: 40px;
           }
 
@@ -316,18 +315,44 @@
           fill: #ec1f27;
         }
 
-        .imageContainer div {
+        .imageContainer > div {
           position: relative;
           display: inline-block;
           width: 229px;
           height: 202px;
           margin-left: 2px;
           margin-right: 2px;
-          margin-bottom: 40px;
+          margin-bottom: 20px;
         }
         .imageContainer img {
           width: 227px;
           height: 170px;
+        }
+        .imageContainer .hilight {
+          background-color: rgba(0,0,0,0.5);
+          position: absolute;
+          height: 20px;
+          width: 40px;
+          font-family: 'Lato', sans-serif;
+          font-size: 8pt;
+          color: #FFF;
+          /*bottom: 0px;*/
+          padding: 0px 5px 0px 5px;
+          top: 150px;
+          left: 175px;
+          z-index: 1;
+        }
+
+
+        .scroll-box {
+          width: 225px;
+          height: 1.2em;
+          overflow: hidden;
+          position: relative;
+        }
+        .scroll-text {
+          position: absolute;
+          white-space: nowrap;
         }
 
         .imageContainer span.info {
@@ -409,14 +434,14 @@
   color: white;
   font-family: 'Lato', sans-serif;
   font-weight: 600;
-  font-size: 13pt;
+  font-size: 14pt;
 }
 
 .movieTitle {
     margin: 0 auto;
     font-family: 'Lato', sans-serif;
     font-weight: 600;
-    font-size: 9pt;
+    font-size: 11pt;
     color: white;
 }
 
