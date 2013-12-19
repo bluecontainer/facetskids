@@ -658,6 +658,32 @@ angular.module('ng-rails-csrf', [] ).config(['$httpProvider', function($httpProv
       $(document).bind('page:change', updateToken); 
     }
 }]);
+String.prototype.toHHMMSS = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second parm
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    var time    = hours+':'+minutes+':'+seconds;
+    return time;
+}
+
+Number.prototype.toHHMMSS = function () {
+    var sec_num = this;
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    var time    = hours+':'+minutes+':'+seconds;
+    return time;
+}
+;
 angular.module('facetsKids.tagListService', ['ngResource'])
 .factory('TagListService', function($resource) {
   return $resource('/api/videos?tag_list=:tag');
@@ -967,7 +993,50 @@ angular.module('facetsKids.svginline', [])
 
 ;
 
-var app = angular.module('facetsKidsApp', ['facetsKids.tagListService','facetsKids.videoTaggingService','facetsKids.videoplayer','facetsKids.rating','facetsKids.svginline']);
+angular.module('facetsKids.marquee', [])
+
+.directive('marquee', function($log, $timeout) {
+  return {
+    restrict: 'EA',
+
+    link: function(scope, elem, attrs) {
+      $log.info("marquee link");
+
+      $timeout(function() {
+
+        var boxWidth = elem.width();
+        var textWidth = $('.scroll-text', elem).width();
+        var animSpeed = textWidth * 20;
+
+        function doAnimation() {
+          elem.animate(
+            {
+              scrollLeft: (textWidth - boxWidth)
+            }, 
+            animSpeed, 
+            function () {
+              elem.animate(
+                {
+                  scrollLeft: 0
+                }, 
+                animSpeed, 
+                function () {
+                  doAnimation();
+                }
+              );
+            }
+          );
+	}
+
+        if (textWidth > boxWidth) {
+          doAnimation();
+        }
+      }, 0);
+    } 
+  };
+});
+
+var app = angular.module('facetsKidsApp', ['facetsKids.tagListService','facetsKids.videoTaggingService','facetsKids.videoplayer','facetsKids.rating','facetsKids.svginline', 'facetsKids.marquee']);
 
 app.config(function($logProvider){
   $logProvider.debugEnabled(false);
@@ -1966,6 +2035,8 @@ var addEvent = function addEvent(element, eventName, func) {
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+
+
 
 
 
