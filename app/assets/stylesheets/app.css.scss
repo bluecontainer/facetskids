@@ -331,15 +331,15 @@
         .imageContainer .hilight {
           background-color: rgba(0,0,0,0.5);
           position: absolute;
-          height: 20px;
-          width: 40px;
+          height: 15px;
+          width: 42px;
           font-family: 'Lato', sans-serif;
           font-size: 8pt;
           color: #FFF;
           /*bottom: 0px;*/
-          padding: 0px 5px 0px 5px;
-          top: 150px;
-          left: 175px;
+          padding: 0px 2px 0px 2px;
+          top: 152px;
+          left: 178px;
           z-index: 1;
         }
 
@@ -489,6 +489,22 @@
     height: 155px;
     /*margin: 10px auto;*/
 }
+
+.iosSlider .slider .slide .hilight {
+  background-color: rgba(0,0,0,0.5);
+  position: absolute;
+  height: 15px;
+  width: 42px;
+  font-family: 'Lato', sans-serif;
+  font-size: 8pt;
+  color: #FFF;
+  /*bottom: 0px;*/
+  padding: 0px 2px 0px 2px;
+  top: 145px;
+  left: 160px;
+  z-index: 1;
+}
+
 
 .iosSliderVertical {
     /* required */

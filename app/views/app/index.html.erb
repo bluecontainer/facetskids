@@ -41,6 +41,7 @@
                   <div class="slider">  
                     <div class="slide" slide ng-repeat="video in result.videos[tag.name]">
                       <a href="" onclick="snapper.open('left');" ng-click="result.playVideo(video);"><img ng-src="{{video.thumbnails[0]}}"></a>
+                      <div class="hilight">{{video.duration_in_sec.toHHMMSS()}}</div>
                       <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span class="movieTitle">{{video.name}}</span></a>
                     </div>
                   </div>
