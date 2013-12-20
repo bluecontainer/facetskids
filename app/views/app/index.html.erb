@@ -5,17 +5,23 @@
               <div class="hilight">
                 {{result.selected_video.name}}
               </div>
-              <div style="margin: 5px 9px 0px 9px;">
+              <div style="margin: 5px 9px 0px 9px; height: 95px; width: 288px;" class="scrollable">
+                <div>
                 {{result.selected_video.description}}
+                </div>
               </div>
             </div>
-
+            <div class="ratingTitle">
+              Rate It
+            </div>
             <div class="ratingContainer">
               <div style="margin: 0px 9px 0px 9px;">
                 <rating value="selected.user_rating" max="5" readonly="false" state-on="'entypo-star'" state-off="'entypo-star-empty'"></rating>
               </div>
             </div>
-
+            <div class="tagTitle">
+              Did this make you...
+            </div>
             <div class="tagContainer" svgbuttongroup tag-list="selected.user_emotion_list" multiple="true">
               <svgbutton src="<%=image_path('happy.svg')%>" value="happy"></svgbutton>
               <svgbutton src="<%=image_path('excited.svg')%>" value="excited"></svgbutton>
@@ -78,8 +84,9 @@
           hyperextensible: false
         });
 
-        $(document).bind('touchmove', function(e) {
-          e.preventDefault();
+        $(document).on('touchmove',function(e){
+          if(!$('.scrollable').has($(e.target)).length)
+            e.preventDefault();
         });
 
         $(function() {

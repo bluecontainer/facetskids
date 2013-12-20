@@ -368,6 +368,12 @@
           width: 306px;
           height: 360px;
         }
+        
+        .ratingTitle {
+          padding-left: 9px;
+          font-weight: bold;
+          background-color: white;
+        }
 
         .ratingContainer {
           position: relative;
@@ -376,6 +382,13 @@
           height: 65px;
         }
 
+        .tagTitle {
+          padding-left: 9px;
+          font-weight: bold;
+          background-color: #526476;
+          color: white;
+        }
+ 
         .tagContainer {
           position: relative;
           background-color: #526476;
@@ -424,7 +437,7 @@
 
         .scrollable {
           -webkit-overflow-scrolling: touch;
-          overflow-y:hidden;
+          overflow: scroll;
         }
 
 
