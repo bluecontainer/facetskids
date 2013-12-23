@@ -22,8 +22,9 @@ class User < ActiveRecord::Base
 
   acts_as_tagger
  
-  validates :age_acknowledgement, presence: true
-  validates :terms_acknowledgement, presence: true
+  validates_presence_of :age_acknowledgement
+  validates_presence_of :terms_acknowledgement
+  validates_presence_of :child_age, :unless => :is_admin?
 
   attr_accessor :stripe_token, :coupon, :plan
 
@@ -31,6 +32,13 @@ class User < ActiveRecord::Base
   before_destroy :cancel_subscription
 
 
+  def is_admin?
+    if !plan.nil? and plan == "admin"
+      return true
+    else
+      return has_role? :admin
+    end
+  end
 
   def has_credit_card?
     !customer_id.nil?
@@ -125,7 +133,7 @@ class User < ActiveRecord::Base
     unless customer_id.nil?
       customer = Stripe::Customer.retrieve(customer_id)
       unless customer.nil? or customer.respond_to?('deleted')
-        if customer.subscription.status == 'active'
+        if !customer.subscription.nil? and customer.subscription.status == 'active'
           customer.cancel_subscription
         end
       end

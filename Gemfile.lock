@@ -39,7 +39,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
     addressable (2.3.5)
-    angularjs-rails (1.2.3)
+    angularjs-rails (1.2.5)
     arel (4.0.1)
     atomic (1.1.14)
     attached (1.0.0)

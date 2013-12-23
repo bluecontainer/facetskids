@@ -13,6 +13,7 @@
 //= require jquery.iosslider.min
 //= require jquery.iosslider-vertical.min
 //= require angular-resource
+//= require angular-sanitize
 //= require ng-rails-csrf
 //= require app.prototype
 //= require api.angular
