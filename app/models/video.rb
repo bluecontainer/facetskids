@@ -256,6 +256,7 @@ class Video < ActiveRecord::Base
   end
 
   def zencodeit_noupload
+    logger.debug "zencodeit_noupload"
     return if encoding_input_url.nil? || encoding_input_url.blank?
 
     self.encoding.identifier = Identifier.generate

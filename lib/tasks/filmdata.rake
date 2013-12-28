@@ -69,8 +69,12 @@ def remote_url(type, filename)
   end
 end
 
-def data_file_open
-  return File.open("db/seeds/Films Acquired and Tagged.csv")
+def data_files
+  return ["db/seeds/Films Acquired and Tagged.csv", "db/seeds/Films Acquired and Tagged 2.csv", "db/seeds/Films Acquired and Tagged 3.csv"]
+end
+
+def data_file_open(index)
+  return File.open(data_files[index])
 end
 
 namespace :filmdata do
@@ -80,33 +84,42 @@ namespace :filmdata do
 
     connection = remote_init(:s3)
     #connection = remote_init("ftp")
-
     total_duration_seconds = 0
     filmcount = 0
     totalsize = 0
+ 
+    data_files.each do |filename|
+    linecount = 0
     header = true
-    file = data_file_open
+    puts filename
+    
+    file = File.open(filename)
     file.each do |line|
+      linecount += 1
+
       if header
         header = false
         next
       end
       filmcount += 1
 
+      errors = []
       fields = line.split("|")
-      if fields.length != 32
-        print line + "\n"
+      if fields.length < 32
+        errors << "incorrect number of fields: " + fields.length.to_s() + " fields at line: " + linecount.to_s()
       else
-        errors = []
-
         #check file exists
         filename = ENV["VIDEO_SOURCE_DIRECTORY"] + "/" + fields[14]
-        size = remote_size(connection, filename)
-        if size == 0
-          error = "file missing (" + filename + ")"
-          errors << error
+        begin
+          size = remote_size(connection, filename)
+          if size == 0
+            error = "file missing (" + filename + ")"
+            errors << error
+          end
+          totalsize += size
+        rescue Exception => e
+          errors << "Remote size exception for " + filename + ": " + e.message
         end
-        totalsize += size
 
         #check country is valid
         countries = fields[4].split /\s*,\s*/
@@ -154,6 +167,9 @@ namespace :filmdata do
               if l.nil?
                 error = "unknown language (" << language << ")"
                 errors << error
+              elsif l.iso_639_3.nil?
+                error = "no iso_639_3 code for (" << language << ")"
+                errors << error
               end
             end
           end
@@ -176,6 +192,10 @@ namespace :filmdata do
           end
         end
 
+        year = fields[7].strip.to_i
+        if year < 1900 and year > 2020
+          errors << "Invalid year"
+        end
 
         duration_seconds = 0
         duration = fields[8].strip
@@ -224,23 +244,23 @@ namespace :filmdata do
         end
 
         lists = fields[30].split(",").map{|x| x.downcase.strip.gsub /\s/, '_'}
-        if lists.empty?
-          errors << "list missing"
-        else
+        if !lists.empty?
           valid_lists = CuratedVideoListTag.all.map(&:name)
           if !(lists - valid_lists).empty?
             error = "unknown list (" + lists.to_s + ")"
             errors << error
           end
         end
-
-        if errors.length > 0
-          raise "line " + filmcount.to_s + " : " + errors.to_s
-        else
-          print "."
-          STDOUT.flush
-        end
       end
+
+      if errors.length > 0
+        raise "line " + linecount.to_s + ", film " + filmcount.to_s + " : " + errors.to_s
+      else
+        print "."
+        STDOUT.flush
+      end
+ 
+    end
     end
 
     puts
@@ -286,7 +306,7 @@ namespace :filmdata do
     admin_user = User.find(1)
     header = true
     film_count = 0
-    file = data_file_open
+    file = data_file_open(1)
     file.each do |line|
       if header
         header = false
@@ -295,8 +315,19 @@ namespace :filmdata do
       film_count += 1
 
       fields = line.split("|")
-      video = admin_user.videos.new
-      video.name = fields[1]
+
+      video_name = fields[1]
+
+      video = Video.find_by(:name => video_name)
+      if !video.nil?
+        puts "exists"
+      else
+        puts "new"
+        video = admin_user.owned_videos.new
+        #video = Video.new
+        video.name = video_name
+      end
+ 
       video.description = fields[15]
 
       screen_cap_time_code = fields[9].strip
@@ -348,7 +379,7 @@ namespace :filmdata do
   
         if language != "Nonverbal"
           l = LanguageList::LanguageInfo.find(language)
-          video.audio_language_code << l.iso_639_1
+          video.audio_language_code << l.iso_639_3
         end
       end
 
@@ -362,15 +393,17 @@ namespace :filmdata do
   
         if language != "Nonverbal"
           l = LanguageList::LanguageInfo.find(language)
-          video.subtitle_language_code << l.iso_639_1
+          video.subtitle_language_code << l.iso_639_3
         end
       end
 
+      video.released_year = fields[7].strip.to_i
+
       input_url = remote_url(:s3, fields[14])
-      puts input_url
       video.encoding_input_url = input_url
 
-      #video.save!
+      print "x" if video.encoding_input_url_changed? 
+      video.save!
       print "."
     end
   end
