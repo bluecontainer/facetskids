@@ -1,6 +1,9 @@
       <div class="snap-drawers">
         <div>
           <div class="detailContainer">
+            <div onclick="snapper.close();" style="width: 288px; margin: 5px 9px 0px 9px; text-align: right;">
+              <i class="icon-cancel-squared" style="font-size: 1.8em;"></i>
+            </div>
             <a href="" ng-click="result.playVideo(result.selected_video);"><img ng-src="{{result.selected_video.thumbnails[0]}}" style="width: 288px; height: 215px; margin: 5px 9px 0px 9px;"/></a>
             <div class="hilight">
               {{result.selected_video.name}}

@@ -306,7 +306,7 @@ namespace :filmdata do
     admin_user = User.find(1)
     header = true
     film_count = 0
-    file = data_file_open(1)
+    file = data_file_open(2)
     file.each do |line|
       if header
         header = false

@@ -1,19 +1,9 @@
 /*
  *= require snap
  *= require rating
+ *= require fontello
  *= require_self
 */
-
-@font-face {
-    font-family: 'modern_pictogramsnormal';
-    src: asset-url('modernpics-webfont.eot');
-    src: asset-url('modernpics-webfont.eot?#iefix') format('embedded-opentype'),
-         asset-url('modernpics-webfont.woff') format('woff'),
-         asset-url('modernpics-webfont.ttf') format('truetype'),
-         asset-url('modernpics-webfont.svg#modern_pictogramsnormal') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
 
 @font-face {
     font-family: 'varela_roundregular';
@@ -22,17 +12,6 @@
          asset-url('varelaround-regular-webfont.woff') format('woff'),
          asset-url('varelaround-regular-webfont.ttf') format('truetype'),
          asset-url('varelaround-regular-webfont.svg#varela_roundregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'entypo';
-    src: asset-url('entypo.eot');
-    src: asset-url('entypo.eot?#iefix') format('embedded-opentype'),
-         asset-url('entypo.woff') format('woff'),
-         asset-url('entypo.ttf') format('truetype'),
-         asset-url('entypo.svg#entypo') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -245,6 +224,7 @@
             position: relative;
             width: 985px;
             padding-left: 45px;
+            padding-top: 5px;
             background: #27b7eb;
           }
 
@@ -255,7 +235,7 @@
 
           .iosSliderVertical {
             width: 1024px;
-            height: 500px;
+            height: 515px;
           }
 
           .navbar .nav > li.tag {
@@ -268,9 +248,8 @@
           }
 
           .navbar .nav .logout {
-            font-family: entypo; 
-            font-size: 2em; 
-            padding-top: 15px;
+            font-size: 1.5em; 
+            padding-top: 20px;
           }
         }
 
@@ -279,6 +258,7 @@
             position: relative;
             width: 729px;
             padding-left: 40px;
+            padding-top: 5px;
           }
 
           .iosSlider {
@@ -301,9 +281,8 @@
           }
 
           .navbar .nav .logout {
-            font-family: entypo; 
-            font-size: 2em; 
-            padding-top: 15px;
+            font-size: 1.2em; 
+            padding-top: 20px;
           }
  
         }
@@ -355,18 +334,11 @@
           white-space: nowrap;
         }
 
-        .imageContainer span.info {
-          font-size: 16pt;
-          font-weight: bold;
-          font-family: 'modern_pictogramsnormal';
-          margin-left: 10px;
-        }
-
         .detailContainer {
           position: relative;
           background-color: white;
           width: 306px;
-          height: 360px;
+          height: 380px;
         }
         
         .ratingTitle {
@@ -419,7 +391,7 @@
           color: #FFF;
           /*bottom: 0px;*/
           padding: 0px 5px 0px 5px;
-          top: 185px;
+          top: 205px;
           left: 9px;
           z-index: 1;
         }
