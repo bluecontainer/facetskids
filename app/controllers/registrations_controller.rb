@@ -2,6 +2,8 @@ class RegistrationsController < Devise::RegistrationsController
   before_filter :configure_permitted_parameters
 
   def after_sign_up_path_for(resource)
+    UserMailer.welcome_email(resource).deliver
+
     case current_user.roles.first.name
       when 'alpha'
         content_alpha_path

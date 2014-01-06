@@ -171,6 +171,6 @@ class User < ActiveRecord::Base
   end
 
   def invite_users(invitation_emails)
-    invitation_emails.each { |x| User.invite!( {:email => x, :skip_invitation => true}, self) }
+    invitation_emails.each { |x| User.invite!( {:email => x, :skip_invitation => false}, self) }
   end
 end

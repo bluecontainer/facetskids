@@ -70,7 +70,7 @@ def remote_url(type, filename)
 end
 
 def data_files
-  return ["db/seeds/Films Acquired and Tagged.csv", "db/seeds/Films Acquired and Tagged 2.csv", "db/seeds/Films Acquired and Tagged 3.csv"]
+  return ["db/seeds/Films Acquired and Tagged.csv", "db/seeds/Films Acquired and Tagged 2.csv", "db/seeds/Films Acquired and Tagged 3.csv", "db/seeds/Films Acquired and Tagged 4.csv"]
 end
 
 def data_file_open(index)
@@ -306,7 +306,7 @@ namespace :filmdata do
     admin_user = User.find(1)
     header = true
     film_count = 0
-    file = data_file_open(2)
+    file = data_file_open(3)
     file.each do |line|
       if header
         header = false

@@ -1,0 +1,82 @@
+<!-- BACKDROP -->
+<table cellpadding="0" width="100%" style="background: rgb(54,182,232)">
+<tr><td>
+
+<br/>
+<!-- containing table -->
+<table cellpadding="0" width="680" align="center" style="border-collapse:collapse; font-size:14px; font-family:Myriad,sans-serif; background:white; width:680px; margin:auto; text-align:left; -moz-border-radius:16px; -webkit-border-radius:16px; border-radius:16px;">
+
+
+<tr> <!-- main branding image -->
+<td align="center">
+<% if @banner_image_type == "generic" %>
+<%= image_tag "facetskids_topbanner2.jpg", size: "550x185", alt: "FacetsKids" %>
+<% else %>
+<%= image_tag "facets-kids-ipad.jpg", size: "500x374", alt: "FacetsKids on iPad" %>
+<% end %> 
+</td>
+</tr><!-- end main branding image  -->
+
+
+
+<tr> <!-- copy-->
+<td>
+<!-- embedded table -->
+<table cellpadding="35" border="0" width="680">
+<tr>
+<td>
+<h2><%=@header_copy.html_safe%></h2>
+<p>
+<%=@body_copy.html_safe%>
+</p>
+</td>
+</tr>
+</table>
+</td></tr>
+
+
+<tr> <!-- footer-->
+<td>
+<!-- embedded table -->
+<table style="color:white;" cellpadding="20" border="0"  width="680">
+<tr>
+<td align="center">
+<!--a href="http://facetskids.facets.org/" title="Go to facetskids.facets.org">
+<%= image_tag "go-to-facets-kids.jpg", size: "180x53", alt: "Go to FacetsKids!", border: "0" %>
+</a-->
+<a style="background:rgb(54,182,232); text-decoration:none; padding:7px 15px; box-shadow:2px 2px 3px #000000; border-radius:5px;" href="<%=@button_link%>" title="Go to facetskids.facets.org"><font color="white"><b><%=@button_text.html_safe%></b></font></a>
+</td>
+</tr>
+</table>
+</td></tr>
+
+</td>
+</tr>
+</table>
+<br/><br/>
+
+
+
+<% if @include_ipad_question %>
+<table width="100%"><!-- iPad alternative -->
+<tr>
+<td width="50%" align="right" valign="middle">
+Don't have an iPad? &nbsp; &nbsp; </td>
+<td width="50%" align="left">
+<!--a href="***" title="***">
+<%= image_tag "click-here_kidsapp.jpg", border: "0", size: "97x34", alt: "Click here." %>
+</a-->
+<a style="background:white; text-decoration:none; padding:3px 8px; box-shadow:1px 1px 3px #000000; border-radius:5px;" href="***" title="***"><font color="black">Click me</font></a>
+<br/>
+<!--a style="background:white; text-decoration:none; padding:3px 8px; box-shadow:1px 1px 3px #000000; border-radius:5px;" href="***" title="***"><font color="black">Click me</font></a-->
+</td>
+</tr>
+</table>
+<br/><br/><br/><!-- end iPad alternative -->
+<% end %>
+
+
+
+<!-- CLOSES BACKDROP -->
+</td></tr></table>
+<br/><br/><br/>

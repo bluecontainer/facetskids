@@ -1,3 +1,11 @@
+<script>
+  function Ctrl($scope) {
+    $scope.check = window.navigator.standalone ? 1 : 0;
+  }
+</script>
+
+<div ng-app ng-controller="Ctrl">
+
 <div class="row" style="padding-top: 60px">
   <div class="offset4 span4">
     <div class="login-form">
@@ -12,6 +20,8 @@
   <%= f.input :remember_me, :as => :hidden, :input_html => { :value => "1"} if devise_mapping.rememberable? %>
 
   <%= f.button :submit, "Login", :class => "btn btn-primary btn-lg btn-block" %>
+
+  <%= hidden_field_tag "check", "{{check}}" %>
 <% end %>
 
 <%= render "devise/shared/links" %>
@@ -20,3 +30,4 @@
   </div>
 </div>
 
+</div>

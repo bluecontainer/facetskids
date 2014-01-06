@@ -11,7 +11,12 @@ FacetsKids::Application.configure do
   config.action_controller.perform_caching = false
 
   # ActionMailer Config
-  config.action_mailer.default_url_options = { :host => ENV["HOST"] }
+  #config.action_mailer.asset_host = "http://" + ENV["HOST"]
+  config.action_mailer.asset_host = "https://s3.amazonaws.com/facetskids"
+  config.action_mailer.default_url_options = { 
+    :host => ENV["HOST"],
+    :only_path => false
+  }
   config.action_mailer.delivery_method = :smtp
   # change to true to allow email to be sent during development
   config.action_mailer.perform_deliveries = true

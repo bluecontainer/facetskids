@@ -1,8 +1,20 @@
-<p>Hello <%= @resource.email %>!</p>
+<!DOCTYPE html>
+<html>
 
-<p>Someone has invited you to <%= unauthenticated_root_url %>, you can accept it through the link below.</p>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
 
-<p><%= link_to 'Accept invitation', accept_invitation_url(@resource, :invitation_token => @token) %></p>
+  <body>
+  <%
+    @banner_image_type = "generic"
+    @header_copy = "Become a Trailblazer!"
+    @body_copy = "<b>" + @user.invited_by.name + "</b> thinks you will like <b>Facets Kids</b>, a new streaming portal of the best global independent children's films.<br/><br/>Sign up to download the app for FREE and introduce your kids to the best films and shorts from around the world."
+    @button_text = "Accept invitation"
+    @button_link = accept_invitation_url(@resource, :invitation_token => @token)
+    @include_ipad_question = false
+  %> 
+  <%= render "user_mailer/user" %>
+  </body>
 
-<p>If you don't want to accept the invitation, please ignore this email.<br />
-Your account won't be created until you access the link above and set your password.</p>
+</html>

@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
 
   def initialize
     @force = false
+    @client_check = false
     super
   end
 
@@ -53,6 +54,10 @@ class ApplicationController < ActionController::Base
     @force = force
   end
 
+  def client_check(check)
+   @client_check = check
+  end
+
   def can_run_app?
     return true if @force
     @user_agent = UserAgent.parse(request.user_agent)
@@ -62,7 +67,8 @@ class ApplicationController < ActionController::Base
       if @user_agent.product.map{|product| product.first.product}.include?("Safari")
         return false
       else
-        return true
+        return true if @client_check or params['check']
+        return false
       end
     else
       return false
