@@ -98,7 +98,9 @@ module Api
     private
     def age_tag
       child_age = current_user.child_age
-      if child_age >= 2 && child_age <= 4
+      if child_age.nil?
+        age_tag = "7_8"
+      elsif child_age >= 2 && child_age <= 4
         age_tag = "2_4"
       elsif child_age >= 5 && child_age <= 6
         age_tag = "5_6"

@@ -14,6 +14,7 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
       $scope.seeked = false;
       $scope.timeupdate = false;
       $scope.playing = false;
+      $scope.loading = false;
       $scope.videoMarkerService = VideoMarkerService;
     },
 
@@ -28,11 +29,13 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
       function play(video) {
         $log.debug("play: " + video.video_url);
         if (video.video_url == scope.videoElem.src && scope.paused) {
-          $log.debug("resuming");
+          $log.info("resuming");
           scope.paused = false;
           scope.videoElem.webkitEnterFullscreen();
+        } else if (video.video_url == scope.videoElem.src && scope.loading) {
+          $log.info("already loading")
         } else {
-          $log.debug("loading");
+          $log.info("loading");
           scope.startTime = 0;
           scope.currentVideo = video;
           scope.currentView = null;
@@ -40,6 +43,7 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
           scope.seeked = false;
           scope.timeupdate = false;
           scope.playing = false;
+          scope.loading = true;
           scope.videoElem.src = video.video_url;
           scope.videoElem.load();
 
@@ -119,6 +123,7 @@ angular.module('facetsKids.videoplayer', ['facetsKids.videoMarkerService'])
 
       scope.videoElem.addEventListener('playing', function() {
         $log.info("playing: " + scope.startTime.toString());
+        scope.loading = false;
         scope.playing = true;
         if (scope.startTime > 0 && scope.timeupdate && !scope.seeked) {
           $log.info("playing: seeking to startTime: " + scope.startTime.toString());

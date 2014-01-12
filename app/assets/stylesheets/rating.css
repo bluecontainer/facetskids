@@ -1,13 +1,13 @@
 .entypo-star:before {
   font-family: fontello;
-  font-size: 3em;
+  font-size: 2.5em;
   content: '\e802';
   color: gold;
 }
 
 .entypo-star-empty:before {
   font-family: fontello;
-  font-size: 3em;
+  font-size: 2.5em;
   content: '\e803';
 }
 
