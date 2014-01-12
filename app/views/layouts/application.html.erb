@@ -6,13 +6,13 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <meta name="description" content="Facets Kids is a new streaming app that introduces kids to the best films and shorts from around the world. Free alpha version goes live in mid-November!">
+    <meta name="description" content="Facets Kids is a new streaming app that introduces kids to the best films and shorts from around the world. Free alpha version available now on the iPad!">
     <meta name="author" content="">
     
     <meta property="og:url"             content="<%= unauthenticated_root_url %>" /> 
     <meta property="og:title"           content="Facets Kids - The Best Global Independent Children's Films" /> 
     <meta property="og:image"           content="<%= image_url 'seasons_of_love.jpg'  %>" />
-    <meta property="og:description"     content="Facets Kids is a new streaming app that introduces kids to the best films and shorts from around the world. Free alpha version goes live in mid-November!" />
+    <meta property="og:description"     content="Facets Kids is a new streaming app that introduces kids to the best films and shorts from around the world. Free alpha version available now on the iPad!" />
 
     <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
 
@@ -41,7 +41,6 @@
 
   <body class="<%= controller_name %> <%= action_name %>">
 
-
   <div id="wrap">
 
     <!--div class="container"-->
@@ -53,6 +52,8 @@
       <!--div class="container"-->
 
         <div class="navbar">
+          <!--div class="ribbon-wrapper-green"><div class="ribbon-green">alpha version</div></div-->
+
           <div class="navbar-inner">
             <%= render 'layouts/navigation' %>  
           </div><!-- /.navbar-inner -->

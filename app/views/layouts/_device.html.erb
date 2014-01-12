@@ -1,0 +1,14 @@
+<div class="row">
+  <%= simple_form_for(@user, :as => :user, :url => update_devices_path(:user), :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
+
+  <div class="offset1 span6">
+    <% if current_user.nil? %>
+      <%= f.input :email, :required => true, :placeholder => "Email", :autofocus => true %>
+    <% end %>
+    <%= f.association :devices, label_method: :name, as: :check_boxes, label: "I use the following device(s):", input_html: { :data => {:toggle => 'checkbox'} } %>
+    <%= f.button :submit, "Email me when my devices are supported", :class => "btn-primary" %>
+  </div>
+  <% end %>
+</div>
+
+

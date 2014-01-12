@@ -31,24 +31,16 @@
 
       <%= csrf_meta_tags %>
 
-      <style>
-        body {
-          height: 100%;
-          overflow: hidden;
-        }
-     </style>
-
      <script>
        if (window.navigator.standalone && window.location.href.indexOf("check=") == -1) {
          window.location.href = window.location.href + "?check=1";
        } 
      </script>
 
-
   </head>
 
-  <% if @type == "install" %>
-  <body>
+  <% if @type == "install" or @type == "unsupported" %>
+  <body style="overflow: scroll">
   <% else %>
   <body ng-controller="MainCtrl">
   <% end %>

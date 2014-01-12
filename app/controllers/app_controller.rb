@@ -2,6 +2,7 @@ class AppController < ApplicationController
   #before_filter :authenticate_user!
 
   def index
+    logger.debug request.user_agent
     force_run_app(params[:force])
     client_check(params[:check])
 
@@ -9,12 +10,18 @@ class AppController < ApplicationController
       authenticate_user!
     else
       if can_install_app?
+        #supported platform
         #show installation instructions
         @type = "install"
         render :installation
       else
-        #show supported platform information
-        redirect_to :unauthenticated_root
+        #error unsupported platform
+        @user = current_user
+        if @user.nil?
+          @user = User.new
+        end
+        @type = "unsupported"
+        render :unsupported
       end
     end
   end

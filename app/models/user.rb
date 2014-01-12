@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   belongs_to :invited_by, :class_name => self.to_s
 
   has_and_belongs_to_many :mail_lists, :join_table => :users_mail_lists
+  has_and_belongs_to_many :devices, :join_table => :users_devices
 
   has_many :owned_videos, :class_name => :Video
   has_many :user_video_views
@@ -161,6 +162,16 @@ class User < ActiveRecord::Base
     end
     mail_list
   end
+
+  def add_device(device_name)
+    device = Device.find_or_create_by( :name => device_name.to_s)
+
+    if !devices.include?(device)
+      self.device_ids |= [device.id]
+    end
+    device
+  end
+
 
   def add_all_mail_lists
     MailList.all.each { |mail_list|

@@ -134,7 +134,6 @@ class RegistrationsController < Devise::RegistrationsController
     @user = current_user
     @user.name = params[:user][:name]
     if @user.save
-
       @user.invite_users(params[:email_invitations].split(","))
 
       if resource.errors.empty?
@@ -146,6 +145,20 @@ class RegistrationsController < Devise::RegistrationsController
       #respond_with resource, :location => after_invite_path_for(resource)
     else
       flash.alert = "Unable to update user name."
+    end
+  end
+
+  def update_devices
+    @user = current_user
+    if @user.nil?
+      email = params[:user][:email]
+      @user = User.invite!( {:email => email, :skip_invitation => true} )
+    end
+    @user.device_ids = params[:user][:device_ids]
+    if @user.save
+      redirect_to content_device_confirmation_path
+    else
+      redirect_to content_device_confirmation_path
     end
   end
 

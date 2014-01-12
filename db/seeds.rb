@@ -19,6 +19,14 @@ puts 'mail list: ' << mail_list.name
 mail_list = MailList.find_or_create_by_name( :name => "research_invitations", :description => "Receive invitations to provide feedback through surveys and workshops" )
 puts 'mail list: ' << mail_list.name
 
+puts 'DEVICES'
+devices = ["iPhone", "Windows XP PC", "Windows 7 PC", "Windows 8 PC", "Windows 8 Tablet", "Mac OSX", "Android Tablet", "Android Phone", "Kindle HD", "Kindle HDX", "Apple TV", "Roku", "Wii", "Playstation", "Chromecast"]
+devices.each do |device|
+  Device.find_or_create_by_name(:name => device)
+end
+puts "Devices:"
+puts Device.all
+
 puts 'DEFAULT USERS'
 user = User.find_or_create_by_email :name => ENV['ADMIN_NAME'].dup, :email => ENV['ADMIN_EMAIL'].dup, :password => ENV['ADMIN_PASSWORD'].dup, :password_confirmation => ENV['ADMIN_PASSWORD'].dup, :age_acknowledgement => true, :terms_acknowledgement => true
 user.add_role :admin
@@ -31,28 +39,28 @@ puts "user: #{user.name}"
 
 age_range_tags = ["2_4","5_6","7_8","9_12","13_14","14+"]
 age_range_tags.each do |tag|
-  AgeRangeTag.new(:name => tag).save
+  AgeRangeTag.find_or_create_by_name(:name => tag)
 end
 puts "Age Range Tags:"
 puts AgeRangeTag.all
 
 emotion_tags = ["happy","think","excited","laugh","scared","care"]
 emotion_tags.each do |tag|
-  EmotionTag.new(:name => tag).save
+  EmotionTag.find_or_create_by_name(:name => tag)
 end
 puts "Emotion Tags:"
 puts EmotionTag.all
 
 curated_video_list_tags = ["brand_new", "top_rated", "picks_for_me", "animation_antics"]
 curated_video_list_tags.each do |tag|
-  CuratedVideoListTag.new(:name => tag).save
+  CuratedVideoListTag.find_or_create_by_name(:name => tag)
 end
 puts "Curated Video List Tags:"
 puts CuratedVideoListTag.all
 
 rating_tags = ["1_star", "2_star", "3_star", "4_star", "5_star"]
 rating_tags.each do |tag|
-  RatingTag.new(:name => tag).save
+  RatingTag.find_or_create_by_name(:name => tag)
 end
 puts "Rating Tags:"
 puts RatingTag.all

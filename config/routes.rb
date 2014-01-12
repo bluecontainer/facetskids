@@ -13,6 +13,7 @@ FacetsKids::Application.routes.draw do
     put 'update_plan', :to => 'registrations#update_plan'
     put 'update_card', :to => 'registrations#update_card'
     put 'add_invitations', :to => 'registrations#add_invitations'
+    put 'update_devices', :to => 'registrations#update_devices'
   end
   resources :users
 
@@ -25,7 +26,8 @@ FacetsKids::Application.routes.draw do
   get "content/about"
   get "content/faq"
   get "content/privacy"
-
+  get "content/device_confirmation"
+  get "content/noipad"
 
   post '/videos/notifications', as: :notifications
 

@@ -47,7 +47,12 @@ class ApplicationController < ActionController::Base
   def can_install_app?
     @user_agent = UserAgent.parse(request.user_agent)
     #check if an iPad
-    return @user_agent.platform == "iPad"
+    if @user_agent.platform == "iPad"
+      return false if @user_agent.product.map{|product| product.first.product}.include?("CriOS")
+      return false if @user_agent.product.map{|product| product.first.product}.include?("Opera Mini")
+    else
+      return false
+    end
   end
 
   def force_run_app(force)
@@ -65,6 +70,7 @@ class ApplicationController < ActionController::Base
     if @user_agent.platform == "iPad"
       #check if Safari or standalone
       if @user_agent.product.map{|product| product.first.product}.include?("Safari")
+        return true if @user_agent.product.map{|product| product.first.product}.include?("Coast")
         return false
       else
         return true if @client_check or params['check']

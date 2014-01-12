@@ -1,0 +1,16 @@
+<div class="row" style="padding-top: 20px;">
+  <div class="offset1 span8">
+<a href="#" 
+  onclick="
+    url = '<%= "http://" + ENV["HOST"] %>';
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url), 
+      'facebook-share-dialog', 
+      'width=626,height=436'); 
+    return false;">
+<%= image_tag "facebookicon.png" %> Post about Facet Kids on Facebook
+</a>
+  </div>
+</div>
+
+
