@@ -50,6 +50,7 @@ class ApplicationController < ActionController::Base
     if @user_agent.platform == "iPad"
       return false if @user_agent.product.map{|product| product.first.product}.include?("CriOS")
       return false if @user_agent.product.map{|product| product.first.product}.include?("Opera Mini")
+      return true
     else
       return false
     end
