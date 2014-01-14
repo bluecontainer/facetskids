@@ -24,7 +24,7 @@
       <%= display_base_errors resource %>
       <%= f.input :name, :autofocus => true %>
       <%= f.input :email, :required => true %>
-      <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 5..15, input_html: { class: "select-block mbl"} %>
+      <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 2..15, input_html: { class: "select-block mbl"} %>
       <%= f.input :password, :autocomplete => "off", :hint => "Leave it blank if you don't want to change it", :required => false %>
       <%= f.input :password_confirmation, :required => false %>
       <%= f.input :current_password, :hint => "We need your current password to confirm your changes", :required => true %>

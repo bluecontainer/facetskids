@@ -41,7 +41,7 @@
   <%= f.input :email, :placeholder => "Email", :readonly => true %>
   <%= f.input :password, :required => true, :placeholder => "Password", :autofocus => true %>
   <%= f.input :password_confirmation, :required => true, :placeholder => "Password again" %>
-  <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 5..15, input_html: { class: "select-block mbl"} %>
+  <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 2..15, input_html: { class: "select-block mbl"} %>
   <div ng-show="plan == 'silver'">
     <%= f.input :donation_amt, :placeholder => "Donation", collection: 50..200, input_html: { class: "select-block mbl"} %>
     <%= f.input :name %>
