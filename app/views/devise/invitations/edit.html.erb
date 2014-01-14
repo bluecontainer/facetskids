@@ -32,7 +32,7 @@
   <div class="offset1 span11">
 <%= simple_form_for(resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:class => 'card_form form-vertical', :method => :put}) do |f| %>
 
-  <%= f.input :plan, as: :radio_buttons, label: false, collection: [ ["alpha","Free alpha account (through December)"], ["silver","Contribute $50 or more (one year subscription)"]], label_method: :last, value_method: :first, input_html: { "ng-model" => "plan", :data => {:toggle => 'radio'} } %>
+  <%= f.input :plan, as: :radio_buttons, label: false, collection: [ ["alpha","Free alpha account"], ["silver","Contribute $50 or more (one year subscription)"]], label_method: :last, value_method: :first, input_html: { "ng-model" => "plan", :data => {:toggle => 'radio'} } %>
   <%= f.error_notification %>
   <%= display_base_errors resource %>
 
