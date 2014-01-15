@@ -1,6 +1,18 @@
 class InvitationsController < Devise::InvitationsController
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
+  def after_accept_path_for(resource)
+    UserMailer.welcome_email(resource).deliver
+
+    case current_user.roles.first.name
+      when 'alpha'
+        content_alpha_path
+      when 'silver'
+        content_silver_path
+    end
+  end
+
+
   # GET /resource/invitation/accept?invitation_token=abcdef
   def edit
     resource.invitation_token = params[:invitation_token]
