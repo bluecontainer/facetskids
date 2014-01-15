@@ -1,70 +1,7 @@
-<% content_for :head do %>
-  <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
-  <%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js" %>
-  <script>
-    function Ctrl($scope) {
-      $scope.plan = "<%= resource.plan %>";
-    }
-  </script>
-<% end %>
 
-<div ng-app ng-controller="Ctrl">
+<%
+  @path = invitation_path(resource_name)
+  @method = :put
+%>
 
-<div class="row">
-  <div class="offset1 span7">
-    <div ng-show="plan == 'alpha'">
-    <h4>Sign up now to create an account and become a pioneer.</h4>
-    </div>
-    <div ng-show="plan == 'silver'">
-    <h4>Help us build the app and inspire the creators of tomorrow.</h4>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="offset3 span6">
-    <div id="stripe_error" class="alert alert-error" style="display:none" >
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="offset1 span11">
-<%= simple_form_for(resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:class => 'card_form form-vertical', :method => :put}) do |f| %>
-
-  <%= f.input :plan, as: :radio_buttons, label: false, collection: [ ["alpha","Free alpha account"], ["silver","Contribute $50 or more (one year subscription)"]], label_method: :last, value_method: :first, input_html: { "ng-model" => "plan", :data => {:toggle => 'radio'} } %>
-  <%= f.error_notification %>
-  <%= display_base_errors resource %>
-
-  <%= f.hidden_field :invitation_token, :value => resource.invitation_token %>
-
-  <%= f.input :email, :placeholder => "Email", :readonly => true %>
-  <%= f.input :password, :required => true, :placeholder => "Password", :autofocus => true %>
-  <%= f.input :password_confirmation, :required => true, :placeholder => "Password again" %>
-  <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 2..15, input_html: { class: "select-block mbl"} %>
-  <div ng-show="plan == 'silver'">
-    <%= f.input :donation_amt, :placeholder => "Donation", collection: 50..200, input_html: { class: "select-block mbl"} %>
-    <%= f.input :name %>
-    <div class="field">
-      <%= label_tag :card_number, "Credit Card Number" %>
-      <%= text_field_tag :card_number, nil, name: nil %>
-    </div>
-    <div class="field">
-      <%= label_tag :card_code, "Card Security Code (CVV)" %>
-      <%= text_field_tag :card_code, nil, name: nil %>
-    </div>
-    <div class="field">
-      <%= label_tag :card_month, "Card Expiration" %>
-      <%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month"}%>
-      <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%>
-    </div>
-    </div>
-  <%= f.input :age_acknowledgement, :required => true, label: false, inline_label: 'I am over 13 years old', input_html: { :data => {:toggle => 'checkbox'} } %>
-  <%= f.input :terms_acknowledgement, :required => true, label: false, inline_label: 'I have read and agree to the Privacy Policy and Terms and Conditions', input_html: { :data => {:toggle => 'checkbox'} } %>
-  <%= hidden_field_tag "plan", "{{plan}}" %>
-  <%= f.hidden_field :stripe_token %>
-  <%= f.button :submit, 'Sign up', :class => 'btn-primary' %>
-<% end %>
-  </div>
-</div>
-</div>
+<%= render "devise/shared/registration" %>
