@@ -40,6 +40,10 @@ class ApplicationController < ActionController::Base
     end    
   end
 
+  def after_resetting_password_path_for(resource)
+    edit_user_registration_path
+  end
+
   def after_invite_path_for(resource)
     authenticated_root_path
   end
