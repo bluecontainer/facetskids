@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
 
   def initialize
     @force = false
-    @client_check = false
     super
   end
 
@@ -61,15 +60,15 @@ class ApplicationController < ActionController::Base
   end
 
   def force_run_app(force)
-    @force = force
+    session[:app_force] = force
   end
 
   def client_check(check)
-   @client_check = check
+   session[:app_client_check] = check
   end
 
   def can_run_app?
-    return true if @force
+    return true if session[:app_force]
     @user_agent = UserAgent.parse(request.user_agent)
     #check if an iPad
     if @user_agent.platform == "iPad"
@@ -78,7 +77,7 @@ class ApplicationController < ActionController::Base
         return true if @user_agent.product.map{|product| product.first.product}.include?("Coast")
         return false
       else
-        return true if @client_check or params['check']
+        return true if session[:app_client_check]
         return false
       end
     else
