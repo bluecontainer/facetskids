@@ -17,9 +17,9 @@
 
 <% if !current_user.nil? %>
 <%= render "layouts/share_with" %>
-<% end %>
-
+<% else %>
 <%= render "layouts/fb" %>
+<% end %>
 
 </div>
 
