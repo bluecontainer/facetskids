@@ -32,6 +32,7 @@ class User < ActiveRecord::Base
   before_save :update_stripe
   before_destroy :cancel_subscription
 
+  scope :invitation_not_sent, lambda { where(arel_table[:invitation_token].not_eq(nil)).where(:invitation_sent_at => nil) }
 
   def is_admin?
     if !plan.nil? and plan == "admin"
