@@ -1,7 +1,7 @@
 
 angular.module('facetsKids.marquee', [])
 
-.directive('marquee', function($log, $timeout) {
+.directive('marquee', function($log, $timeout, $interval) {
   return {
     restrict: 'EA',
 
@@ -11,19 +11,23 @@ angular.module('facetsKids.marquee', [])
       $timeout(function() {
 
         var boxWidth = elem.width();
-        var textWidth = $('.scroll-text', elem).width();
+        var textElem = $('.scroll-text', elem);
+        var textWidth = textElem.width();
         var animSpeed = textWidth * 20;
+        console.log("$timeout: " + textWidth + ", " + boxWidth);
 
         function doAnimation() {
-          elem.animate(
+          textElem.animate(
             {
-              scrollLeft: (textWidth - boxWidth)
+              //scrollLeft: (textWidth - boxWidth)
+              left: -(textWidth - boxWidth)
             }, 
             animSpeed, 
             function () {
-              elem.animate(
+              textElem.animate(
                 {
-                  scrollLeft: 0
+                  //scrollLeft: 0
+                  left: 0
                 }, 
                 animSpeed, 
                 function () {
@@ -35,7 +39,22 @@ angular.module('facetsKids.marquee', [])
 	}
 
         if (textWidth > boxWidth) {
-          doAnimation();
+          //doAnimation();
+          $interval(function() {
+            startPos = move(textElem[0])
+              .to(0)
+              .duration('3s');
+            move(textElem[0])
+              .to(-(textWidth - boxWidth))
+              .duration('3s')
+              .end(startPos);
+            /*
+            TweenMax.to(textElem, 3, {left: -(textWidth - boxWidth), onComplete: function() {
+              TweenMax.to(textElem, 3, {left: 0});
+            }});
+            */
+          }, 8000);
+          //
         }
       }, 0);
     } 

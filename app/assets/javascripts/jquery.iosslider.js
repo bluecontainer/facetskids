@@ -9,7 +9,7 @@
  * 
  * Copyright (c) 2013 Marc Whitbread
  * 
- * Version: v1.3.19 (11/17/2013)
+ * Version: v1.3.26 (01/26/2014)
  * Minimum requirements: jQuery v1.4+
  *
  * Advanced requirements:
@@ -1119,9 +1119,13 @@
 				var $this = $(this);
 				var data = $this.data('iosslider');	
 				if(data != undefined) return true;
-           		
-           		$(this).find('img').bind('dragstart.iosSliderEvent', function(event) { event.preventDefault(); });
-
+				
+				if(parseInt($().jquery.split('.').join(''), 10) >= 14.2) {
+					$(this).delegate('img', 'dragstart.iosSliderEvent', function(event) { event.preventDefault(); });	
+				} else {
+					$(this).find('img').bind('dragstart.iosSliderEvent', function(event) { event.preventDefault(); });
+				}
+		   		
 				if(settings.infiniteSlider) {
 					settings.scrollbar = false;
 				}
@@ -1618,13 +1622,17 @@
 					helpers.autoSlide(scrollerNode, slideNodes, scrollTimeouts, scrollbarClass, scrollbarWidth, stageWidth, scrollbarStageWidth, scrollMargin, scrollBorder, originalOffsets, childrenOffsets, slideNodeOuterWidths, sliderNumber, infiniteSliderWidth, numberOfSlides, centeredSlideOffset, settings);
 
 					$(stageNode).bind('mouseleave.iosSliderEvent', function() {
-
+						
+						if(isAutoSlideToggleOn) return true;
+						
 						helpers.autoSlide(scrollerNode, slideNodes, scrollTimeouts, scrollbarClass, scrollbarWidth, stageWidth, scrollbarStageWidth, scrollMargin, scrollBorder, originalOffsets, childrenOffsets, slideNodeOuterWidths, sliderNumber, infiniteSliderWidth, numberOfSlides, centeredSlideOffset, settings);
 						
 					});
 					
 					$(stageNode).bind('touchend.iosSliderEvent', function() {
-					
+						
+						if(isAutoSlideToggleOn) return true;
+						
 						helpers.autoSlide(scrollerNode, slideNodes, scrollTimeouts, scrollbarClass, scrollbarWidth, stageWidth, scrollbarStageWidth, scrollMargin, scrollBorder, originalOffsets, childrenOffsets, slideNodeOuterWidths, sliderNumber, infiniteSliderWidth, numberOfSlides, centeredSlideOffset, settings);
 					
 					});
@@ -1634,7 +1642,7 @@
 							helpers.autoSlidePause(sliderNumber);
 						});
 					}
-					
+						
 					$(stageNode).data('iosslider', {
 						obj: $this,
 						settings: settings,
@@ -1654,7 +1662,8 @@
 						scrollBorder: scrollBorder, 
 						infiniteSliderOffset: infiniteSliderOffset[sliderNumber], 
 						infiniteSliderWidth: infiniteSliderWidth,
-						slideNodeOuterWidths: slideNodeOuterWidths
+						slideNodeOuterWidths: slideNodeOuterWidths,
+						shortContent: shortContent
 					});
 					
 					isFirstInit = false;
@@ -1688,6 +1697,8 @@
 						if((!isIe7) && (!isIe8)) {
 							var e = e.originalEvent;
 						}
+						
+						if(touchLocks[sliderNumber]) return true;
 						
 						if((e.keyCode == 37) && settings.keyboardControls) {
 							
@@ -1843,18 +1854,16 @@
 
 					});
 					
-					$(touchSelectionMove).bind('touchmove.iosSliderEvent mousemove.iosSliderEvent', function(e) {
-						
+					$(document).bind('touchmove.iosSliderEvent mousemove.iosSliderEvent', function(e) {
+					
 						if((!isIe7) && (!isIe8)) {
 							var e = e.originalEvent;
 						}
 						
-						if(touchLocks[sliderNumber] || shortContent) return true;
-						
-						if(isUnselectable) return true;
+						if(touchLocks[sliderNumber] || shortContent || isUnselectable || !touchStartFlag) return true;
 						
 						var edgeDegradation = 0;
-						
+
 						if(e.type == 'touchmove') {
 						
 							eventX = e.touches[0].pageX;
@@ -2170,8 +2179,6 @@
 							
 						}
 						
-						touchStartFlag = false;
-						
 					});
 					
 					var eventObject = $(window);
@@ -2486,7 +2493,8 @@
 					
 				var $this = $(this);
 				var data = $this.data('iosslider');
-				if(data == undefined) return false;
+				
+				if((data == undefined) || data.shortContent) return false;
 				
 				slide = (slide > data.childrenOffsets.length) ? data.childrenOffsets.length - 1 : slide - 1;
 				
@@ -2502,7 +2510,7 @@
 					
 				var $this = $(this);
 				var data = $this.data('iosslider');
-				if(data == undefined) return false;
+				if((data == undefined) || data.shortContent) return false;
 				
 				var slide = (activeChildOffsets[data.sliderNumber] + infiniteSliderOffset[data.sliderNumber] + data.numberOfSlides)%data.numberOfSlides;
 				
@@ -2522,7 +2530,7 @@
 					
 				var $this = $(this);
 				var data = $this.data('iosslider');
-				if(data == undefined) return false;
+				if((data == undefined) || data.shortContent) return false;
 				
 				var slide = (activeChildOffsets[data.sliderNumber] + infiniteSliderOffset[data.sliderNumber] + data.numberOfSlides)%data.numberOfSlides;
 				
@@ -2542,7 +2550,7 @@
 			
 				var $this = $(this);
 				var data = $this.data('iosslider');
-				if(data == undefined) return false;
+				if((data == undefined) || data.shortContent) return false;
 				
 				$(data.scrollerNode).css({
 					cursor: 'default'
@@ -2559,7 +2567,7 @@
 
 				var $this = $(this);
 				var data = $this.data('iosslider');
-				if(data == undefined) return false;
+				if((data == undefined) || data.shortContent) return false;
 			
 				$(data.scrollerNode).css({
 					cursor: grabOutCursor
@@ -2576,7 +2584,7 @@
 			
 				var $this = $(this);
 				var data = $this.data('iosslider');
-				if(data == undefined) return false;
+				if((data == undefined) || data.shortContent) return false;
 				
 				return data;
 			
@@ -2590,7 +2598,7 @@
 			
 				var $this = $(this);
 				var data = $this.data('iosslider');
-				if(data == undefined) return false;
+				if((data == undefined) || data.shortContent) return false;
 				
 				iosSliderSettings[data.sliderNumber].autoSlide = false;
 				
@@ -2608,7 +2616,7 @@
 			
 				var $this = $(this);
 				var data = $this.data('iosslider');
-				if(data == undefined) return false;
+				if((data == undefined) || data.shortContent) return false;
 				
 				iosSliderSettings[data.sliderNumber].autoSlide = true;
 				

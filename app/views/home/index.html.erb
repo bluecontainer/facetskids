@@ -30,7 +30,11 @@
             <div class="row" style="padding-top: 10px;">
               <div class="span12">
                 <div align="center">
-                <%= link_to 'Sign Up', new_user_registration_path(:plan => 'alpha'), :class => 'btn btn-large btn-primary' %> 
+                <% if user_signed_in? %>
+                <%= link_to 'Install App', app_path, :class => 'btn btn-large btn-primary' %>
+                <% else %>
+                <%= link_to 'Sign Up', new_user_registration_path(:plan => 'alpha'), :class => 'btn btn-large btn-primary' %>
+                <% end %>
                 </div>
               </div>
             </div>
@@ -56,7 +60,11 @@
             <div class="row" style="padding-top: 10px;">
               <div class="span12">
                 <div align="center">
+                <% if user_signed_in? %>
+                <%= link_to 'Install App', app_path, :class => 'btn btn-large btn-primary' %>
+                <% else %>
                 <%= link_to 'Sign Up', new_user_registration_path(:plan => 'alpha'), :class => 'btn btn-large btn-primary' %> 
+                <% end %>
                 </div>
               </div>
             </div>
@@ -83,7 +91,11 @@
             <div class="row" style="padding-top: 10px;">
               <div class="span12">
                 <div align="center">
+                <% if user_signed_in? %>
+                <%= link_to 'Install App', app_path, :class => 'btn btn-large btn-primary' %>
+                <% else %>
                 <%= link_to 'Sign Up', new_user_registration_path(:plan => 'alpha'), :class => 'btn btn-large btn-primary' %> 
+                <% end %>
                 </div>
               </div>
             </div>
@@ -109,7 +121,11 @@
              <div class="row" style="padding-top: 10px;">
               <div class="span12">
                 <div align="center">
+                <% if user_signed_in? %>
+                <%= link_to 'Install App', app_path, :class => 'btn btn-large btn-primary' %>
+                <% else %>
                 <%= link_to 'Sign Up', new_user_registration_path(:plan => 'alpha'), :class => 'btn btn-large btn-primary' %> 
+                <% end %>
                 </div>
               </div>
             </div>
