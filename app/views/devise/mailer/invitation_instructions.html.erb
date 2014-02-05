@@ -9,7 +9,11 @@
   <%
     @banner_image_type = "generic"
     @header_copy = "Become a Trailblazer!"
-    @body_copy = "<b>" + @user.invited_by.name + "</b> thinks you will like <b>Facets Kids</b>, a new streaming portal of the best global independent children's films.<br/><br/>Sign up to download the app for FREE and introduce your kids to the best films and shorts from around the world."
+    name = @user.invited_by.name + " (" + @user.invited_by.email + ")"
+    if name.nil?
+      name = @user.invited_by.email
+    end
+    @body_copy = "<b>" + name + "</b> thinks you will like <b>Facets Kids</b>, a new streaming portal of the best global independent children's films.<br/><br/>Sign up to download the app for FREE and introduce your kids to the best films and shorts from around the world."
     @button_text = "Accept invitation"
     @button_link = accept_invitation_url(@resource, :invitation_token => @token)
     @include_ipad_question = false
