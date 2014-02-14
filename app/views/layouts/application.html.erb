@@ -76,6 +76,12 @@
   <%= render 'layouts/footer' %>
   <% end %>
 
+  <script>
+    var page_url_fragment = window.location.pathname + window.location.search;
+    ga('create', '<%= ENV["GA_TRACKING_ID"] %>', '<%= ENV["HOST"] %>');
+    ga('send', 'pageview', page_url_fragment);
+  </script>
+
   </body>
 </html>
 
