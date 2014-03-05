@@ -7,6 +7,8 @@ class RegistrationsController < Devise::RegistrationsController
     case current_user.roles.first.name
       when 'alpha'
         content_alpha_path
+      when 'red'
+        content_silver_path
       when 'silver'
         content_silver_path
     end
@@ -108,6 +110,16 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def cancel_plan
+    @user = current_user
+    if @user.cancel_subscription
+      redirect_to edit_user_registration_path, :notice => 'Cancelled plan.'
+    else
+      flash.alert = 'Unable to cancel plan.'
+      render :edit
+    end
+  end
+
   def update_plan
     @user = current_user
     role = Role.find(params[:user][:role_ids]) unless params[:user][:role_ids].nil?
@@ -154,11 +166,28 @@ class RegistrationsController < Devise::RegistrationsController
       email = params[:user][:email]
       @user = User.invite!( {:email => email, :skip_invitation => true} )
     end
+
+    UserMailer.gift_card_email(current_user).deliver
     @user.device_ids = params[:user][:device_ids]
     if @user.save
       redirect_to content_device_confirmation_path
     else
       redirect_to content_device_confirmation_path
+    end
+  end
+
+  def create_gift_card
+    giftcard = GiftCard.new
+    giftcard.value = params[:giftcard][:value]
+    giftcard.sender = current_user
+    giftcard.receiver_email = params[:giftcard][:receiver_email]
+    receiver_user = User.find_by_email(giftcard.receiver_email)
+    giftcard.receiver = receiver_user
+
+    if giftcard.save
+      UserMailer.gift_card_email(current_user).deliver
+    else
+      flash.alert = "Failed to create gift card."
     end
   end
 

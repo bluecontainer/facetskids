@@ -8,21 +8,22 @@
 <% end %>
 
 <% if in_app? && user_signed_in? %>
-            <%= image_tag("FacetsKids2.2alpha.svg", :class => 'brand', :"ng-click" => "selected.emotion = []") %>
-<% elsif in_app? %>
-            <%= image_tag("FacetsKids2.2alpha.svg", :class => 'brand') %>
+            <ul class="nav pull-left">
+              <!--li class="home"><a href="" ng-click="selected.emotion = []"><svginline src="'<%=image_path('FacetsKidsAlpha2.svg')%>'"></svginline></a></li-->
+              <li class="home"><svgbutton src="<%=image_path('FacetsKidsAlpha2.svg')%>"></svgbutton></li>
+            </ul>
 <% else %>
             <%= link_to image_tag("FacetsKids2alpha.png"), unauthenticated_root_path, :class => 'brand' %>
 <% end %>
 
 <% if in_app? && user_signed_in? %>
               <ul class="nav pull-left" style="" svgbuttongroup tag-list="selected.emotion" multiple="false">
-                <li class="tag"><svgbutton src="<%=image_path('happy.1.svg')%>" value="happy"></svgbutton></li>
-                <li class="tag"><svgbutton src="<%=image_path('excited.1.svg')%>" value="excited"></svgbutton></li>
-                <li class="tag"><svgbutton src="<%=image_path('scared.1.svg')%>" value="scared"></svgbutton></li>
-                <li class="tag"><svgbutton src="<%=image_path('think.1.svg')%>" value="think"></svgbutton></li>
-                <li class="tag"><svgbutton src="<%=image_path('laugh.1.svg')%>" value="laugh"></svgbutton></li>
-                <li class="tag"><svgbutton src="<%=image_path('care.1.svg')%>" value="care"></svgbutton></li>
+                <li class="tag"><svgbutton src="<%=image_path('Happy2.svg')%>" value="happy"></svgbutton></li>
+                <li class="tag"><svgbutton src="<%=image_path('Excited2.svg')%>" value="excited"></svgbutton></li>
+                <li class="tag"><svgbutton src="<%=image_path('Scared2.svg')%>" value="scared"></svgbutton></li>
+                <li class="tag"><svgbutton src="<%=image_path('Think2.svg')%>" value="think"></svgbutton></li>
+                <li class="tag"><svgbutton src="<%=image_path('Laugh2.svg')%>" value="laugh"></svgbutton></li>
+                <li class="tag"><svgbutton src="<%=image_path('Care2.svg')%>" value="care"></svgbutton></li>
               </ul>
               <ul class="nav pull-right">
                 <li><%= link_to "", destroy_user_session_path + "?check=1", :method => 'delete', :class => 'icon-logout logout'%></li>

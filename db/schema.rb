@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140107234654) do
+ActiveRecord::Schema.define(version: 20140225170720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,23 @@ ActiveRecord::Schema.define(version: 20140107234654) do
   end
 
   add_index "devices", ["name"], name: "index_devices_on_name", using: :btree
+
+  create_table "gift_cards", force: true do |t|
+    t.string   "code"
+    t.decimal  "value"
+    t.boolean  "paid"
+    t.boolean  "redeemed"
+    t.boolean  "coupon_created"
+    t.integer  "sender_id"
+    t.integer  "receiver_id"
+    t.string   "receiver_email"
+    t.string   "receiver_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "gift_cards", ["receiver_id"], name: "index_gift_cards_on_receiver_id", using: :btree
+  add_index "gift_cards", ["sender_id"], name: "index_gift_cards_on_sender_id", using: :btree
 
   create_table "jobs", force: true do |t|
     t.integer  "video_id"
@@ -89,6 +106,20 @@ ActiveRecord::Schema.define(version: 20140107234654) do
     t.string "description"
     t.string "type"
   end
+
+  create_table "user_stripe_events", force: true do |t|
+    t.string   "event_id"
+    t.string   "event_type"
+    t.json     "event_data"
+    t.integer  "user_id"
+    t.decimal  "charge_amount"
+    t.string   "charge_id"
+    t.string   "plan"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_stripe_events", ["user_id"], name: "index_user_stripe_events_on_user_id", using: :btree
 
   create_table "user_video_views", force: true do |t|
     t.integer  "user_id"

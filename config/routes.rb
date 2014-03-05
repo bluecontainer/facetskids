@@ -10,8 +10,10 @@ FacetsKids::Application.routes.draw do
   end
   devise_for :users, :controllers => { :registrations => 'registrations', :invitations => 'invitations', :sessions => 'sessions' }
   devise_scope :user do
+    get 'myaccount', :to => 'registrations#edit'
     put 'update_plan', :to => 'registrations#update_plan'
     put 'update_card', :to => 'registrations#update_card'
+    put 'cancel_plan', :to => 'registrations#cancel_plan'
     put 'add_invitations', :to => 'registrations#add_invitations'
     put 'update_devices', :to => 'registrations#update_devices'
   end

@@ -42,6 +42,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def has_subscription?
+    #return true
+    return (has_role? :red or has_role? :yellow)
+  end
+
   def has_credit_card?
     !customer_id.nil?
   end
@@ -51,7 +56,7 @@ class User < ActiveRecord::Base
     self.add_role(role.name)
     unless customer_id.nil?
       customer = Stripe::Customer.retrieve(customer_id)
-      customer.update_subscription(:plan => role.name)
+      customer.update_subscription(:plan => role.name, :prorate => false)
     end
     true
   rescue Stripe::StripeError => e
@@ -135,7 +140,7 @@ class User < ActiveRecord::Base
     unless customer_id.nil?
       customer = Stripe::Customer.retrieve(customer_id)
       unless customer.nil? or customer.respond_to?('deleted')
-        if !customer.subscription.nil? and customer.subscription.status == 'active'
+        if !customer.subscription.nil? and (customer.subscription.status == 'active' or customer.subscription.status == 'trialing')
           customer.cancel_subscription
         end
       end
@@ -147,8 +152,9 @@ class User < ActiveRecord::Base
   end
   
   def expire
+    self.role_ids = []
     UserMailer.expire_email(self).deliver
-    destroy
+    #destroy
   end
 
   def find_by_email(email)

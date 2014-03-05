@@ -7,7 +7,7 @@ class Ability
       can :manage, :all
     else
       can :view, :alpha if user.has_role? :alpha
-      can :view, :silver if user.has_role? :silver
+      can :view, :silver if user.has_role? :silver or user.has_role? :red
     end
   end
 end
