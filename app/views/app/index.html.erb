@@ -41,16 +41,22 @@
         </div>
         <div class="snap-drawer snap-drawer-right"></div>
       </div>
-      
+     
+      TEST1 
       <div id="content" class="snap-content iosSliderVertical" iosvslider>
+        TEST2
         <div class='slider'>
-
+          TEST3
           <div ng-if="selected.emotion.length == 0">
+            TEST4
+
             <div ng-repeat="tag in result.curated_tag_list"  ng-class-odd="'iosSliderColorOdd'" ng-class-even="'iosSliderColorEven'">
 
               <div class="slide" vslide>
+                TEST5
+                <div class="listTitle">TEST6</div>
                 <div class="listTitle">{{tag.label}}</div>
-                <div class="iosSlider" iosslider data-snap-ignore="true">
+                <!--div class="iosSlider" iosslider data-snap-ignore="true">
                   <div class="slider">  
                     <div class="slide" slide ng-repeat="video in result.videos[tag.name]">
                       <a href="" onclick="snapper.open('left');" ng-click="result.playVideo(video);"><img ng-src="{{video.thumbnails[0]}}"></a>
@@ -58,7 +64,7 @@
                       <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><span class="movieTitle">{{video.name}}</span></a>
                     </div>
                   </div>
-                </div>
+                </div-->
               </div>
 
             </div>

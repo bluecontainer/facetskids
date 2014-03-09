@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
 
   def has_subscription?
     #return true
-    return (has_role? :red or has_role? :yellow)
+    return ((has_role? :red or has_role? :yellow) and !is_admin?)
   end
 
   def has_credit_card?
@@ -125,7 +125,10 @@ class User < ActiveRecord::Base
       customer.save
     end
 
-    self.last_4_digits = customer.cards.data.first["last4"]
+    card = customer.cards.data.first
+    self.last_4_digits = card["last4"]
+    #self.exp_month = card.exp_month
+    #self.exp_year = card.exp_year
     self.customer_id = customer.id
     self.stripe_token = nil
 

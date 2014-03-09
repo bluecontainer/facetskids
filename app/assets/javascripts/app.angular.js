@@ -2,7 +2,7 @@
 var app = angular.module('facetsKidsApp', ['facetsKids.tagListService','facetsKids.videoTaggingService','facetsKids.videoplayer','facetsKids.rating','facetsKids.svginline', 'facetsKids.marquee', 'ngSanitize']);
 
 app.config(function($logProvider){
-  $logProvider.debugEnabled(false);
+  $logProvider.debugEnabled(true);
 });
 
 app.controller('MainCtrl', function($scope, $log, TagListService, VideoTaggingService) {
@@ -217,6 +217,7 @@ app.directive('iosvslider', ['$parse', '$log', function($parse, $log) {
 
     link: function(scope, elem, attrs, ctrl) {
       $log.debug("iosvslider link");
+      $log.debug(elem);
 
       var myOptions = $parse(attrs.slider)(scope),
         options = angular.extend( angular.copy(defaultOptions), myOptions);

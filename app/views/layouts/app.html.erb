@@ -45,7 +45,7 @@
   </head>
 
   <% if @type == "install" or @type == "unsupported" %>
-  <body style="overflow: scroll">
+  <body style="overflow-y: scroll">
   <% else %>
   <body ng-controller="MainCtrl">
   <% end %>
@@ -54,16 +54,17 @@
       <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
       <!--div class="container"-->
 
-        <div class="navbar">
-          <div class="navbar-inner">
-            <%= render 'layouts/navigation' %>
-         </div>
-        </div>
+        <%= render 'layouts/navigation' %>
 
       <!--/div--> <!-- /.container -->
     </div>
 
     <%= yield %>
+
+    <% if !in_app? %>
+    <%= render 'layouts/footer' %>
+    <% end %>
+
 
     <script>
       var page_url_fragment = window.location.pathname + window.location.search;
