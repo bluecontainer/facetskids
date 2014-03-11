@@ -5,4 +5,3 @@
 //= require flatui-radio
 //= require jquery.tagsinput
 //= require jquery.placeholder
-//= require jquery.stacktable
