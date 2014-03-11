@@ -1,7 +1,7 @@
 <div class="row">
   <%= simple_form_for(@user, :as => :user, :url => update_devices_path(:user), :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
 
-  <div class="offset1 span6">
+  <div class="col-md-offset-1 col-md-6">
     <% if current_user.nil? %>
       <%= f.input :email, :required => true, :placeholder => "Email", :autofocus => true %>
     <% end %>

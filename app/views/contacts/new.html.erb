@@ -1,13 +1,13 @@
 <% content_for :title, "Contact Us" %>
 
 <div class="row" style="padding-top: 60px">
-  <div class="offset1 span8">
+  <div class="col-md-offset-1 col-md-8">
     <%= render 'layouts/messages' %>
   </div>
 </div>
 
 <div class="row">
-  <div class="offset2 span5"> 
+  <div class="col-md-offset-2 col-md-5"> 
     <h4>Give us a shout</h1>
     <p>
     Facets Kids<br/>
@@ -28,7 +28,7 @@
 </a>
  
   </div>
-  <div class="span4">
+  <div class="col-md-4">
 <%= simple_form_for(@contact, :html => {:class => "form-vertical"}) do |f| %>
   <%= f.input :name, :required => true, :placeholder => "Name", :autofocus => true %>
   <%= f.input :email, :required => true, :placeholder => "Email" %>
