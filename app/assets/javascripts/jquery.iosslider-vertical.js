@@ -1269,7 +1269,7 @@
 				});
 				
 				var newChildOffset = helpers.calcActiveOffset(settings, helpers.getSliderOffset($(scrollerNode), 'y'), childrenOffsets, stageHeight, infiniteSliderOffset[sliderNumber], numberOfSlides, undefined, sliderNumber);
-				var tempOffset = (newChildOffset + infiniteSliderOffset[sliderNumber] + numberOfSlides)%numberOfSlides;
+				var tempOffset = numberOfSlides > 0 ? (newChildOffset + infiniteSliderOffset[sliderNumber] + numberOfSlides)%numberOfSlides : 0;
 				
 				var args = new helpers.args('load', settings, scrollerNode, $(scrollerNode).children(':eq(' + tempOffset + ')'), tempOffset, tempOffset);
 				$(stageNode).data('args', args);

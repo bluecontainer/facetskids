@@ -11,6 +11,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.0.3'
 
 gem 'haml-rails'
+gem 'yajl-ruby'
 gem 'jbuilder'
 
 gem 'countries'

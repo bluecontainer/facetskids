@@ -6,7 +6,7 @@ angular.module('facetsKids.marquee', [])
     restrict: 'EA',
 
     link: function(scope, elem, attrs) {
-      $log.info("marquee link");
+      $log.debug("marquee link");
 
       $timeout(function() {
 
@@ -14,7 +14,6 @@ angular.module('facetsKids.marquee', [])
         var textElem = $('.scroll-text', elem);
         var textWidth = textElem.width();
         var animSpeed = textWidth * 20;
-        console.log("$timeout: " + textWidth + ", " + boxWidth);
 
         function doAnimation() {
           textElem.animate(

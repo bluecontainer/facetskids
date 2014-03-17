@@ -2,7 +2,7 @@
 var app = angular.module('facetsKidsApp', ['facetsKids.tagListService','facetsKids.videoTaggingService','facetsKids.videoplayer','facetsKids.rating','facetsKids.svginline', 'facetsKids.marquee', 'ngSanitize']);
 
 app.config(function($logProvider){
-  $logProvider.debugEnabled(true);
+  $logProvider.debugEnabled(false);
 });
 
 app.controller('MainCtrl', function($scope, $log, TagListService, VideoTaggingService) {
@@ -184,7 +184,8 @@ app.directive('iosvslider', ['$parse', '$log', function($parse, $log) {
 
   var defaultOptions = {
         elasticPullResistance: 0.9,
-        slideStartVelocityThreshold: 5
+        slideStartVelocityThreshold: 5,
+        startAtSlide: 1
   };
   
   return {
@@ -197,7 +198,7 @@ app.directive('iosvslider', ['$parse', '$log', function($parse, $log) {
       $scope.sliderElem = null;
 
       this.addSlide = function(slideElem) {
-        $log.debug("addVSlide");
+        $log.info("addVSlide");
         if ($scope.sliderElem) {
           $log.debug($scope.sliderElem.data('args'));
  
@@ -225,7 +226,7 @@ app.directive('iosvslider', ['$parse', '$log', function($parse, $log) {
       scope.sliderElem = elem.iosSliderVertical(options);
 
       scope.$on('$destroy', function() {
-        $log.debug("iosvslider scope destroy");
+        $log.info("iosvslider scope destroy");
       });
 
       scope.$parent.$on('repeatLastNotifier', function(event){
@@ -249,7 +250,7 @@ app.directive('vslide', ['$log', function($log) {
       sliderCtrl.addSlide(element);
 
       scope.$on('$destroy', function() {
-        $log.debug("vslide scope destroy");
+        $log.info("vslide scope destroy");
 
         sliderCtrl.updateSlide();
       });
