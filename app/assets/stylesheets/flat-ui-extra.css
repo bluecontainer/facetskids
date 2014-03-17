@@ -38,7 +38,7 @@
 .login-form {
   background-color: #edeff1;
   padding: 24px 23px 20px;
-  width: 210px;
+  width: 250px;
   position: relative;
   margin: 0 auto;
   border-radius: 6px;
@@ -51,9 +51,10 @@ login-form .control-group {
   border-color: transparent;
   font-size: 17px;
   text-indent: 3px;
+  margin-bottom: 6px;
 }
 .login-field {
-  width: auto;
+  /*width: auto;*/
 }
 .login-form .login-field:focus {
   border-color: #1abc9c;

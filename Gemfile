@@ -11,6 +11,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.0.3'
 
 gem 'haml-rails'
+gem 'yajl-ruby'
 gem 'jbuilder'
 
 gem 'countries'
@@ -37,8 +38,10 @@ gem "teaspoon", ">= 0.7.7", :group => [:development, :test, :production]
 
 gem 'therubyracer', platforms: :ruby
 gem 'less-rails'
-gem 'twitter-bootstrap-rails'
-gem 'designmodo-flatuipro-rails'
+#gem 'twitter-bootstrap-rails'
+gem 'less-rails-bootstrap'
+#gem 'designmodo-flatuipro-rails', '~> 1.2.5.0.branch'
+gem 'designmodo-flatuipro-rails', :github => "bluecontainer/designmodo-flatuipro-rails", :branch => 'flatuipro-1.2'
 
 gem "devise", ">= 3.1.1"
 gem "devise_invitable"

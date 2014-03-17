@@ -3,13 +3,13 @@
 <% end %>
 
 <div class="row">
-  <div class="offset1">
+  <div class="col-md-offset-1 col-md-4">
     <h4>Account</h4>
   </div>
 </div>
 
 <div class="row">
-  <div class="offset1 span11">
+  <div class="col-md-offset-1 col-md-11">
 
     <%= render 'layouts/messages' %>
 
@@ -17,11 +17,12 @@
 </div>
 
 <div class="row">
-    <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
-  <div class="offset1 span5">
-    <div id="stripe_error" class="alert alert-error" style="display:none" ></div>
+  <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
+    <div class="col-md-offset-1 col-md-4">
+      <div id="stripe_error" class="alert alert-error" style="display:none" ></div>
       <%= f.error_notification %>
       <%= display_base_errors resource %>
+
       <%= f.input :name, :autofocus => true %>
       <%= f.input :email, :required => true %>
       <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 2..15, input_html: { class: "select-block mbl"} %>
@@ -30,34 +31,37 @@
       <%= f.input :current_password, :hint => "We need your current password to confirm your changes", :required => true %>
 
       <%= f.button :submit, 'Update', :class => 'btn-primary' %>
-  </div>
-  <div class="span6">
+    </div>
+    <div class="col-md-offset-1 col-md-6">
       <%= f.association :mail_lists, label_method: :description, as: :check_boxes, input_html: { :data => {:toggle => 'checkbox'} } %>
 
 <% if @user.has_credit_card? %>
       <br/>
       <h4>Credit Card</h4>
       <p>
-        Using card ending with <%= @user.last_4_digits %>
+        Using card ending with <%= @user.last_4_digits %>.
         <a data-toggle="modal" href="#card-data" class="btn btn-mini" type="button">Change card</a>
       </p>
 <% end %>
 
 <% if @user.has_subscription? %>
       <br/>
-      <h4>Subscription</h4>
+      <h4>Plan</h4>
       <p>
+        Subscribed to the <%= @user.roles[0].name%> plan.
         <a data-toggle="modal" href="#cancel-subscription" class="btn btn-mini" type="button">Cancel subscription</a>
       </p>
 <% end %>
-  </div>
+    </div>
 
-    <% end %>
+  <% end %>
 </div>
 
 <% if @user.has_credit_card? %>
 <div id="card-data" class="modal" style="display: none;">
+  <div class="modal-dialog">
   <%= simple_form_for resource, :as => resource_name, :url => update_card_path, :html => {:method => :put, :class => 'form-horizontal card_form' } do |f| %>
+    <div class="modal-content">
     <div class="modal-header">
       <a class="close" data-dismiss="modal">&#215;</a>
       <h3>Change Credit Card</h3>
@@ -65,16 +69,16 @@
     <div class="modal-body">
       <div class="field">
         <%= label_tag :card_number, "Credit Card Number" %>
-        <%= text_field_tag :card_number, nil, name: nil %>
+        <%= text_field_tag :card_number, nil, {name: nil, class: "form-control"} %>
       </div>
       <div class="field">
         <%= label_tag :card_code, "Card Security Code (CVV)" %>
-        <%= text_field_tag :card_code, nil, name: nil %>
+        <%= text_field_tag :card_code, nil, {name: nil, class: "form-control"} %>
       </div>
       <div class="field">
         <%= label_tag :card_month, "Card Expiration" %>
-        <%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month"}%>
-        <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%>
+        <%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month", class: "select form-control select-block mbl"}%>
+        <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year", class: "select form-control select-block mbl"}%>
       </div>
       <%= f.hidden_field :name %>
       <%= f.hidden_field :email %>
@@ -84,16 +88,20 @@
       <%= f.submit "Change Credit Card", :class => "btn btn-primary" %>
       <a class="btn" data-dismiss="modal" href="#">Close</a>
     </div>
+    </div>
   <% end %>
+  </div>
 </div>
 <% end %>
 
 <% if @user.has_subscription? %>
 <div id="cancel-subscription" class="modal" style="display: none;">
+  <div class="modal-dialog modal-sm">
   <%= simple_form_for resource, :as => resource_name, :url => cancel_plan_path, :html => {:method => :put, :class => 'form-horizontal card_form' } do |f| %>
+    <div class="modal-content">
     <div class="modal-header">
       <a class="close" data-dismiss="modal">&#215;</a>
-      <h3>Cancel Subscription</h3>
+      <h4>Cancel Subscription</h4>
     </div>
     <div class="modal-body">
       <div>Are you sure?</div>
@@ -102,6 +110,8 @@
       <%= f.submit "Yes", :class => "btn btn-primary" %>
       <a class="btn" data-dismiss="modal" href="#">Close</a>
     </div>
+    </div>
   <% end %>
+  </div>
 </div>
 <% end %>

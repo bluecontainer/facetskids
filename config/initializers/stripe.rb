@@ -7,6 +7,11 @@ StripeEvent.setup do
     user.expire unless user.nil?
   end
 
+  subscribe 'customer.subscription.updated' do |event|
+    user_event = create_user_event(event, event.data.object.customer)
+    user_event.save
+  end
+
   subscribe 'charge.failed' do |event|
     save_user_charge_event(event)
   end
@@ -15,8 +20,16 @@ StripeEvent.setup do
     save_user_charge_event(event)
   end
  
-  #invoice.updated
-  #invoice.payment_failed
+  subscribe 'invoice.updated' do |event|
+    user_event = create_user_event(event, event.data.object.customer)
+    user_event.save
+  end
+
+  subscribe 'invoice.payment_failed' do |event|
+    user_event = create_user_event(event, event.data.object.customer)
+    user_event.save
+  end
+
   subscribe 'invoice.payment_succeeded' do |event|
     user_event = create_user_event(event, event.data.object.customer)
     user_event.save
@@ -36,8 +49,6 @@ StripeEvent.setup do
     user_event = create_user_event(event, event.data.object.id)
     user_event.save
   end
-
-  #customer.subscription.updated
 end
 
 def create_user_event(event, customer_id)

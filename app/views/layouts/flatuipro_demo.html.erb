@@ -3,12 +3,10 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Facets Pioneers</title>
+  <title>Flat UI Pro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <%= stylesheet_link_tag "flatuipro_demo", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
  
   <!-- HTML5shiv, for IE 6, 7 and 8 -->
   <!--[if lte IE 9]>
@@ -20,10 +18,11 @@
 <body>
   <%= yield %>
 
-  <script>
+  <!--script>
   $(".tagsinput").tagsInput();
-  </script>
+  </script-->
 
+  <%= javascript_include_tag "flatuipro_demo" %>
 </body>
 </html>
 

@@ -10,8 +10,8 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require jquery.iosslider.min
-//= require jquery.iosslider-vertical.min
+//= require jquery.iosslider
+//= require jquery.iosslider-vertical
 //= require angular-resource
 //= require angular-sanitize
 //= require ng-rails-csrf

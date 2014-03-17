@@ -88,5 +88,7 @@ module FacetsKids
 
     config.assets.initialize_on_precompile = false
     config.assets.precompile += ['app.js', 'app.css']
+
+    config.assets.paths << Rails.root.join("app", "assets", "fonts")
   end
 end

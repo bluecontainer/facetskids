@@ -3,11 +3,13 @@
   font-size: 2.5em;
   content: '\e802';
   color: gold;
+  line-height: 100%;
 }
 
 .entypo-star-empty:before {
   font-family: fontello;
   font-size: 2.5em;
   content: '\e803';
+  line-height: 100%;
 }
 

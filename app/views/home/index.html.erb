@@ -14,12 +14,12 @@
         <div class="item active" style="background-color: #27b7eb;">
           <div class="container">
             <div class="row">
-              <div class="span12">
+              <div class="col-md-12">
                 <%= image_tag "slide1.png" %>
               </div>
             </div>
             <div class="row">
-              <div class="span12">
+              <div class="col-md-12">
                 <div class="carousel-caption" align="center">
                   <h3>Become a Trailblazer!</h3>
                   <p class="lead">Download the Facets Kids app and introduce your kids to</p>
@@ -28,7 +28,7 @@
               </div>
             </div>
             <div class="row" style="padding-top: 10px;">
-              <div class="span12">
+              <div class="col-md-12">
                 <div align="center">
                 <% if user_signed_in? %>
                 <%= link_to 'Install App', app_path, :class => 'btn btn-large btn-primary' %>
@@ -44,12 +44,12 @@
         <div class="item" style="background-color: #ec1f27;">
           <div class="container">
             <div class="row">
-              <div class="span12">
+              <div class="col-md-12">
                 <%= image_tag "FACETS-KIDS-SIGNUP2a2_0005_Layer-30.png", :style => "height: 300px;" %>
               </div>
             </div>
             <div class="row" style="padding-top: 20px;">
-              <div class="span12">
+              <div class="col-md-12">
                 <div class="carousel-caption" align="center">
                   <h3>Foster Global Citizens</h3>
                   <p class="lead">Access our rapidly growing library of kids films from around the world.</p><br/>
@@ -58,7 +58,7 @@
               </div>
             </div>
             <div class="row" style="padding-top: 10px;">
-              <div class="span12">
+              <div class="col-md-12">
                 <div align="center">
                 <% if user_signed_in? %>
                 <%= link_to 'Install App', app_path, :class => 'btn btn-large btn-primary' %>
@@ -80,16 +80,16 @@
               </div>
             </div>
             <div class="row">
-              <div class="span12">
+              <div class="col-md-12">
                 <div class="carousel-caption" align="center">
                   <h3>Instill Critical Thinking</h3>
-                  <p class="lead" style="color: black">Empower kids to actively explore, experience and <br/> respond to independent films.</p><br/>
-                  <p class="lead" style="color: black">Developed by educators to foster social emotional learning <br/> and instill critical thinking.</p>
+                  <p class="lead">Empower kids to actively explore, experience and <br/> respond to independent films.</p><br/>
+                  <p class="lead">Developed by educators to foster social emotional learning <br/> and instill critical thinking.</p>
                 </div>
               </div>
             </div>
             <div class="row" style="padding-top: 10px;">
-              <div class="span12">
+              <div class="col-md-12">
                 <div align="center">
                 <% if user_signed_in? %>
                 <%= link_to 'Install App', app_path, :class => 'btn btn-large btn-primary' %>
@@ -105,12 +105,12 @@
         <div class="item" style="background-color: #3e3939;">
            <div class="container">
              <div class="row">
-               <div class="span12">
+               <div class="col-md-12">
                  <%= image_tag "FACETS-KIDS-SIGNUP2a2_0000_Group-2.png", :style => "height: 300px;" %>
                </div>
              </div>
              <div class="row">
-               <div class="span12" style="color: white;">
+               <div class="col-md-12" style="color: white;">
                  <div class="carousel-caption" align="center">
                    <h3>Safe and Secure</h3>
                    <p class="lead">Closed streaming environment protects your kids.</p><br/>
@@ -119,7 +119,7 @@
                </div>
              </div>
              <div class="row" style="padding-top: 10px;">
-              <div class="span12">
+              <div class="col-md-12">
                 <div align="center">
                 <% if user_signed_in? %>
                 <%= link_to 'Install App', app_path, :class => 'btn btn-large btn-primary' %>
@@ -139,7 +139,8 @@
         
     </div>
 
-    <script>
+    <%= javascript_include_tag "home", 'data-turbolinks-track' => true %>
+    <!--script>
       !function ($) {
         $(function(){
           // carousel demo
@@ -164,5 +165,5 @@
         });  
       });  
 
-    </script>
+    </script-->
   

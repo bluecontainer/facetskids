@@ -1,8 +1,8 @@
       <div class="snap-drawers">
         <div>
           <div class="detailContainer">
-            <div onclick="snapper.close();" style="width: 288px; margin: 5px 9px 0px 9px; text-align: right;">
-              <i class="icon-cancel-squared" style="font-size: 1.8em;"></i>
+            <div onclick="snapper.close();" style="width: 288px; height: 25px; margin: 5px 9px 0px 9px; text-align: right;">
+              <i class="icon-cancel-squared" style="font-size: 28px; line-height: 1px;"></i>
             </div>
             <a href="" ng-click="result.playVideo(result.selected_video);"><img ng-src="{{result.selected_video.thumbnails[0]}}" style="width: 288px; height: 215px; margin: 5px 9px 0px 9px;"/></a>
             <div class="hilight">
@@ -41,13 +41,14 @@
         </div>
         <div class="snap-drawer snap-drawer-right"></div>
       </div>
-      
-      <div id="content" class="snap-content iosSliderVertical" iosvslider>
+
+    
+      <div id="content"class="snap-content iosSliderVertical" iosvslider>
+
         <div class='slider'>
 
           <div ng-if="selected.emotion.length == 0">
             <div ng-repeat="tag in result.curated_tag_list"  ng-class-odd="'iosSliderColorOdd'" ng-class-even="'iosSliderColorEven'">
-
               <div class="slide" vslide>
                 <div class="listTitle">{{tag.label}}</div>
                 <div class="iosSlider" iosslider data-snap-ignore="true">
@@ -65,7 +66,6 @@
           </div>
 
           <div ng-if="selected.emotion.length > 0">
-
             <div class="slide" vslide>
               <div id="wrapper" class="imageContainer">
                 <div ng-repeat="video in result.videos[selected.emotion[0]]" repeat-last-notifier data-snap-ignore="true">
@@ -78,6 +78,7 @@
           </div>
 
         </div>
+
       </div>
 
       <videoplayer src="result.play_video"></videoplayer>
