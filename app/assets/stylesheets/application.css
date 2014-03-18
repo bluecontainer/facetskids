@@ -9,7 +9,6 @@
  *= require navbar
  *= require carousel
  *= require_self
- *= require flatuipro-demo
 */
 
 .checkbox .icons .first-icon,

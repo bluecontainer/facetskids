@@ -191,6 +191,7 @@ GEM
     ng-rails-csrf (0.1.0)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
+    oj (2.6.0)
     orm_adapter (0.4.0)
     pg (0.17.0)
     phantomjs (1.9.2.0)
@@ -294,7 +295,6 @@ GEM
     xml-simple (1.1.2)
     xpath (2.0.0)
       nokogiri (~> 1.3)
-    yajl-ruby (1.2.0)
     zencoder (2.4.4)
       multi_json
 
@@ -335,6 +335,7 @@ DEPENDENCIES
   less-rails-bootstrap
   newrelic_rpm
   ng-rails-csrf
+  oj
   pg
   quiet_assets (>= 1.0.2)
   rack-cors
@@ -355,5 +356,4 @@ DEPENDENCIES
   unicorn
   useragent
   wicked_pdf
-  yajl-ruby
   zencoder
