@@ -9,7 +9,6 @@ class ApplicationController < ActionController::Base
   end
 
   def initialize
-    @force = false
     super
   end
 
@@ -69,6 +68,7 @@ class ApplicationController < ActionController::Base
 
   def can_run_app?
     return true if session[:app_force]
+
     @user_agent = UserAgent.parse(request.user_agent)
     #check if an iPad
     if @user_agent.platform == "iPad"

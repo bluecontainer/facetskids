@@ -1,12 +1,12 @@
 <div class="row" style="padding-top: 20px;">
-  <div class="offset1 span8">
+  <div class="col-md-offset-1 col-md-8">
     <p>Share your Discovery</p>
     Invite your friends
   </div>
 </div>
 
 <div class="row" style="padding-top: 10px;">
-  <div class="offset1 span8" style="padding-top: 10px;">
+  <div class="col-md-offset-1 col-md-8" style="padding-top: 10px;">
     <%= simple_form_for(current_user, :as => :user, :url => add_invitations_path, :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
       <%= f.error_notification %>
       <%= display_base_errors current_user %>

@@ -1,69 +1,74 @@
 Stripe.api_key = ENV["STRIPE_API_KEY"]
 STRIPE_PUBLIC_KEY = ENV["STRIPE_PUBLIC_KEY"]
 
-StripeEvent.setup do
-  subscribe 'customer.subscription.deleted' do |event|
-    user = User.find_by_customer_id(event.data.object.customer)
-    user.expire unless user.nil?
+StripeEvent.configure do |events|
+
+  events.subscribe 'customer.subscription.created' do |event|
+    StripeEventHandlers::UserEventHandler.new.call(event)
+    #new subscription email
   end
 
-  subscribe 'customer.subscription.updated' do |event|
-    user_event = create_user_event(event, event.data.object.customer)
-    user_event.save
+  events.subscribe 'customer.subscription.deleted' do |event|
+    StripeEventHandlers::DeleteSubscriptionUserEventHandler.new.call(event)
+    #user_event.user.expire unless user_event.user.nil?
   end
 
-  subscribe 'charge.failed' do |event|
-    save_user_charge_event(event)
+  events.subscribe 'customer.subscription.updated' do |event|
+    StripeEventHandlers::UserEventHandler.new.call(event)
+    #subscription changed email
   end
 
-  subscribe 'charge.succeeded' do |event|
-    save_user_charge_event(event)
+  events.subscribe 'charge.failed' do |event|
+    StripeEventHandlers::ChargeUserEventHandler.new.call(event)
+    #charge attempt failed
+  end
+
+  events.subscribe 'charge.succeeded' do |event|
+    StripeEventHandlers::ChargeUserEventHandler.new.call(event)
+    #customer card charged email
+  end
+
+  events.subscribe 'invoice.created' do |event|
+    StripeEventHandlers::UserEventHandler.new.call(event)
   end
  
-  subscribe 'invoice.updated' do |event|
-    user_event = create_user_event(event, event.data.object.customer)
-    user_event.save
+  events.subscribe 'invoice.updated' do |event|
+    StripeEventHandlers::UserEventHandler.new.call(event)
   end
 
-  subscribe 'invoice.payment_failed' do |event|
-    user_event = create_user_event(event, event.data.object.customer)
-    user_event.save
+  events.subscribe 'invoice.payment_failed' do |event|
+    StripeEventHandlers::UserEventHandler.new.call(event)
+    #subscription payment attempts failed email
   end
 
-  subscribe 'invoice.payment_succeeded' do |event|
-    user_event = create_user_event(event, event.data.object.customer)
-    user_event.save
+  events.subscribe 'invoice.payment_succeeded' do |event|
+    StripeEventHandlers::UserEventHandler.new.call(event)
   end
 
-  subscribe 'customer.card.deleted' do |event|
-    user_event = create_user_event(event, event.data.object.customer)
-    user_event.save
+  events.subscribe 'customer.card.deleted' do |event|
+    StripeEventHandlers::UserEventHandler.new.call(event)
   end
 
-  subscribe 'customer.card.created' do |event|
-    user_event = create_user_event(event, event.data.object.customer)
-    user_event.save
+  events.subscribe 'customer.card.created' do |event|
+    StripeEventHandlers::UserEventHandler.new.call(event)
   end
 
-  subscribe 'customer.updated' do |event|
-    user_event = create_user_event(event, event.data.object.id)
-    user_event.save
+  events.subscribe 'customer.created' do |event|
+    StripeEventHandlers::CustomerUserEventHandler.new.call(event)
+  end
+
+  events.subscribe 'customer.updated' do |event|
+    StripeEventHandlers::CustomerUserEventHandler.new.call(event)
+    #customer credit card information updated email
+  end
+
+  events.subscribe 'customer.discount.created' do |event|
+    StripeEventHandlers::UserEventHandler.new.call(event)
+    #coupon applied email
+  end
+
+  events.subscribe 'customer.subscription.trial_will_end' do |event|
+    #trial ending in 3 days email
   end
 end
 
-def create_user_event(event, customer_id)
-  user_event = UserStripeEvent.new
-  user_event.event_id = event.id
-  user_event.event_type = event.type
-  user_event.event_data = event.data.object.to_json
-  user_event.user = User.find_by_customer_id(customer_id)
-  user_event
-end
-
-def save_user_charge_event(event)
-  user_event = create_user_event(event, event.data.object.customer)
-  user_event.charge_amount = event.data.object.amount
-  user_event.charge_id = event.data.object.id
-  user_event.save
-  user_event
-end

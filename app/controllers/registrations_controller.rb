@@ -123,7 +123,7 @@ class RegistrationsController < Devise::RegistrationsController
   def update_plan
     @user = current_user
     role = Role.find(params[:user][:role_ids]) unless params[:user][:role_ids].nil?
-    if @user.update_plan(role)
+    if @user.update_plan(role.name)
       redirect_to edit_user_registration_path, :notice => 'Updated plan.'
     else
       flash.alert = 'Unable to update plan.'

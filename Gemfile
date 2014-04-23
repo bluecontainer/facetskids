@@ -28,6 +28,7 @@ gem 'angularjs-rails'
 gem 'ng-rails-csrf'
 
 gem "rspec-rails", ">= 2.12.2", :group => [:development, :test]
+gem "byebug", :group => [:development, :test]
 gem "database_cleaner", ">= 1.0.0.RC1", :group => :test
 gem "email_spec", ">= 1.4.0", :group => :test
 gem "cucumber-rails", ">= 1.4.0", :group => :test, :require => false
@@ -36,6 +37,7 @@ gem "capybara", ">= 2.0.3", :group => :test
 gem "capybara-webkit", :group => :test
 gem "factory_girl_rails", ">= 4.2.0", :group => [:development, :test]
 gem "teaspoon", ">= 0.7.7", :group => [:development, :test, :production]
+gem "timecop", :group => [:test]
 
 gem 'therubyracer', platforms: :ruby
 gem 'less-rails'
@@ -49,7 +51,10 @@ gem "devise_invitable"
 gem "cancan", ">= 1.6.10"
 gem "rolify", :github => "EppO/rolify"
 gem "simple_form", ">= 3.0.0"
-gem "stripe", ">= 1.7.11"
+
+gem "stripe", ">= 1.7.11", :group => [:development, :production]
+#gem 'stripe-ruby-mock', ">= 1.10.1.5", :group => [:test]
+gem 'stripe-ruby-mock', :path => '~/stripe-ruby-mock', :group => [:test]
 gem "stripe_event", ">= 0.4.0"
 
 gem 'fog', '1.18.0'

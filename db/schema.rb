@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140225170720) do
+ActiveRecord::Schema.define(version: 20140401124231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,16 @@ ActiveRecord::Schema.define(version: 20140225170720) do
 
   add_index "devices", ["name"], name: "index_devices_on_name", using: :btree
 
+  create_table "donations", force: true do |t|
+    t.decimal  "amount"
+    t.integer  "user_id"
+    t.string   "stripe_charge_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "donations", ["user_id"], name: "index_donations_on_user_id", using: :btree
+
   create_table "gift_cards", force: true do |t|
     t.string   "code"
     t.decimal  "value"
@@ -37,6 +47,11 @@ ActiveRecord::Schema.define(version: 20140225170720) do
     t.string   "receiver_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "stripe_charge_id"
+    t.string   "stripe_coupon_id"
+    t.integer  "duration_in_months"
+    t.datetime "redeemed_at"
+    t.datetime "end_at"
   end
 
   add_index "gift_cards", ["receiver_id"], name: "index_gift_cards_on_receiver_id", using: :btree
@@ -77,6 +92,18 @@ ActiveRecord::Schema.define(version: 20140225170720) do
   add_index "outputs", ["video_id"], name: "index_outputs_on_video_id", using: :btree
   add_index "outputs", ["zencoder_id"], name: "index_outputs_on_zencoder_id", using: :btree
 
+  create_table "plans", force: true do |t|
+    t.string   "name"
+    t.decimal  "amount"
+    t.string   "interval"
+    t.integer  "trial_period_days"
+    t.string   "stripe_plan_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "duration_in_months"
+    t.datetime "end_at"
+  end
+
   create_table "roles", force: true do |t|
     t.string   "name"
     t.integer  "resource_id"
@@ -87,6 +114,24 @@ ActiveRecord::Schema.define(version: 20140225170720) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
+
+  create_table "subscriptions", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "plan_id"
+    t.string   "status"
+    t.boolean  "cancel_at_period_end"
+    t.datetime "canceled_at"
+    t.datetime "trial_start"
+    t.datetime "trial_end"
+    t.datetime "current_period_start"
+    t.datetime "current_period_end"
+    t.string   "stripe_subscription_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id", using: :btree
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
 
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"
@@ -161,6 +206,8 @@ ActiveRecord::Schema.define(version: 20140225170720) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.string   "authentication_token"
+    t.integer  "card_exp_month"
+    t.integer  "card_exp_year"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
