@@ -1,0 +1,72 @@
+<div class="container" style="background-color: white;">
+
+  <div class="row">
+    <div class="col-md-4">
+      <h4>Purchased Gifts</h4>
+    </div>
+  </div>
+
+  <div class="row" style="border-top: thin solid black; margin-top: 10px;">
+    <div class="col-md-1">
+      Date
+    </div>
+    <div class="col-md-2">
+      Method
+    </div>
+    <div class="col-md-2">
+      Gift
+    </div>
+    <div class="col-md-2">
+      Recipient
+    </div>
+    <div class="col-md-3">
+      Period Redeemed For
+    </div>
+    <div class="col-md-1">
+      Total
+    </div>
+  </div>
+
+  <% @sent_gift_cards.each do |gift_card| %>
+  <%   next if gift_card.stripe_charge_id.nil? %>
+  <%   recipient = "None" %>
+  <%   method = "Unknown" %>
+  <%   gift = "Unknown" %>
+  <%   stripe_event = UserStripeEvent.find_by_event_object_id(gift_card.stripe_charge_id) %>
+  <%   if stripe_event.present? %>
+  <%     method = display_charge_type(stripe_event) + " using " + stripe_event.event_data["card"]["type"] + " ending in " + stripe_event.event_data["card"]["last4"] %>
+  <%     gift = "One-year Gift Membership" %>
+  <%   end %>
+  <%   period = "Not yet redeemed" %>
+  <%   if gift_card.redeemed_at.present? %>
+  <%     period = Time.at(gift_card.redeemed_at).to_date.to_s + " to " + Time.at(gift_card.end_at).to_date.to_s %>
+  <%     recipient = gift_card.receiver.email %>
+  <%   end %>
+
+  <div class="row" style="font-size: 12px;">
+    <div class="col-md-1">
+      <%= gift_card.created_at.to_date %>
+    </div>
+    <div class="col-md-2">
+      <%= method %>
+    </div>
+    <div class="col-md-2">
+      <%= gift %>
+    </div>
+    <div class="col-md-2">
+      <%= recipient %>
+    </div>
+    <div class="col-md-3">
+      <%= period %>
+    </div>
+    <div class="col-md-1">
+      $<%= gift_card.value.to_i %>
+    </div>
+    <div class="col-md-1">
+      <%= link_to "Show", gift_card_path(gift_card, :format => "pdf") %>
+    </div>
+
+  </div>
+  <% end %>
+
+</div> 

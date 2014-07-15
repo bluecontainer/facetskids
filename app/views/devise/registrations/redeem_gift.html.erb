@@ -1,0 +1,17 @@
+
+<% if @apply.nil? %>
+Are you sure you want to redeem gift <%=@gift_code%> for <%=current_user.email%>
+
+<%= link_to 'Apply Gift to this Account', redeem_gift_path(:code => @gift_code, :apply => 1), :class => 'btn btn-large btn-primary' %>
+<% else %>
+    <div class="row">
+      <div class="col-md-12">
+  <%= display_base_errors resource %>
+      </div>
+    </div>
+    <% if @redeemed %>
+Gift <%=@gift_code%> has been redeemed for <%=current_user.email%>.
+	<% else %>
+Gift <%=@gift_code%> cannot be redeemed.
+	<% end %>
+<% end %>

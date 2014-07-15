@@ -1,0 +1,50 @@
+
+<div style="padding-top: 20px;">
+<div class="row">
+  <div class="col-md-offset-1 col-md-8">
+    <h2>Thank you!</h2>
+
+    
+    <p>
+    You have successfully purchased a gift membership. 
+    </p>
+    <p>
+    The certificate will be emailed to you at <%= current_user.email %> 
+    <% unless current_user.sent_gift_cards.last.receiver_email.nil? %>
+    and the recipient at <%= current_user.sent_gift_cards.last.receiver_email %>
+    <% end %>
+    </p>
+    <p>
+    Summary
+    </p>
+    <p>
+        Your Email: <%= current_user.email %>
+    <p>
+    <p>
+        One Year Gift Membership
+    </p>
+    <p>
+        Payment with Card Ending in <%= current_user.last_4_digits %>
+    </p>
+    <p>
+        Name on Card: <%= current_user.name %>
+    </p>
+    <p>
+        Expiration Date: <%=current_user.card_exp_month%>/<%=current_user.card_exp_year%>
+    </p>
+    <p>
+        To: <%=current_user.sent_gift_cards.last.receiver_name%>
+    </p>
+    <p>
+        From: <%=current_user.sent_gift_cards.last.sender_name%>
+    </p>
+    <p>
+        Message: <%=current_user.sent_gift_cards.last.message%>
+    </p>
+
+  </div>
+</div>
+
+<%= render "layouts/share_with" %>
+
+</div>

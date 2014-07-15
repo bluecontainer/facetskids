@@ -13,6 +13,12 @@ YAML.load(ENV['ROLES']).each do |role|
   puts 'role: ' << role
 end
 
+puts 'PLANS'
+plan = Plan.find_or_create_by_name(name: "red", amount: 6, stripe_plan_id: "red")
+puts "plan: " << plan.name
+plan = Plan.find_or_create_by_name(name: "yellow", amount: 50, stripe_plan_id: "yellow")
+puts "plan: " << plan.name
+
 puts 'MAIL LISTS'
 mail_list = MailList.find_or_create_by_name( :name => "product_updates", :description => "Receive updates when features and content are added" )
 puts 'mail list: ' << mail_list.name
@@ -64,4 +70,6 @@ rating_tags.each do |tag|
 end
 puts "Rating Tags:"
 puts RatingTag.all
+
+
 

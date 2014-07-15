@@ -4,7 +4,7 @@
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require twitter/bootstrap
  *= require flatuipro
- *= require flat-ui-extra
+ *= require login
  *= require home
  *= require navbar
  *= require carousel
@@ -16,4 +16,15 @@
 .checkbox .icons .second-icon,
 .radio .icons .second-icon {
   background-color: transparent;
+}
+
+.circle{
+  width:25px;
+  height:25px;
+  border-radius:12px;
+  /*font-size:20px;*/
+  color:#fff;
+  line-height:25px;
+  text-align:center;
+  background:#000;
 }

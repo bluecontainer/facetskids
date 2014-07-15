@@ -4,4 +4,10 @@
   @method = :post
 %>
 
-<%= render "devise/shared/registration2" %>
+<% if @plan == "giftcard_purchase" %>
+<%= render "devise/shared/registration_giftcard_purchase" %>
+<% elsif @plan == "giftcard_redeem" %>
+<%= render "devise/shared/registration_giftcard_redeem" %>
+<% else %>
+<%= render "devise/shared/registration" %>
+<% end %>

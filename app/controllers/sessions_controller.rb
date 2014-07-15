@@ -3,7 +3,16 @@ require "useragent"
 class SessionsController < Devise::SessionsController
  
   def new
-    @user_agent = UserAgent.parse(request.user_agent) 
+    @user_agent = UserAgent.parse(request.user_agent)
+
+    @redeem_view = false
+    if session[:user_return_to] =~ /redeem/
+      @redeem_view = true
+      @giftcode = CGI.parse(URI.parse(session[:user_return_to]).query)["code"].first
+    elsif params["type"] == "redeem"
+      @redeem_view = true
+    end
+
     super
   end
  

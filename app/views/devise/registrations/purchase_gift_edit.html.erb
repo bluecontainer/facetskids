@@ -1,0 +1,133 @@
+
+
+<%
+  @path = purchase_gift_update_path
+  @method = :put
+%>
+
+<% content_for :title, "Sign Up" %>
+
+<script>
+  function Ctrl($scope) {
+
+  }
+</script>
+
+<div ng-app ng-controller="Ctrl">
+
+
+<div class="row">
+  <div class="col-md-offset-3 col-md-6">
+    <div id="stripe_error" class="alert alert-error" style="display:none" >
+    </div>
+  </div>
+</div>
+
+<%= content_for(:the_links) do %>
+  I have read and agree to the Privacy Policy
+<% end %>
+
+<div class="row" style="background-color: white;">
+  <div class="col-md-12">
+
+<%= simple_form_for(resource, :as => resource_name, :url => @path, :html => {:method => @method }) do |f| %>
+    <%= f.hidden_field :stripe_token %>
+    <%= hidden_field_tag "plan", "giftcard_purchase" %>
+
+    <div class="row">
+      <div class="col-md-12">
+  <%= f.error_notification %>
+  <%= display_base_errors resource %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+      <h6>Buy a gift</h6>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="circle" style="display:inline-block;">1</div>
+        <h7>Your Information</h7>
+
+        <p><%= resource.email %></p>
+
+        <div class="circle" style="display:inline-block;">2</div>
+        <h7>Billing Information</h7>
+
+  <% if resource.has_credit_card? %>
+        <p><%= resource.last_4_digits %></p>
+  
+  <% else %>
+
+        <%= f.input :name %>
+        <div class="field">
+          <%= label_tag :address_zip, "Zip code" %>
+          <%= text_field_tag :address_zip, nil, {name: nil, class: "form-control"} %>
+        </div>
+        <div class="field">
+          <%= label_tag :card_number, "Credit Card Number" %>
+          <%= text_field_tag :card_number, nil, {name: nil, class: "form-control"} %>
+        </div>
+        <div class="field">
+          <%= label_tag :card_code, "Card Security Code (CVV)" %>
+          <%= text_field_tag :card_code, nil, {name: nil, class: "form-control"} %>
+        </div>
+        <div class="field">
+          <%= label_tag :card_month, "Card Expiration" %>
+          <%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month", class: "select form-control select-block mbl"}%>
+          <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year", class: "select form-control select-block mbl"}%>
+        </div>
+
+  <% end %>
+      </div>
+
+      <div class="col-md-4">
+        <div class="circle" style="display:inline-block;">3</div>
+        <h7>Gift Certificate</h7>
+
+        <%= f.simple_fields_for :sent_gift_cards do |p| %>
+          <% if !p.object.persisted? %>
+          <%= p.input :receiver_name %>
+          <%= p.input :sender_name %>
+          <%= p.input :message, as: :text, input_html: {rows: 10} %>
+          <%= p.input :receiver_email %>
+          <%= p.input :value, as: :hidden, input_html: { value: '50' } %>
+          <%= p.input :duration_in_months, as: :hidden, input_html: { value: '12' } %>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="col-md-4">
+        <div class="circle" style="display:inline-block;">4</div>
+        <h7>We Need Your Support</h7>
+
+        <%= f.simple_fields_for :donations do |p| %>
+          <%= p.input :amount %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-offset-4 col-md-4">
+        <div style="align: center;"> 
+        <%= f.button :submit, 'Place the Order', :class => 'btn-primary' %>
+        </div>
+      </div>
+    </div>
+<% end %>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+  </div>
+</div>
+
+<script>
+//$("select").selectpicker({style: 'btn-info'});
+//$("select").selectpicker();
+</script>

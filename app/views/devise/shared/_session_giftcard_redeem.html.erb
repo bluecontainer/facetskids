@@ -1,0 +1,31 @@
+  <div class="row" style="background-color: white;">
+    <div class="col-md-12">
+      <h5>It's your lucky day. You got a gift of Facets Kids!</h5>
+    </div>
+  </div>
+  <div class="row" style="background-color: white;">
+    <div class="col-md-5" style="border-right: thin solid gray">
+      Add to an existing account
+
+      <%= render 'layouts/messages' %>
+      <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+        <%= f.error_notification %>
+
+        <%= f.input :email, :autofocus => true, :label => "Email", :placeholder => "Email", input_html: { class: "login-field"} %>
+
+        <%= f.input :password, :label => "Password", :placeholder => "Password", input_html: { class: "login-field" } %>
+
+        <%= f.input :remember_me, :as => :hidden, :input_html => { :value => "1"} if devise_mapping.rememberable? %>
+
+        <%= f.button :submit, "Sign In", :class => "btn btn-primary btn-lg btn-block" %>
+
+        <%= hidden_field_tag "check", "{{check}}" %>
+        <%= hidden_field_tag "giftcode", @giftcode %>
+      <% end %>
+    </div>
+    <div class="col-md-offset-2 col-md-5">
+      <p>Add to a new account</p> 
+
+      <%= link_to "Create a New Account", new_registration_path(resource_name, :giftcode => @giftcode), :class => "btn btn-large btn-primary" %>
+    </div>
+  </div>

@@ -1,0 +1,70 @@
+
+<div class="container" style="background-color: white;">
+
+  <div class="row">
+    <div class="col-md-4">
+      <h4>Payment History</h4>
+    </div>
+  </div>
+
+  <div class="row" style="border-top: thin solid black; margin-top: 10px;">
+    <div class="col-md-1">
+      Date
+    </div>
+    <div class="col-md-2">
+      Method
+    </div>
+    <div class="col-md-2">
+      Plan
+    </div>
+    <div class="col-md-2">
+      Recipient
+    </div>
+    <div class="col-md-3">
+      Period
+    </div>
+    <div class="col-md-2">
+      Total
+    </div> 
+  </div>
+
+  <% @charges.each do |event| %>
+  <%   next if event.event_type == "charge.failed" %>
+  <%   invoice = UserStripeEvent.find_by_event_object_id(event.event_data["invoice"]) unless event.event_data["invoice"].nil? %>
+  <%   if invoice.present? %>
+  <%     plan = invoice.event_data["lines"]["data"].first["plan"]["id"] %>
+  <%     period = Time.at(invoice.event_data["lines"]["data"].first["period"]["start"]).to_date.to_s + " to " + Time.at(invoice.event_data["lines"]["data"].first["period"]["end"]).to_date.to_s %>
+  <%   else %>
+  <%     plan = "Unknown" %>
+  <%     period = "Unknown" %>
+  <%     gift = GiftCard.find_by_stripe_charge_id(event.event_object_id) %>
+  <%     if gift.present? %>
+  <%       plan = "One Year Gift Membership" %>
+  <%       period = Time.at(gift.redeemed_at).to_date.to_s + " to " + Time.at(gift.end_at).to_date.to_s %>
+  <%     end %>
+  <%   end %>
+
+  <div class="row" style="font-size: 12px;">
+    <div class="col-md-1">
+      <%= Time.at(event.event_data["created"]).to_date %>
+    </div>
+    <div class="col-md-2">
+      <%= display_charge_type(event) %> using <%= event.event_data["card"]["type"] %> ending in <%= event.event_data["card"]["last4"] %>
+    </div>
+    <div class="col-md-2">
+      <%= plan %>
+    </div>
+    <div class="col-md-2">
+      recipient
+    </div>
+    <div class="col-md-3">
+      <%= period %>
+    </div>
+    <div class="col-md-2">
+      $<%= event.event_data["amount"]/100 %>
+    </div>
+
+  </div>
+  <% end %>
+
+</div>

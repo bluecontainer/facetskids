@@ -33,7 +33,7 @@ class InvitationsController < Devise::InvitationsController
       sign_in(resource_name, resource)
       respond_with resource, :location => after_accept_path_for(resource)
     else
-      logger.debug resource.errors.to_json
+      #logger.debug resource.errors.to_json
       respond_with_navigational(resource){ render :edit }
     end
   end

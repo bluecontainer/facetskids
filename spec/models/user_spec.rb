@@ -258,7 +258,9 @@ describe User do
         #receiver_user = FactoryGirl.create(:user, stripe_token: @card_token)
         receiver_user = FactoryGirl.create(:user)
         receiver_user.should be_valid
+        receiver_user.active?.should be_false
         giftcard.redeem(receiver_user)
+        giftcard.redeemed?.should be_true
         receiver_user.active?.should be_true
         lambda {Stripe::Invoice.upcoming(:customer => receiver_user.customer_id)}.should raise_error
 

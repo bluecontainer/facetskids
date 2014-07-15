@@ -21,6 +21,12 @@ GIT
       jquery-ui-rails (>= 4.0.3)
       less-rails-bootstrap
 
+GIT
+  remote: git@github.com:iven/angular-ui-router-rails
+  revision: 66cfae76f9c7c09f93f624789455d974e98f79d4
+  specs:
+    angular-ui-router-rails (0.2.8.0)
+
 PATH
   remote: ~/stripe-ruby-mock
   specs:
@@ -57,6 +63,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
     addressable (2.3.5)
+    angular-ui-bootstrap-rails (0.11.0)
     angularjs-rails (1.2.14)
     arel (4.0.2)
     atomic (1.1.16)
@@ -196,9 +203,12 @@ GEM
     less-rails-bootstrap (3.1.1.0)
       less-rails (~> 2.4.2)
     libv8 (3.16.14.3)
+    lodash-rails (2.4.1)
+      railties (>= 3.1)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    method_source (0.8.2)
     mime-types (1.25.1)
     mini_portile (0.5.2)
     minitest (4.7.5)
@@ -216,6 +226,12 @@ GEM
     pg (0.17.0)
     phantomjs (1.9.2.0)
     polyglot (0.3.4)
+    pry (0.10.0)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-rails (0.3.2)
+      pry (>= 0.9.10)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
@@ -266,6 +282,7 @@ GEM
     simple_form (3.0.0)
       actionpack (>= 4.0.0, < 4.1)
       activemodel (>= 4.0.0, < 4.1)
+    slop (3.5.0)
     sprockets (2.12.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -326,6 +343,8 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on!
+  angular-ui-bootstrap-rails
+  angular-ui-router-rails!
   angularjs-rails
   attached
   aws-s3
@@ -357,10 +376,12 @@ DEPENDENCIES
   launchy (>= 2.2.0)
   less-rails
   less-rails-bootstrap
+  lodash-rails
   newrelic_rpm
   ng-rails-csrf
   oj
   pg
+  pry-rails
   quiet_assets (>= 1.0.2)
   rack-cors
   rails (= 4.0.0)

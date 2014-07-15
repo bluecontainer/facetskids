@@ -10,6 +10,7 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= require lodash
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery.ui.button
@@ -30,3 +31,7 @@
 //= require fastclick
 //= require registrations
 //= require angular
+//= require angular-animate
+//= require angular-ui-router
+//= require angular-ui-bootstrap
+//= require planSelector.angular

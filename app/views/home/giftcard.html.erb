@@ -1,0 +1,23 @@
+<%
+buy_path = user_signed_in? ? purchase_gift_path : new_user_registration_path(:plan => 'giftcard_purchase')
+%>
+
+
+<div class="row" style="background-color: white;">
+
+  <div class="col-md-6" style="border-right: 2px solid gray;">
+  	<h6>Buy a gift</h6>
+	<%= link_to 'Buy', buy_path, :class => 'btn btn-large btn-primary' %>
+  </div>
+
+  <div class="col-md-6">
+  	<h6>Use a gift</h6>
+
+	  <%= form_tag(redeem_gift_path, method: "get") do %>
+  	  <%= label_tag(:code, "Enter the code here:") %>
+  	  <%= text_field_tag(:code) %>
+      <%= submit_tag("Redeem") %>
+    <% end %>
+  </div>
+
+</div>

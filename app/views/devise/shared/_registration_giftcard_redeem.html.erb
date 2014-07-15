@@ -1,0 +1,89 @@
+<% content_for :title, "Sign Up" %>
+
+<script>
+  function Ctrl($scope) {
+    $scope.cc_required = function (){
+      return false
+    }
+  }
+</script>
+
+<div ng-app ng-controller="Ctrl">
+
+<div style="background-color: white;">
+
+<div class="row">
+  <div class="col-md-offset-1 col-md-11" style="text-align:center;">
+    <h5>You got a gift of Facets Kids!</h5>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-offset-3 col-md-6">
+    <div id="stripe_error" class="alert alert-error" style="display:none" >
+    </div>
+  </div>
+</div>
+
+<%= content_for(:the_links) do %>
+  I have read and agree to the Privacy Policy
+<% end %>
+
+<div class="row">
+  <div class="col-md-offset-1 col-md-11" >
+
+<%= simple_form_for(resource, :as => resource_name, :url => @path, :html => {:class => 'card_form', :method => @method }) do |f| %>
+
+    <%= hidden_field_tag "plan", "giftcard_redeem" %>
+
+    <div class="row">
+      <div class="col-md-12">
+        <%= f.error_notification %>
+        <%= display_base_errors resource %>
+      </div>
+    </div>
+
+    <%= f.hidden_field :invitation_token, :value => resource.invitation_token unless resource.invitation_token.nil? %>
+
+    <div class="row">
+      <div class="col-md-5">
+        <p>It's your lucky day.</p>
+        <p>Create a basic account to use the gift</p>
+
+        <% if resource.invitation_token.nil? %>
+        <%= f.input :email, :required => true, :placeholder => "Email", :autofocus => true %>
+        <% else %>
+        <%= f.input :email, :required => true, :placeholder => "Email", :readonly => true %>
+        <% end %>
+        <%= f.input :password, :required => true, :placeholder => "Password" %>
+        <%= f.input :password_confirmation, :required => true, :placeholder => "Password again" %>
+        <%= f.input :child_age, :required => true, :label => "Child's Age", :placeholder => "Child's age", collection: 2..15 %>
+ 
+        <%= f.input :age_acknowledgement, :required => true, label: false, inline_label: 'I am over 13 years old', input_html: { :data => {:toggle => 'checkbox'} } %>
+        <%= f.input :terms_acknowledgement, :required => true, label: false, :inline_label => content_for(:the_links), input_html: { :data => {:toggle => 'checkbox'} } %>
+        <%= f.button :submit, 'Start Your Gift', :class => 'btn-primary' %>
+      </div>
+
+      <div class="col-md-offset-1 col-md-5" style="border-left: thin solid gray;">
+        <p>Subscribe with a credit card and get an additional free month!</p>
+
+        <p>Your gift will be applied to the begnning of your subscription, followed by a free trial month. Your card will not be charged until you have completed both your gift membership and the free trial month. At that point, your account will roll over to the plan you select.<p>
+        <%= link_to 'Start Gift and Get a Free Month', new_user_registration_path(:plan => 'red'), :class => 'btn btn-large btn-primary' %>
+      </div>
+    </div>
+<% end %>
+
+    <div class="row">
+      <div class="col-md-offset-3 col-md-6">
+        Note: the alpha version of the app is only available for iPad. <%= link_to "What if I don't have an iPad?", content_noipad_path %>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+//$("select").selectpicker({style: 'btn-info'});
+//$("select").selectpicker();
+</script>

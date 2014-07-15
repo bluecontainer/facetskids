@@ -1,60 +1,143 @@
-<% content_for :head do %>
-  <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
-<% end %>
+<div class="container" style="background-color: white;">
 
-<div class="row">
-  <div class="col-md-offset-1 col-md-4">
-    <h4>Account</h4>
+  <div class="row">
+    <div class="col-md-4" >
+      <h4>My Account</h4>
+    </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col-md-offset-1 col-md-11">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-11">
 
-    <%= render 'layouts/messages' %>
+      <%= render 'layouts/messages' %>
 
+    </div>
   </div>
-</div>
 
-<div class="row">
-  <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
-    <div class="col-md-offset-1 col-md-4">
+  <div class="row" style="border-top: thin solid black; margin-top: 10px;">
+    <div class="col-md-3">
+      My Profile
+    </div>
+<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
+    <div class="col-md-4">
       <div id="stripe_error" class="alert alert-error" style="display:none" ></div>
       <%= f.error_notification %>
       <%= display_base_errors resource %>
 
       <%= f.input :name, :autofocus => true %>
       <%= f.input :email, :required => true %>
-      <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 2..15, input_html: { class: "select-block mbl"} %>
+    </div>
+    <div class="col-md-4">
+        <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 2..15, input_html: { class: "select-block mbl"} %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-offset-3 col-md-9">
+      <%= f.association :mail_lists, label_method: :description, as: :check_boxes, input_html: { :data => {:toggle => 'checkbox'} } %> 
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-offset-3 col-md-4">
       <%= f.input :password, :autocomplete => "off", :hint => "Leave it blank if you don't want to change it", :required => false %>
-      <%= f.input :password_confirmation, :required => false %>
       <%= f.input :current_password, :hint => "We need your current password to confirm your changes", :required => true %>
 
       <%= f.button :submit, 'Update', :class => 'btn-primary' %>
     </div>
-    <div class="col-md-offset-1 col-md-6">
-      <%= f.association :mail_lists, label_method: :description, as: :check_boxes, input_html: { :data => {:toggle => 'checkbox'} } %>
-
-<% if @user.has_credit_card? %>
-      <br/>
-      <h4>Credit Card</h4>
-      <p>
-        Using card ending with <%= @user.last_4_digits %>.
-        <a data-toggle="modal" href="#card-data" class="btn btn-mini" type="button">Change card</a>
-      </p>
-<% end %>
-
-<% if @user.has_subscription? %>
-      <br/>
-      <h4>Plan</h4>
-      <p>
-        Subscribed to the <%= @user.roles[0].name%> plan.
-        <a data-toggle="modal" href="#cancel-subscription" class="btn btn-mini" type="button">Cancel subscription</a>
-      </p>
-<% end %>
+    <div class="col-md-4">
+      <%= f.input :password_confirmation, :required => false %>
     </div>
+  </div>
+<% end %>
 
-  <% end %>
+<% current_subscription = @user.current_subscription %>
+<% if @user.has_credit_card? %>
+  <div class="row" style="border-top: thin solid black; margin-top: 10px;">
+    <div class="col-md-3">
+      Payment Method
+    </div>
+    <div class="col-md-9">
+    <% if current_subscription.present? and current_subscription.past_due? %>
+    <%   charge_event = @user.user_stripe_events.charge.last %>
+    <%   invoice_event = @user.user_stripe_events.invoice.last %>
+      <br/>
+      <div class="alert alert-danger">
+        <a>There is a problem with your credit card on file with Facets Kids</a>
+        Please contact your bank to fix the problem. We will retry your card on <%=Time.at(invoice_event.event_data["next_payment_attempt"])%>. Once you change your card, we will retry with the new card. If we are unable to successfully change your credit card, you will lose access to FacetsKids. You can reactivate your account with a valid card to regain access.
+      </div>
+    <% end %>
+      Using card ending with <%= @user.last_4_digits %>.
+      <a data-toggle="modal" href="#card-data">Change card</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-offset-3 col-md-9">
+      <%= link_to "View Payment History", user_stripe_events_path %>
+    </div>
+  </div>
+<% end %>
+
+  <div class="row" style="border-top: thin solid black; margin-top: 10px;">
+    <div class="col-md-3">
+      Plan
+    </div>
+    <div class="col-md-9">
+      <% unless current_subscription.nil? %>
+      <%   if current_subscription.cancel_requested? %>
+      The subscription to <%=current_subscription.plan.name%> plan was cancelled at <%=current_subscription.canceled_at%>. Access to Facets Kids will end at the end of the current period, <%=current_subscription.current_period_end%>.
+      <%   elsif current_subscription.past_due? %>
+      <%     charge_event = @user.user_stripe_events.charge.last  %>
+      <%     invoice_event = @user.user_stripe_events.invoice.last %>
+      <%     charge_failure_message = charge_event.event_data["failure_message"].downcase unless charge_event.nil? %>
+      Your account is past due. A scheduled payment failed because <%=charge_failure_message%>. The next attempt to charge your card is at <%=Time.at(invoice_event.event_data["next_payment_attempt"])%>
+      <%   else %>
+      Subscribed to the <%= @user.roles[0].name%> plan.<br/>
+      Next payment at <%= current_subscription.current_period_end %>.
+      <%   end %> 
+
+      <%   if @user.has_stripe_subscription? %>
+      <%     unless @user.cancel_requested? %>
+      <a data-toggle="modal" href="#cancel-subscription">Cancel subscription</a>
+      <%     end %>
+      <a data-toggle="modal" href="#create-subscription">Change subscription</a>
+      <%   end %>
+
+      <% else %>
+      <a data-toggle="modal" href="#create-subscription">Subscribe</a>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row"  style="border-top: thin solid black; margin-top: 10px;">
+    <div class="col-md-3">
+      Gift
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-offset-3 col-md-9">
+      <%= link_to "View Purchased Gifts", gift_cards_path %>
+    </div>
+  </div>
+
+  <div class="row" style="border-top: thin solid black; margin-top: 10px;">
+    <div class="col-md-3">
+      Support
+    </div>
+  </div>
+
+  <div class="row"  style="border-top: thin solid black; margin-top: 10px;">
+    <div class="col-md-3">
+      Share
+    </div>
+  </div>
+
+  <div class="row" style="border-top: thin solid black; margin-top: 10px;">
+    <div class="col-md-3">
+      Explore
+    </div>
+  </div>
+
 </div>
 
 <% if @user.has_credit_card? %>
@@ -94,10 +177,10 @@
 </div>
 <% end %>
 
-<% if @user.has_subscription? %>
+<% if @user.has_stripe_subscription? %>
 <div id="cancel-subscription" class="modal" style="display: none;">
   <div class="modal-dialog modal-sm">
-  <%= simple_form_for resource, :as => resource_name, :url => cancel_plan_path, :html => {:method => :put, :class => 'form-horizontal card_form' } do |f| %>
+  <%= simple_form_for resource, :as => resource_name, :url => cancel_plan_path, :html => {:method => :put, :class => 'form-horizontal' } do |f| %>
     <div class="modal-content">
     <div class="modal-header">
       <a class="close" data-dismiss="modal">&#215;</a>
@@ -115,3 +198,160 @@
   </div>
 </div>
 <% end %>
+
+<div id="change-subscription" class="modal" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">&#215;</a>
+        <h4>Change Subscription</h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <a class="btn" data-dismiss="modal" href="#">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+subscriptionApp = angular.module('subscriptionApp', ['ngAnimate', 'ui.router', 'facetsKids.planSelector'])
+
+// configuring our routes 
+// =============================================================================
+.config(function($stateProvider, $urlRouterProvider) {
+    
+    $stateProvider
+    
+        // route to show our basic form (/subscription)
+        .state('subscription', {
+            url: '/subscription',
+            templateUrl: 'subscription.html',
+            //template: "<div ui-view></div>",
+            controller: 'subscriptionController'
+        })
+        
+        // nested states 
+        // each of these sections will have their own view
+        // url will be nested (/subscription/plan)
+        .state('subscription.plan', {
+            url: '/plan',
+            templateUrl: 'subscription.plan.html'
+        })
+        
+        // url will be /subscription/payment
+        .state('subscription.payment', {
+            url: '/payment',
+            templateUrl: 'subscription.payment.html'
+        });
+       
+    // catch all route
+    // send users to the subscription/plan page 
+    $urlRouterProvider.otherwise('/subscription/plan');
+})
+
+// our controller for the form
+// =============================================================================
+.controller('subscriptionController', function($scope) {
+    
+    // we will store all of our form data in this object
+    $scope.formData = {};
+    $scope.planSelection = {};
+    $scope.planSelection.planName = "red";
+    
+});
+</script>
+
+<div id="create-subscription" class="modal" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">&#215;</a>
+        <h4>Create Subscription</h4>
+      </div>
+      <div class="modal-body">
+
+        <style>
+          /* numbered buttons */
+          #status-buttons                 {  }
+          #status-buttons a               { display:inline-block; font-size:12px; margin-right:10px; text-align:center; text-transform:uppercase; }
+          #status-buttons a:hover         { text-decoration:none; }
+
+          /* we will style the span as the circled number */
+          #status-buttons span            { background:#080808; display:block; height:30px; margin:0 auto 10px; padding-top:5px; width:30px; 
+              border-radius:50%; }
+
+          /* active buttons turn light green-blue*/
+          #status-buttons a.active span   { background:#00BC8C; }
+        </style>
+
+        <div ng-app="subscriptionApp">
+          <script>
+          subscriptionApp.service("planSelectorInitializer", function() {
+            plans = new Array();
+
+            <% @plans.each do |plan| %>
+            plan = {btn_label: "Get", price_label: "<%=plan[2]%>", type_label: "<%=plan[1]%>", plan_name: "<%=plan[0]%>",state: false};
+            plans.push(plan);
+            <% end %>
+            return plans;
+          });
+          </script>
+
+          <div ui-view></div>
+
+          <script type="text/ng-template" id="subscription.html">
+            <div id="status-buttons" class="text-center">
+              <a ui-sref-active="active" ui-sref=".plan"><span>1</span> Plan</a>
+              <a ui-sref-active="active" ui-sref=".payment"><span>2</span> Payment</a>
+            </div>
+            <div ui-view></div>
+          </script>
+          <script type="text/ng-template" id="subscription.plan.html">
+          <div class="row">
+            <div plan-selector></div>
+          </div>
+          <div><a ui-sref-active="active" ui-sref="subscription.payment">next</a></div>
+          </script>
+          <script type="text/ng-template" id="subscription.payment.html">
+          <div>payment</div>
+
+          <%= simple_form_for resource, :as => resource_name, :url => subscribe_plan_path, :html => {:method => :put, :class => 'form-horizontal card_form' } do |f| %>
+              <%= f.input :name %>
+              <div class="field">
+                <%= label_tag :address_zip, "Zip code" %>
+                <%= text_field_tag :address_zip, nil, {name: nil, class: "form-control"} %>
+              </div>
+              <div class="field">
+                <%= label_tag :card_number, "Credit Card Number" %>
+                <%= text_field_tag :card_number, nil, {name: nil, class: "form-control"} %>
+              </div>
+              <div class="field">
+                <%= label_tag :card_code, "Card Security Code (CVV)" %>
+                <%= text_field_tag :card_code, nil, {name: nil, class: "form-control"} %>
+              </div>
+              <div class="field">
+                <%= label_tag :card_month, "Card Expiration" %>
+                <%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month", class: "select form-control select-block mbl"}%>
+                <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year", class: "select form-control select-block mbl"}%>
+              </div>
+              <%= f.hidden_field :email %>
+              <%= f.hidden_field :stripe_token %>
+              <%= f.hidden_field :plan, {value: "{{planSelection.planName}}"} %>
+              <%= f.submit "Subscribe", :class => "btn btn-primary" %>
+          <% end %>
+
+          </script>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <a class="btn" data-dismiss="modal" href="#">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+

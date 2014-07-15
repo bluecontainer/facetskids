@@ -15,14 +15,6 @@ class UserMailer < ActionMailer::Base
     @include_ipad_question = true    
     mail(:to => user.email, :subject => "Getting Started with Facets Kids")
   end
-
-  def gift_card_email(user)
-    attachments["giftcard.pdf"] = WickedPdf.new.pdf_from_string(
-      render_to_string(:pdf => "invoice", :template => 'user_mailer/gift_card_email.html.erb')
-    )
-    self.instance_variable_set(:@_lookup_context, nil)
-    mail :to => user.email, :subject => "Your Gift Card"
-  end
   
   def image_url(source)
     URI.join(unauthenticated_root_url, image_path(source))

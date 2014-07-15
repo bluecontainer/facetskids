@@ -8,9 +8,17 @@ FacetsKids::Application.routes.draw do
     root :to => "home#index", as: :unauthenticated_root
     #root :to => "invite_requests#new", as: :unauthenticated_root
   end
+
+  get 'gift', :to => 'home#giftcard'
+
   devise_for :users, :controllers => { :registrations => 'registrations', :invitations => 'invitations', :sessions => 'sessions' }
+
   devise_scope :user do
     get 'myaccount', :to => 'registrations#edit'
+    get 'redeem_gift', :to => 'registrations#redeem_gift'
+    get 'purchase_gift', :to => 'registrations#purchase_gift_edit'
+    put 'purchase_gift_update', :to => 'registrations#purchase_gift_update'
+    put 'subscribe_plan', :to => 'registrations#subscribe_plan'
     put 'update_plan', :to => 'registrations#update_plan'
     put 'update_card', :to => 'registrations#update_card'
     put 'cancel_plan', :to => 'registrations#cancel_plan'
@@ -21,10 +29,15 @@ FacetsKids::Application.routes.draw do
 
   resources :contacts, only: [:new, :create]
   resources :invite_requests, only: [:new, :create]
+  resources :user_stripe_events, only: [:index]
+  resources :gift_cards, only: [:index, :show]
 
   get "flatuipro_demo/index"
+  
   get "content/alpha"
   get "content/silver"
+  get "content/giftcard"
+
   get "content/about"
   get "content/faq"
   get "content/privacy"

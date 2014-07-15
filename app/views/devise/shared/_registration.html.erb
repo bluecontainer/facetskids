@@ -1,94 +1,211 @@
 <% content_for :title, "Sign Up" %>
 
-<script>
-  function Ctrl($scope) {
-    $scope.plan = "<%= resource.plan %>";
-  }
-</script>
-
-<div ng-app ng-controller="Ctrl">
-
-<div class="row">
-  <div class="offset1 span7">
-    <div ng-show="plan == 'alpha'">
-    <p>Sign up now to create an account and become a pioneer.</p>
-    </div>
-    <div ng-show="plan == 'silver'">
-    <p>Help us build the app and inspire the creators of tomorrow.</p>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="offset3 span6">
-    <div id="stripe_error" class="alert alert-error" style="display:none" >
-    </div>
-  </div>
-</div>
-
 <%= content_for(:the_links) do %>
   I have read and agree to the Privacy Policy
 <% end %>
 
-<div class="row">
-  <div class="offset1 span11">
+<script>
+  function Ctrl($scope) {
+    $scope.plan = "<%= resource.plan %>";
 
-<%= simple_form_for(resource, :as => resource_name, :url => @path, :html => {:class => 'card_form', :method => @method }) do |f| %>
+    $scope.donation_amt = 0;
 
-  <%= f.input :plan, as: :radio_buttons, label: false, collection: [ ["alpha","Free alpha account"], ["silver","Contribute $50 or more (one year subscription)"]], label_method: :last, value_method: :first, input_html: { "ng-model" => "plan", :data => {:toggle => 'radio'} } %>
-  <%= f.error_notification %>
-  <%= display_base_errors resource %>
+    $scope.plans = new Array();
+    <% @plans.each do |plan| %>
+    plan = {btn_label: "Get", price_label: "<%=plan[2]%>", type_label: "<%=plan[1]%>", plan_name: "<%=plan[0]%>",state: false};
+    if (plan.plan_name == $scope.plan) {
+      selectPlan(plan);
+    }
+    $scope.plans.push(plan);
+    <% end %>
 
-  <%= f.hidden_field :invitation_token, :value => resource.invitation_token unless resource.invitation_token.nil? %>
+    //$scope.cc_required = function (){
+    //  return ($scope.plan == "silver" || $scope.plan == "red" || $scope.plan == "yellow" || $scope.plan == "yellow+donation")
+    //}
 
-    <div class="row">
-      <div class="span4">
-        <% if resource.invitation_token.nil? %>
-        <%= f.input :email, :required => true, :placeholder => "Email", :autofocus => true %>
-        <% else %>
-        <%= f.input :email, :required => true, :placeholder => "Email", :readonly => true %>
+    //$scope.donation_required = function (){
+    //  return ($scope.plan == "silver" || $scope.plan == "yellow+donation")
+    //}
+
+    $scope.select = function (){
+      //make everything false
+      this.plans.forEach(function(elem) {
+        elem.state = false;
+        elem.btn_label = "Get";
+      })
+
+      //set selected to true
+      selectPlan(this.p)
+    }
+
+    function selectPlan(plan) {
+      plan.state = true;
+      plan.btn_label = "Selected";
+      $scope.plan = plan.plan_name;
+
+      if ($scope.plan == "yellow+donation") {
+        $scope.donation_amt = 10;
+      }
+      else {
+        $scope.donation_amt = 0;
+      }
+    }
+  }
+</script>
+
+<div ng-app ng-controller="Ctrl" class="container" style="background-color: white;">
+
+  <div class="row">
+    <div class="col-md-offset-3 col-md-6">
+      <div id="stripe_error" class="alert alert-error" style="display:none" >
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+
+  <%= simple_form_for(resource, :as => resource_name, :url => @path, :html => {:class => 'card_form', :method => @method }) do |f| %>
+
+      <%= f.hidden_field :invitation_token, :value => resource.invitation_token unless resource.invitation_token.nil? %>
+      <%= hidden_field_tag "plan", "{{plan}}" %>
+      <%= f.hidden_field :stripe_token %>
+
+      <div class="row">
+        <div class="col-md-3">
+          <div class="circle" style="display:inline-block;">1</div>
+          <h7>Choose a plan</h7>
+        </div>
+      </div>
+
+      <% offerCount = @plans.length %>
+      <% offerCount += 1 if @offer_gift %>
+      <% colSize = 12/offerCount %>
+      <% colOffset = 12 - (colSize*2)%>
+      <% colClass = "col-md-#{colSize}" %>
+      <% colOffsetClass = "col-md-offset-#{colOffset}" %>
+
+      <% if @offer_gift %>
+      <div class="row" style="margin-top: 10px;">
+        <div class="<%=colClass%>" style="background-color: gray;">
+          For Yourself
+        </div>
+        <div class="<%=colOffsetClass%> <%=colClass%>" style="background-color: gray;">
+          For Someone Else
+        </div>
+      </div>
+      <% end %>
+
+      <div class="row" style="padding-top: 5px; background-color: gray">
+      </div>
+
+      <div class="row" style="background-color: lightgray; margin-bottom: 10px;">
+        <div class="<%=colClass%>" style="text-align: center; border-right: thick dotted white" ng-repeat="p in plans">
+          <h3>{{p.price_label}}</h3>
+          {{p.type_label}}<br/>
+          <div class="btn btn-large btn-primary" ng-click="select()">{{p.btn_label}}</div>
+          <br/><br/>
+        </div>        
+
+        <% if @offer_gift %>
+        <div class="<%=colClass%>" style="text-align: center;">
+          <h3>$50</h3>
+          One-Year Gift Membership<br/>
+          <div class="btn btn-large btn-primary">Get</div>
+        </div>
         <% end %>
-        <%= f.input :password, :required => true, :placeholder => "Password" %>
-        <%= f.input :password_confirmation, :required => true, :placeholder => "Password again" %>
-        <%= f.input :child_age, :required => true, :label => "Child's Age", :placeholder => "Child's age", collection: 2..15, input_html: { class: "select-block mbl"} %>
       </div>
-      <div class="span5">
-        <div ng-show="plan == 'silver'">
-        <%= f.input :donation_amt, :label => "Donation Amount", :placeholder => "Donation", collection: (50..1000).step(10), input_html: { class: "select-block mbl"} %>
-        <%= f.input :name %>
-        <div class="field">
-          <%= label_tag :card_number, "Credit Card Number" %>
-          <%= text_field_tag :card_number, nil, name: nil %>
-        </div>
-        <div class="field">
-          <%= label_tag :card_code, "Card Security Code (CVV)" %>
-          <%= text_field_tag :card_code, nil, name: nil %>
-        </div>
-        <div class="field">
-          <%= label_tag :card_month, "Card Expiration" %>
-          <%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month"}%>
-          <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year"}%>
-        </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="span12">  
-        <%= f.input :age_acknowledgement, :required => true, label: false, inline_label: 'I am over 13 years old', input_html: { :data => {:toggle => 'checkbox'} } %>
-        <%= f.input :terms_acknowledgement, :required => true, label: false, :inline_label => content_for(:the_links), input_html: { :data => {:toggle => 'checkbox'} } %>
-        <%= hidden_field_tag "plan", "{{plan}}" %>
-        <%= f.hidden_field :stripe_token %>
-        <%= f.button :submit, 'Sign up', :class => 'btn-primary' %>
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.error_notification %>
+          <%= display_base_errors resource %>
+        </div>
       </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="circle" style="display:inline-block;">2</div>
+          <h7>Account Information</h7>
+
+          <% if resource.invitation_token.nil? %>
+          <%= f.input :email, :required => true, :placeholder => "Email", :autofocus => true %>
+          <% else %>
+          <%= f.input :email, :required => true, :placeholder => "Email", :readonly => true %>
+          <% end %>
+          <%= f.input :password, :required => true, :placeholder => "Password" %>
+          <%= f.input :password_confirmation, :required => true, :placeholder => "Password again" %>
+          <%= f.input :child_age, :required => true, :label => "Child's Age", :placeholder => "Child's age", collection: 2..15 %>
+          <%= f.input :age_acknowledgement, :required => true, label: false, inline_label: 'I am over 13 years old', input_html: { :data => {:toggle => 'checkbox'} } %>
+          <%= f.input :terms_acknowledgement, :required => true, label: false, :inline_label => content_for(:the_links), input_html: { :data => {:toggle => 'checkbox'} } %>
+        </div>
+        
+        <div class="col-md-4" style="border-left: thin solid gray; border-right: thin solid gray;">
+          <div class="circle" style="display:inline-block;">3</div>
+          <h7>Billing Information</h7>
+
+          <%= f.input :name %>
+          <div class="field">
+            <%= label_tag :address_zip, "Zip code" %>
+            <%= text_field_tag :address_zip, nil, {name: nil, class: "form-control"} %>
+          </div>
+          <div class="field">
+            <%= label_tag :card_number, "Credit Card Number" %>
+            <%= text_field_tag :card_number, nil, {name: nil, class: "form-control"} %>
+          </div>
+          <div class="field">
+            <%= label_tag :card_code, "Card Security Code (CVV)" %>
+            <%= text_field_tag :card_code, nil, {name: nil, class: "form-control"} %>
+          </div>
+          <div class="field">
+            <%= label_tag :card_month, "Card Expiration" %>
+            <%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month", class: "select form-control select-block mbl"}%>
+            <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, {name: nil, id: "card_year", class: "select form-control select-block mbl"}%>
+          </div>
+          <%= image_tag "poweredbystripe.png" %>
+        </div>
+
+        <div class="col-md-4">
+          <div>
+            <div class="circle" style="display:inline-block;">4</div>
+            <h7>We Need Your Support</h7>
+            <p><small>Your one-time donation will help inspire the creators of tomorrow by giving a free subscription to a child in need.</small></p>
+
+            <%= f.input :donation_amt, :label => "Donation Amount", :placeholder => "Donation", collection: @donation_amts, input_html: { "ng-model" => "donation_amt", class: "select-block mbl"} %>        
+          </div>
+
+          <div>
+            <div class="circle" style="display:inline-block;">5</div>
+            <h7>Have a Gift Code?</h7>
+            <p><small>Your gift will be applied to the beginning of your subscription, followed by a free trial month. Your card will not be charged until you have completed both your gift membership and free trial month. At that point, your account will roll over to the plan selected above.</small></p>
+            <%= f.input :gift_code %>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-md-8">
+          <small>Currently only available for iPad. Click <%= link_to "here", content_noipad_path %> if you don't have one.</small><br/>
+          <small>One household per account. Maximum of 3 devices at a time per account.</small><br/>
+          <small>Monthly account will be charged $6 at the start of each month. Annual account will be charged $50 at the start of the year. You can cancel online any time. In the event of cancellation, your card will not be charged again. Your subscription will continue for the remainder of the month/year you have paid for, and then your account will be deactivated.</small><br/>
+          <small>Donations goes towards free Facets Kids subscriptions for our partner organizations.</small><br/>
+        </div>
+
+        <div class="col-md-4">
+          <p><small>Double-check all your details are correct.</small></p>
+          <%= f.button :submit, 'Start Your Free Month', :class => 'btn-primary' %>
+        </div>
+      </div>
+
+  <% end %>
+
     </div>
-<% end %>
   </div>
+
 </div>
 
-<div class="row">
-  <div class="offset3 span6">
-    Note: the alpha version of the app is only available for iPad. <%= link_to "What if I don't have an iPad?", content_noipad_path %>
-  </div>
-</div>
-
+<script>
+//$("select").selectpicker({style: 'btn-info'});
+//$("select").selectpicker();
+</script>

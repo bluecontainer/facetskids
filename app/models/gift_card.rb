@@ -1,9 +1,13 @@
 class GiftCard < ActiveRecord::Base
   belongs_to :sender, :class_name => "User"
+  #, inverse_of: :sent_gift_cards
+  #validates_presence_of :sender
   belongs_to :receiver, :class_name => "User"
   after_initialize :defaults, unless: :persisted?
 
-  validates_presence_of :receiver_email, :receiver_name, :sender, :value, :duration_in_months
+  validates_presence_of :receiver_email, :receiver_name, :value, :duration_in_months
+
+  before_save :purchase_before_save
 
   def defaults
     self.code = create_uniq_code_string
@@ -12,11 +16,28 @@ class GiftCard < ActiveRecord::Base
     self.coupon_created = false
   end
 
+  def purchase_before_save
+    #if self.stripe_charge_id.nil?
+    if !self.paid and !self.sender.nil?
+      charge_id = self.sender.charge(value.to_i * 100)
+      if charge_id != false
+        self.stripe_charge_id = charge_id
+        self.paid = true
+
+        #GiftCardMailer.purchase_email(self).deliver
+
+        true
+      else
+        errors.add :base, "Failed to charge giftcard"
+        false
+      end
+    else
+      true
+    end
+  end
+
   def purchase
-    charge_id = self.sender.charge(value.to_i * 100)
-    if charge_id != false
-      self.stripe_charge_id = charge_id
-      self.paid = true
+    if purchase_before_save
       save
     else
       false
@@ -27,10 +48,11 @@ class GiftCard < ActiveRecord::Base
     return false unless paid?
     return false if redeemed?
  
-    if receiver_user.has_stripe_subscription?
+    if receiver_user.has_stripe_role?
       coupon = create_coupon(receiver_user, self.duration_in_months)
       unless coupon.nil?
-        self.stripe_coupon_id = coupon.id 
+        self.stripe_coupon_id = coupon.id
+        self.coupon_created = true
         self.redeemed = true
         self.redeemed_at = Time.now
         self.end_at = (redeemed_at.to_date >> self.duration_in_months)

@@ -4,7 +4,7 @@ STRIPE_PUBLIC_KEY = ENV["STRIPE_PUBLIC_KEY"]
 StripeEvent.configure do |events|
 
   events.subscribe 'customer.subscription.created' do |event|
-    StripeEventHandlers::UserEventHandler.new.call(event)
+    StripeEventHandlers::SubscriptionUserEventHandler.new.call(event)
     #new subscription email
   end
 
@@ -14,7 +14,7 @@ StripeEvent.configure do |events|
   end
 
   events.subscribe 'customer.subscription.updated' do |event|
-    StripeEventHandlers::UserEventHandler.new.call(event)
+    StripeEventHandlers::SubscriptionUserEventHandler.new.call(event)
     #subscription changed email
   end
 
@@ -26,6 +26,10 @@ StripeEvent.configure do |events|
   events.subscribe 'charge.succeeded' do |event|
     StripeEventHandlers::ChargeUserEventHandler.new.call(event)
     #customer card charged email
+  end
+
+  events.subscribe 'charge.refunded' do |event|
+    StripeEventHandlers::ChargeUserEventHandler.new.call(event)
   end
 
   events.subscribe 'invoice.created' do |event|
@@ -63,7 +67,7 @@ StripeEvent.configure do |events|
   end
 
   events.subscribe 'customer.discount.created' do |event|
-    StripeEventHandlers::UserEventHandler.new.call(event)
+    StripeEventHandlers::CustomerDiscountUserEventHandler.new.call(event)
     #coupon applied email
   end
 

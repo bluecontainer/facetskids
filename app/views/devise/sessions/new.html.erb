@@ -1,3 +1,5 @@
+
+
 <script>
   function Ctrl($scope) {
     $scope.check = window.navigator.standalone ? 1 : 0;
@@ -6,28 +8,14 @@
 
 <div ng-app ng-controller="Ctrl">
 
-<div class="row" style="padding-top: 60px">
-  <div class="col-md-offset-4 col-md-4">
-    <div class="login-form">
-<%= render 'layouts/messages' %>
-<%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-  <%= f.error_notification %>
+  <% unless @redeem_view %>
 
-  <%= f.input :email, :autofocus => true, :label => false, :placeholder => "Email", input_html: { class: "login-field"} %>
+    <%= render "devise/shared/session" %>
 
-  <%= f.input :password, :label => false, :placeholder => "Password", input_html: { class: "login-field" } %>
+  <% else %>
 
-  <%= f.input :remember_me, :as => :hidden, :input_html => { :value => "1"} if devise_mapping.rememberable? %>
+    <%= render "devise/shared/session_giftcard_redeem" %>
 
-  <%= f.button :submit, "Login", :class => "btn btn-primary btn-lg btn-block" %>
-
-  <%= hidden_field_tag "check", "{{check}}" %>
-<% end %>
-
-<%= render "devise/shared/links" %>
-
-    </div>
-  </div>
-</div>
+  <% end %>
 
 </div>

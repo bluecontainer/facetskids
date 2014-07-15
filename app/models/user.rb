@@ -24,8 +24,12 @@ class User < ActiveRecord::Base
   has_many :subscriptions, -> { order('subscriptions.created_at ASC') }, dependent: :destroy
   has_many :user_stripe_events, dependent: :destroy
   has_many :donations, dependent: :destroy
-  has_many :sent_gift_cards, -> { where paid: true }, class_name: :GiftCard, foreign_key: :sender_id 
+  has_many :sent_gift_cards, -> { where paid: true }, class_name: :GiftCard, foreign_key: :sender_id
+  #, inverse_of: :sender
+  #has_many :sent_gift_cards, class_name: :GiftCard, foreign_key: :sender_id, inverse_of: :sender
   has_many :received_gift_cards, class_name: :GiftCard, foreign_key: :receiver_id
+
+  accepts_nested_attributes_for :sent_gift_cards, :donations, :reject_if => :all_blank, :allow_destroy => true
 
   acts_as_tagger
  
@@ -33,7 +37,7 @@ class User < ActiveRecord::Base
   validates_presence_of :terms_acknowledgement
   validates_presence_of :child_age, :unless => :is_admin?
 
-  attr_accessor :stripe_token, :coupon, :plan, :trial_end
+  attr_accessor :stripe_token, :coupon, :plan, :trial_end, :gift_code
 
   before_save :update_stripe
   before_destroy :cancel_subscription
@@ -48,31 +52,47 @@ class User < ActiveRecord::Base
     end
   end
 
-  def has_stripe_subscription?
-    #return (has_role? :red or has_role? :yellow)
+  def has_stripe_role?
+    return (has_role? :red or has_role? :yellow)
+  end
 
-    if subscriptions.length > 0
-      plan = subscriptions.last.plan
-      unless plan.stripe_plan_id.nil?
-        #subscriptions.last.status == "trialing" or subscriptions.last.status == "active"
-        subscriptions.last.active?
-      else
-        false
-      end
+  def stripe_required?
+    has_role?("yellow") or has_role?("red") or has_role?("silver") or has_role?("giftcard_purchase")
+  end
+
+  def stripe_plan
+    roles.first.name unless (has_role?("silver") or has_role?("giftcard_purchase"))
+  end
+
+  def current_subscription
+    subscription = subscriptions.last
+    unless subscription.nil?
+      subscription if subscription.active?
     else
-      false
+      if has_role?(:alpha) or has_role?(:silver)
+        plan = Plan.find_by_name(roles.first.name)
+        if plan.end_at > Time.now
+          subscription = Subscription.new(
+            {
+              :plan => plan, 
+              :status => "active",
+              :current_period_end => plan.end_at
+            })
+          self.subscriptions << subscription
+          subscription
+        end
+      end
     end
   end
 
   def has_subscription?
-    if subscriptions.length > 0
-      plan = subscriptions.last.plan
-      if plan.name == "alpha" and plan.name == "silver"
-        subscriptions.last.current_period_end >= Time.now
-      else
-        #subscriptions.last.status == "trialing" or subscriptions.last.status == "active"
-        subscriptions.last.active?
-      end
+    self.current_subscription.present?
+  end
+
+  def has_stripe_subscription?
+    subscription = self.current_subscription
+    if subscription.present?
+      subscription.plan.stripe_plan_id.present?
     else
       false
     end
@@ -90,40 +110,55 @@ class User < ActiveRecord::Base
   def active?
     return true if is_admin?
 
-    if subscriptions.length > 0
-      plan_name = subscriptions.last.plan.name
-      if plan_name != "alpha" and plan_name != "silver"
-        subscriptions.last.active?
-      else
-        subscriptions.last.current_period_end >= Time.now
-      end
+    has_subscription? or has_gift_card?
+
+    #if subscriptions.length > 0
+    #  plan_name = subscriptions.last.plan.name
+    #  if plan_name != "alpha" and plan_name != "silver"
+    #    subscriptions.last.active?
+    #  else
+    #    subscriptions.last.current_period_end >= Time.now
+    #  end
+    #else
+    #  has_gift_card?
+    #end
+  end
+
+  def past_due?
+    subscription = subscriptions.last
+    unless subscription.nil?
+      subscription.past_due?
     else
-      has_gift_card?
+      false
     end
   end
 
   def unpaid?
-    if subscriptions.length > 0
-      plan_name = subscriptions.last.plan.name
-      if plan_name != "alpha" and plan_name != "silver"
-        (subscriptions.last.status == "canceled" or subscriptions.last.status == "unpaid") and !subscriptions.last.cancel_at_period_end
-      else
-        false
-      end
+    subscription = subscriptions.last
+    unless subscription.nil?
+      subscription.unpaid?
+    else
+      false
     end    
   end
 
   def canceled?
-    if subscriptions.length > 0
-      plan_name = subscriptions.last.plan.name
-      if plan_name != "alpha" and plan_name != "silver"
-        subscriptions.last.status == "canceled" and subscriptions.last.cancel_at_period_end
-        #subscriptions.last.cancel_at_period_end.present?
-      else
-        false
-      end
+    subscription = subscriptions.last
+    unless subscription.nil?
+      subscription.canceled?
+    else
+      false
     end    
-  end 
+  end
+
+  def cancel_requested?
+    subscription = subscriptions.last
+    unless subscription.nil?
+      subscription.cancel_requested?
+    else
+      false
+    end
+  end
 
   def stripe_customer
     if !customer_id.nil? and @stripe_customer.nil?
@@ -163,6 +198,24 @@ class User < ActiveRecord::Base
       logger.error "Failed to charge a donation #{amount}c for user #{email}."
       false
     end
+  end
+
+  def redeem_gift(gift_code)
+    gc = GiftCard.find_by_code(gift_code)
+    unless gc.nil?
+      if gc.redeem(self)
+        self.coupon = gc.stripe_coupon_id
+        true
+      else
+        raise "Gift card cannot be redeemed. Already redeemed."
+      end
+    else
+      raise "Gift card cannot be redeemed. Code is not valid."
+    end
+  rescue Exception => e
+    logger.error e.message
+    errors.add :base, "#{e.message}"
+    false
   end
  
   def update_plan(name)
@@ -219,7 +272,7 @@ class User < ActiveRecord::Base
     errors.add :base, "Unable to update your subscription. #{e.message}."
     false
   end
-  
+
   def update_stripe
     return if email.include?(ENV['ADMIN_EMAIL'])
     #return if email.include?('@example.com') and not Rails.env.production?
@@ -227,13 +280,19 @@ class User < ActiveRecord::Base
     #return if roles.first.name == "alpha"
 
     unless roles.empty?
-      stripe_required = (roles.first.name != "alpha")
+      stripe_required = stripe_required?
       donation_required = (roles.first.name == "silver")
-      stripe_plan = roles.first.name unless roles.first.name == "silver"
+      stripe_plan = self.stripe_plan
     else
       stripe_required = stripe_token.present?
     end
     
+    if gift_code.present?
+      if redeem_gift(gift_code)
+        self.gift_code = nil
+      end
+    end
+
     if stripe_required and customer_id.nil?
       if !stripe_token.present?
         raise "Stripe token not present. Can't create account."
@@ -263,13 +322,13 @@ class User < ActiveRecord::Base
         end
       end
 
-      if donation_amt.present?
-        if !donate(donation_amt * 100)
-          raise "Donation could not be charged. Can't create account.'" if donation_required
-        end
-      else
-        raise "Donation amount not present. Can't create account." if donation_required
-      end 
+      #if donation_amt.present?
+      #  if !donate(donation_amt * 100)
+      #    raise "Donation could not be charged. Can't create account.'" if donation_required
+      #  end
+      #else
+      #  raise "Donation amount not present. Can't create account." if donation_required
+      #end 
     elsif !stripe_customer.nil?
       if stripe_token.present?
         stripe_customer.card = stripe_token
@@ -288,7 +347,7 @@ class User < ActiveRecord::Base
       self.stripe_token = nil
     end
 
-    unless roles.empty?
+    unless roles.empty? or has_role?("giftcard_purchase")
       subscription = subscriptions.last
       create_subscription = subscription.present? ? ((subscription.plan.name != roles.first.name) or (subscription.status == "canceled" or subscription.status == "unpaid")) : true
       if create_subscription
@@ -296,19 +355,26 @@ class User < ActiveRecord::Base
         if self.stripe_customer and self.stripe_customer.subscriptions.count >= 1
           stripe_subscription_id = self.stripe_customer.subscriptions.data.first.id
           status = self.stripe_customer.subscriptions.data.first.status
-        else
+          current_period_start = Time.at(self.stripe_customer.subscriptions.data.first.current_period_start)
+          current_period_end = Time.at(self.stripe_customer.subscriptions.data.first.current_period_end)
+        elsif plan.present?
           status = "active"
+          current_period_start = Time.now
           current_period_end = plan.end_at
           current_period_end = Time.now.to_date >> plan.duration_in_months unless plan.duration_in_months.nil?
         end
-        subscription = Subscription.new(
-          {
-            :plan => plan, 
-            :stripe_subscription_id => stripe_subscription_id,
-            :status => status,
-            :current_period_end => current_period_end
-          })
-        self.subscriptions << subscription
+
+        if plan.present?
+          subscription = Subscription.new(
+            {
+              :plan => plan, 
+              :stripe_subscription_id => stripe_subscription_id,
+              :status => status,
+              :current_period_start => current_period_start,
+              :current_period_end => current_period_end
+            })
+          self.subscriptions << subscription
+        end
       end
     end
     true
@@ -320,6 +386,7 @@ class User < ActiveRecord::Base
     false
   rescue Exception => e
     logger.error e.message
+    errors.add :base, "#{e.message}"
     self.stripe_token = nil
     false
   end
@@ -331,8 +398,11 @@ class User < ActiveRecord::Base
           stripe_customer.cancel_subscription(at_period_end: true)
           self.stripe_customer = nil
           #subscriptions.last.status = "user_canceled"
-          subscriptions.last.cancel_at_period_end = true
-          subscriptions.last.save
+          subscription = subscriptions.last
+          unless subscription.nil?
+            subscription.cancel_at_period_end = true
+            subscription.save
+          end
         end
       end
     end
@@ -345,10 +415,6 @@ class User < ActiveRecord::Base
   def expire
     self.role_ids = []
     UserMailer.expire_email(self).deliver
-  end
-
-  def find_by_email(email)
-    where("email = ?", email)
   end
 
   def add_mail_list(mail_list_name)

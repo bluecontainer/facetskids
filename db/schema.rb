@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140401124231) do
+ActiveRecord::Schema.define(version: 20140613162544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(version: 20140401124231) do
     t.integer  "duration_in_months"
     t.datetime "redeemed_at"
     t.datetime "end_at"
+    t.string   "message"
+    t.string   "sender_name"
   end
 
   add_index "gift_cards", ["receiver_id"], name: "index_gift_cards_on_receiver_id", using: :btree
@@ -128,6 +130,7 @@ ActiveRecord::Schema.define(version: 20140401124231) do
     t.string   "stripe_subscription_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "ended_at"
   end
 
   add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id", using: :btree
@@ -158,12 +161,13 @@ ActiveRecord::Schema.define(version: 20140401124231) do
     t.json     "event_data"
     t.integer  "user_id"
     t.decimal  "charge_amount"
-    t.string   "charge_id"
+    t.string   "event_object_id"
     t.string   "plan"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "user_stripe_events", ["event_id"], name: "index_user_stripe_events_on_event_id", using: :btree
   add_index "user_stripe_events", ["user_id"], name: "index_user_stripe_events_on_user_id", using: :btree
 
   create_table "user_video_views", force: true do |t|

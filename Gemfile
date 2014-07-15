@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.1.1'
+ruby '2.1.2'
 
 gem 'rails', '4.0.0'
 gem 'sqlite3', :group => [:development, :test]
@@ -25,7 +25,10 @@ gem 'jquery-turbolinks'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'angularjs-rails'
+gem 'angular-ui-router-rails', :git => 'git@github.com:iven/angular-ui-router-rails'
+gem 'angular-ui-bootstrap-rails'
 gem 'ng-rails-csrf'
+gem 'lodash-rails'
 
 gem "rspec-rails", ">= 2.12.2", :group => [:development, :test]
 gem "byebug", :group => [:development, :test]
@@ -80,3 +83,5 @@ gem "rack-cors", :require => 'rack/cors'
 gem "acts-as-taggable-on", :github => 'bluecontainer/acts-as-taggable-on'
 
 gem "useragent"
+
+gem 'pry-rails', :group => :development
