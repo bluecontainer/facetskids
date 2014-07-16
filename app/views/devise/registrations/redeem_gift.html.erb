@@ -1,6 +1,8 @@
 
+<%= render 'layouts/messages' %>
+
 <% if @apply.nil? %>
-Are you sure you want to redeem gift <%=@gift_code%> for <%=current_user.email%>
+Are you sure you want to redeem gift <%=@gift_code%> (from <%=@gc.sender.email%>) for <%=current_user.email%>
 
 <%= link_to 'Apply Gift to this Account', redeem_gift_path(:code => @gift_code, :apply => 1), :class => 'btn btn-large btn-primary' %>
 <% else %>
@@ -9,7 +11,7 @@ Are you sure you want to redeem gift <%=@gift_code%> for <%=current_user.email%>
   <%= display_base_errors resource %>
       </div>
     </div>
-    <% if @redeemed %>
+    <% unless @gc.nil? %>
 Gift <%=@gift_code%> has been redeemed for <%=current_user.email%>.
 	<% else %>
 Gift <%=@gift_code%> cannot be redeemed.

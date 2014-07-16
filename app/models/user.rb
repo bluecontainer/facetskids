@@ -205,7 +205,7 @@ class User < ActiveRecord::Base
     unless gc.nil?
       if gc.redeem(self)
         self.coupon = gc.stripe_coupon_id
-        true
+        gc
       else
         raise "Gift card cannot be redeemed. Already redeemed."
       end
@@ -215,7 +215,7 @@ class User < ActiveRecord::Base
   rescue Exception => e
     logger.error e.message
     errors.add :base, "#{e.message}"
-    false
+    nil
   end
  
   def update_plan(name)

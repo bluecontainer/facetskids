@@ -213,7 +213,13 @@ class RegistrationsController < Devise::RegistrationsController
     @apply = params["apply"]
     
     unless @apply.nil?
-      @redeemed = current_user.redeem_gift(@gift_code)
+      @gc = current_user.redeem_gift(@gift_code)
+    else
+      @gc = GiftCard.find_by(:code => @gift_code)
+      if @gc.nil? or @gc.redeemed?
+        flash.now.alert = "Gift code #{@gift_code} is invalid"
+        render "home/giftcard"
+      end
     end
   end
 

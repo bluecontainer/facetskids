@@ -9,6 +9,8 @@ class GiftCard < ActiveRecord::Base
 
   before_save :purchase_before_save
 
+  scope :active, lambda { where(arel_table[:redeemed_at].lt(Time.now).and(arel_table[:end_at].gt(Time.now))) }
+
   def defaults
     self.code = create_uniq_code_string
     self.paid = false
@@ -16,6 +18,10 @@ class GiftCard < ActiveRecord::Base
     self.coupon_created = false
   end
 
+  def active?
+    redeemed_at < Time.now and end_at > Time.now
+  end
+  
   def purchase_before_save
     #if self.stripe_charge_id.nil?
     if !self.paid and !self.sender.nil?
