@@ -10,8 +10,8 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require jquery.iosslider
-//= require jquery.iosslider-vertical
+//= require jquery/jquery.iosslider.js
+//= require jquery/jquery.iosslider-vertical.js
 //= require angular-resource
 //= require angular-sanitize
 //= require ng-rails-csrf
@@ -21,6 +21,6 @@
 //= require video.angular
 //= require svginline.angular
 //= require marquee.angular
-//= require app.angular
+//= require app.angular.js.erb
 //= require app.jquery
 //= require snap

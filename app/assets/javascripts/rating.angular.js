@@ -1,74 +1,74 @@
 angular.module('facetsKids.rating', [])
 
-.constant('ratingConfig', {
-  max: 5,
-  stateOn: null,
-  stateOff: null
-})
+    .constant('ratingConfig', {
+        max: 5,
+        stateOn: null,
+        stateOff: null
+    })
 
-.controller('RatingController', ['$scope', '$attrs', '$parse', 'ratingConfig', function($scope, $attrs, $parse, ratingConfig) {
+    .controller('RatingController', ['$scope', '$attrs', '$parse', 'ratingConfig', function ($scope, $attrs, $parse, ratingConfig) {
 
-  this.maxRange = angular.isDefined($attrs.max) ? $scope.$parent.$eval($attrs.max) : ratingConfig.max;
-  this.stateOn = angular.isDefined($attrs.stateOn) ? $scope.$parent.$eval($attrs.stateOn) : ratingConfig.stateOn;
-  this.stateOff = angular.isDefined($attrs.stateOff) ? $scope.$parent.$eval($attrs.stateOff) : ratingConfig.stateOff;
+        this.maxRange = angular.isDefined($attrs.max) ? $scope.$parent.$eval($attrs.max) : ratingConfig.max;
+        this.stateOn = angular.isDefined($attrs.stateOn) ? $scope.$parent.$eval($attrs.stateOn) : ratingConfig.stateOn;
+        this.stateOff = angular.isDefined($attrs.stateOff) ? $scope.$parent.$eval($attrs.stateOff) : ratingConfig.stateOff;
 
-  this.createRateObjects = function(states) {
-    var defaultOptions = {
-      stateOn: this.stateOn,
-      stateOff: this.stateOff
-    };
+        this.createRateObjects = function (states) {
+            var defaultOptions = {
+                stateOn: this.stateOn,
+                stateOff: this.stateOff
+            };
 
-    for (var i = 0, n = states.length; i < n; i++) {
-      states[i] = angular.extend({ index: i }, defaultOptions, states[i]);
-    }
-    return states;
-  };
+            for (var i = 0, n = states.length; i < n; i++) {
+                states[i] = angular.extend({ index: i }, defaultOptions, states[i]);
+            }
+            return states;
+        };
 
-  // Get objects used in template
-  $scope.range = angular.isDefined($attrs.ratingStates) ?  this.createRateObjects(angular.copy($scope.$parent.$eval($attrs.ratingStates))): this.createRateObjects(new Array(this.maxRange));
+        // Get objects used in template
+        $scope.range = angular.isDefined($attrs.ratingStates) ? this.createRateObjects(angular.copy($scope.$parent.$eval($attrs.ratingStates))) : this.createRateObjects(new Array(this.maxRange));
 
-  $scope.rate = function(value) {
-    if ( $scope.readonly || $scope.value === value) {
-      return;
-    }
+        $scope.rate = function (value) {
+            if ($scope.readonly || $scope.value === value) {
+                return;
+            }
 
-    $scope.value = value;
-  };
+            $scope.value = value;
+        };
 
-  $scope.enter = function(value) {
-    if ( ! $scope.readonly ) {
-      $scope.val = value;
-    }
-    $scope.onHover({value: value});
-  };
+        $scope.enter = function (value) {
+            if (!$scope.readonly) {
+                $scope.val = value;
+            }
+            $scope.onHover({value: value});
+        };
 
-  $scope.reset = function() {
-    $scope.val = angular.copy($scope.value);
-    $scope.onLeave();
-  };
+        $scope.reset = function () {
+            $scope.val = angular.copy($scope.value);
+            $scope.onLeave();
+        };
 
-  $scope.$watch('value', function(value) {
-    $scope.val = value;
-  });
+        $scope.$watch('value', function (value) {
+            $scope.val = value;
+        });
 
-  $scope.readonly = false;
-  if ($attrs.readonly) {
-    $scope.$parent.$watch($parse($attrs.readonly), function(value) {
-      $scope.readonly = !!value;
+        $scope.readonly = false;
+        if ($attrs.readonly) {
+            $scope.$parent.$watch($parse($attrs.readonly), function (value) {
+                $scope.readonly = !!value;
+            });
+        }
+    }])
+
+    .directive('rating', function () {
+        return {
+            restrict: 'EA',
+            scope: {
+                value: '=',
+                onHover: '&',
+                onLeave: '&'
+            },
+            controller: 'RatingController',
+            template: '<span ng-mouseleave="reset()" style="padding: 1px;"><span ng-repeat="r in range" ng-mouseenter="enter($index + 1)" ng-click="rate($index + 1)" ng-class="$index < val && (r.stateOn || \'icon-star\') || (r.stateOff || \'icon-star-empty\')"></span></span>',
+            replace: true
+        };
     });
-  }
-}])
-
-.directive('rating', function() {
-  return {
-    restrict: 'EA',
-    scope: {
-      value: '=',
-      onHover: '&',
-      onLeave: '&'
-    },
-    controller: 'RatingController',
-    template:  '<span ng-mouseleave="reset()" style="padding: 1px;"><span ng-repeat="r in range" ng-mouseenter="enter($index + 1)" ng-click="rate($index + 1)" ng-class="$index < val && (r.stateOn || \'icon-star\') || (r.stateOff || \'icon-star-empty\')"></span></span>',
-    replace: true
-  };
-});

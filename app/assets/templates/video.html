@@ -1,0 +1,9 @@
+<div ng-if="isLoaded(video)">
+    <a href="" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><img ng-src="{{video.thumbnails[thumbnailId()]}}"></a>
+</div>
+<div ng-if="!isLoaded(video)">
+    <a href="" class="hide" onclick="snapper.open('left');" ng-click="result.selectVideo(video);"><img ng-src="{{video.thumbnails[thumbnailId()]}}"></a>
+    LOADING
+</div>
+<div class="hilight">{{video.duration_in_sec.toHHMMSS()}}</div>
+<span class="movieTitle">{{video.name}}</span>

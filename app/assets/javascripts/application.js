@@ -10,7 +10,8 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require jquery
+//= require jquery/jquery
+//= require jquery/jquery.iosslider.js
 //= require jquery.turbolinks
 //= require jquery.ui.button
 //= require jquery.ui.datepicker
@@ -20,13 +21,17 @@
 //= require jquery.ui.effect
 //= require jquery_ujs
 //= require twitter/bootstrap
-//= require flatuipro
-//= require bootstrap
+//= require flatuipro/flatuipro.js
 //= require turbolinks
 //= require analytics
-//= require jquery.externalscript
-//= require jquery.readyselector
-//= require jquery.mobile.custom.min
+//= require jquery/jquery.externalscript
+//= require jquery/jquery.readyselector
 //= require fastclick
 //= require registrations
 //= require angular
+//= require angular-animate
+//= require angular-ui-router
+//= require angular-ui-bootstrap
+//= require ngProgress
+//= require spin
+//= require jquery/jquery.spin

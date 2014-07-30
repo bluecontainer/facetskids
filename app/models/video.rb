@@ -1,4 +1,5 @@
 require 'uri-s3'
+require 'open-uri'
 
 class Video < ActiveRecord::Base
 
@@ -208,15 +209,18 @@ class Video < ActiveRecord::Base
   end
 
   def thumbnails
-    thumbnail_urls = Array.new
+    thumbnails = Array.new
     count = 0
     self.screen_cap_time_code.each { |x|
       thumbnail_url = String.new
       thumbnail_url << encoding_base_url(:thumbnails) << "frame_" << sprintf('%04i', count) << ".png"
-      thumbnail_urls << thumbnail_url
+      thumbnails << thumbnail_url
       count += 1
     }
-    thumbnail_urls
+
+    thumbnails << "https://s3.amazonaws.com/facets_thumbnails/#{URI::encode(self.name).gsub("%20","%2520")}_200x200.png"
+
+    thumbnails
   end
 
   def encoding_base_url(style)

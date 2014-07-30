@@ -1,23 +1,26 @@
 <style>
-  .instruction {
-    font-family: "lato";
-    font-size: 12pt;
-    color: white;
-  }
-  h4 {
-    color: white;
-  }
+    .instruction {
+        font-family: "lato";
+        font-size: 12pt;
+        color: white;
+    }
+
+    h4 {
+        color: white;
+    }
 </style>
 
 <div class="well" style="background-color: #028abc; margin-top: 145px; border: none;">
 
   <div style="padding: 0px 0px 40px 40px;">
     <h4>Facets Kids app is not supported on this platform</h4>
+
     <div class="instruction">
       The Facets Kids application is currently only available for use on the iPad. If you have<br/>
-      an iPad, please visit <%=app_url%> on your iPad using Safari in order to install the app.<br/><br/>
-      If you have not yet created a Facets Kids account, click the button to sign up: &nbsp; 
-      <%= link_to 'Sign Up', new_user_registration_path, :class => 'btn btn-large btn-primary' %><br/><br/>
+      an iPad, please visit <%= app_url %> on your iPad using Safari in order to install the app.<br/><br/>
+      If you have not yet created a Facets Kids account, click the button to sign up: &nbsp;
+      <%= link_to 'Sign Up', new_user_registration_path, :class => 'btn btn-large btn-primary' %>
+      <br/><br/>
 
       If you do not have an iPad and are interested in Facets Kids, please fill out the form<br/>
       below and we will notify you when Facets Kids is available for your device(s).

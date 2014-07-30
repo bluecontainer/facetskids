@@ -14,7 +14,7 @@
 
 <% if in_app? && user_signed_in? %>
             <ul class="nav navbar-nav navbar-left">
-              <li class="home"><a href="" ng-click="selected.emotion = []"><svginline src="'<%=image_path('FacetsKidsAlpha2.svg')%>'"></svginline></a></li>
+              <li class="home"><a href="" ng-click="selected.emotion = [];snapper.close();"><svginline src="'<%=image_path('FacetsKidsAlpha2.svg')%>'"></svginline></a></li>
             </ul>
 <% else %>
     <div class="navbar-header">

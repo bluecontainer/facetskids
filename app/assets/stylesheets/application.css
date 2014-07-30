@@ -2,9 +2,14 @@
  * This is a manifest file that'll automatically include all the stylesheets available in this directory
  * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
  * the top of the compiled file, but it's generally better to create a new file per style scope.
+ *= require jquery.mobile
  *= require twitter/bootstrap
+<<<<<<< HEAD
  *= require flatuipro
  *= require flat-ui-extra
+=======
+ *= require flatuipro/flatuipro.less
+>>>>>>> e27c4ad... Moved some files around, added gem for generating smaller thumbnails, added detection code to detect retina display or not, refactored movie thumbnail display to a directive, many smaller changes.
  *= require home
  *= require navbar
  *= require carousel
@@ -16,4 +21,74 @@
 .checkbox .icons .second-icon,
 .radio .icons .second-icon {
   background-color: transparent;
+}
+
+.circle{
+  width:25px;
+  height:25px;
+  border-radius:12px;
+  /*font-size:20px;*/
+  color:#fff;
+  line-height:25px;
+  text-align:center;
+  background:#000;
+}
+
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+
+    -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+}
+
+@-webkit-keyframes bounceIn {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(.3);
+    }
+
+    50% {
+        opacity: 1;
+        -webkit-transform: scale(1.05);
+    }
+
+    70% {
+        -webkit-transform: scale(.9);
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(.3);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    70% {
+        transform: scale(.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bounceIn {
+    -webkit-animation-name: bounceIn;
+    animation-name: bounceIn;
+}
+
+.hide {
+    opacity: 0;
 }

@@ -1,29 +1,32 @@
 <%
-  image_prefix = "iOs" + client_platform_version.to_s
-  images = [image_prefix + "pic1.jpg", image_prefix + "pic2.jpg", image_prefix + "pic3.jpg"]
+   image_prefix = "iOs" + client_platform_version.to_s
+   images = [image_prefix + "pic1.jpg", image_prefix + "pic2.jpg", image_prefix + "pic3.jpg"]
 %>
 
 <style>
-  .step {
-    font-family: "lato";
-    font-weight: bold;
-    font-size: 14pt;
-    color: white;
-  }
-  .instruction {
-    font-family: "lato";
-    font-size: 10pt;
-    color: white;
-  }
-  h4 {
-    color: white;
-  }
+    .step {
+        font-family: "lato";
+        font-weight: bold;
+        font-size: 14pt;
+        color: white;
+    }
+
+    .instruction {
+        font-family: "lato";
+        font-size: 10pt;
+        color: white;
+    }
+
+    h4 {
+        color: white;
+    }
 </style>
 
 <div class="well" style="background-color: #028abc; margin-top: 145px; border: none;">
 
   <div style="padding: 0px 0px 40px 40px;">
     <h4>Add Facets Kids to Your iPad</h4>
+
     <div class="instruction">
       Follow the three steps below to add the Facets Kids icon to your iPad home screen.</br>
       Then go to your home screen and click on the new Facets Kids icon to launch the app.
@@ -35,21 +38,23 @@
       <span class="step">Step 1</span><br/>
       <span class="instruction">Click the Share button to the left of the address bar.</span><br/>&nbsp;
       <div class="thumbnail">
-      <%=image_tag(images[0])%>
+        <%= image_tag(images[0]) %>
       </div>
     </div>
     <div class="col-md-4 col-xs-12">
       <span class="step">Step 2</span><br/>
       <span class="instruction">Click the "Add to Home Screen" button within the sharing drop-down menu.</span>
+
       <div class="thumbnail">
-      <%=image_tag(images[1])%>
+        <%= image_tag(images[1]) %>
       </div>
     </div>
     <div class="col-md-4 col-xs-12">
       <span class="step">Step 3</span><br/>
       <span class="instruction">Click the "Add" button on the "Add to Home" drop-down form.</span>
+
       <div class="thumbnail">
-      <%=image_tag(images[2])%>
+        <%= image_tag(images[2]) %>
       </div>
     </div>
   </div>

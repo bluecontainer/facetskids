@@ -38,4 +38,4 @@ $('.registrations, .invitations').ready(function() {
       };
       return subscription.setupForm();
   });
-});
+
