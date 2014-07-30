@@ -4,12 +4,7 @@
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require jquery.mobile
  *= require twitter/bootstrap
-<<<<<<< HEAD
- *= require flatuipro
- *= require flat-ui-extra
-=======
  *= require flatuipro/flatuipro.less
->>>>>>> e27c4ad... Moved some files around, added gem for generating smaller thumbnails, added detection code to detect retina display or not, refactored movie thumbnail display to a directive, many smaller changes.
  *= require home
  *= require navbar
  *= require carousel
