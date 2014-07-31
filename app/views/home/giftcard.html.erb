@@ -14,11 +14,11 @@ buy_path = user_signed_in? ? purchase_gift_path : new_user_registration_path(:pl
   <div class="col-md-6">
   	<h6>Use a gift</h6>
 
-	  <%= form_tag(redeem_gift_path, method: "get") do %>
-  	  <%= label_tag(:code, "Enter the code here:") %>
-  	  <%= text_field_tag(:code) %>
-      <%= submit_tag("Redeem") %>
+    <%= simple_form_for(:gift, :url => redeem_gift_path, :html => {:method => "post" }) do |f| %>
+      <%= f.input :code, :required => true, :label => false, :placeholder => "Code", :autofocus => true %>
+      <%= f.button :submit, 'Redeem Gift', :class => 'btn-primary' %>
     <% end %>
+
   </div>
 
 </div>

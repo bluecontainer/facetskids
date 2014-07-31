@@ -28,7 +28,7 @@
       <%= f.input :email, :required => true %>
     </div>
     <div class="col-md-4">
-        <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 2..15, input_html: { class: "select-block mbl"} %>
+      <%= f.input :child_age, :required => true, :placeholder => "Child's age", collection: 2..15, input_html: { class: "select-block mbl"} %>
     </div>
   </div>
 
@@ -84,26 +84,46 @@
     </div>
     <div class="col-md-9">
       <% unless current_subscription.nil? %>
+      <%   charge_event = @user.last_subscription_charge  %>
+      <%   invoice_event = @user.last_invoice %>
       <%   if current_subscription.cancel_requested? %>
       The subscription to <%=current_subscription.plan.name%> plan was cancelled at <%=current_subscription.canceled_at%>. Access to Facets Kids will end at the end of the current period, <%=current_subscription.current_period_end%>.
       <%   elsif current_subscription.past_due? %>
-      <%     charge_event = @user.user_stripe_events.charge.last  %>
-      <%     invoice_event = @user.user_stripe_events.invoice.last %>
       <%     charge_failure_message = charge_event.event_data["failure_message"].downcase unless charge_event.nil? %>
       Your account is past due. A scheduled payment failed because <%=charge_failure_message%>. The next attempt to charge your card is at <%=Time.at(invoice_event.event_data["next_payment_attempt"])%>
       <%   else %>
       Subscribed to the <%= @user.roles[0].name%> plan.<br/>
-      Next payment at <%= current_subscription.current_period_end %>.
+      <%     unless charge_event.nil? %>
+      The last payment was at <%= charge_event.created_at %>.<br/>
+      <%     else %>
+      <%       if invoice_event.event_data["total"] == 0 %>
+      <%         unless invoice_event.event_data["discount"].nil? %>
+      <%           if @user.has_active_gift_card? %>
+      Using a gift that ends on <%= @user.active_gift_card.end_at %> after which you will be charged.<br/>
+      <%            else %>
+      There was no charge for the last period because of a discount that has been applied.<br/>
+      <%            end %>
+      <%         end %>
+      <%       end %>
+      <%     end %>
+      <%     if @user.has_active_gift_card? %>
+      <%       %>
+      <%     else %>
+      Next payment at <%= current_subscription.current_period_end %>.<br/>
+      <%     end %>
       <%   end %> 
 
       <%   if @user.has_stripe_subscription? %>
       <%     unless @user.cancel_requested? %>
-      <a data-toggle="modal" href="#cancel-subscription">Cancel subscription</a>
+      <a data-toggle="modal" href="#cancel-subscription">Cancel subscription</a><br/>
       <%     end %>
-      <a data-toggle="modal" href="#create-subscription">Change subscription</a>
+      <a data-toggle="modal" href="#create-subscription">Change subscription</a><br/>
       <%   end %>
 
       <% else %>
+      <%   if @user.has_active_gift_card? %>
+      Using a gift that ends on <%= @user.active_gift_card.end_at %> after which you will need to create a subscription to continue access.<br/>
+      <%   end %>
       <a data-toggle="modal" href="#create-subscription">Subscribe</a>
       <% end %>
     </div>
@@ -113,10 +133,19 @@
     <div class="col-md-3">
       Gift
     </div>
+    <div class="col-md-3">
+      <%= simple_form_for(:gift, :url => redeem_gift_path, :html => {:method => "post" }) do |f| %>
+        <%= f.input :code, :required => true, :label => false, :placeholder => "Code", :autofocus => true %>
+        <%= f.button :submit, 'Redeem Gift', :class => 'btn-primary' %>
+      <% end %>
+    </div>
   </div>
   <div class="row">
     <div class="col-md-offset-3 col-md-9">
+      <%= link_to "Buy Gift", purchase_gift_path %><br/>
+      <% if @user.sent_gift_cards.length > 0 %>
       <%= link_to "View Purchased Gifts", gift_cards_path %>
+      <% end %>
     </div>
   </div>
 

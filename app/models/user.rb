@@ -102,15 +102,19 @@ class User < ActiveRecord::Base
     !customer_id.nil?
   end
 
-  def has_gift_card?
-    return received_gift_cards.last.end_at > Time.now if received_gift_cards.length > 0
-    false
+  def active_gift_card
+    gc = received_gift_cards.last
+    (gc.present? and gc.end_at > Time.now) ? gc : nil
+  end
+
+  def has_active_gift_card?
+    active_gift_card.present?
   end
 
   def active?
     return true if is_admin?
 
-    has_subscription? or has_gift_card?
+    has_subscription? or has_active_gift_card?
 
     #if subscriptions.length > 0
     #  plan_name = subscriptions.last.plan.name
@@ -158,6 +162,16 @@ class User < ActiveRecord::Base
     else
       false
     end
+  end
+
+  def last_invoice
+    return nil if current_subscription.nil?
+    user_stripe_events.invoice.where("event_data->>'subscription' = '#{current_subscription.stripe_subscription_id}'").last
+  end
+
+  def last_subscription_charge
+    return nil if last_invoice.nil?
+    user_stripe_events.charge.where("event_data->>'invoice' = '#{last_invoice.event_object_id}'").last
   end
 
   def stripe_customer
@@ -253,7 +267,7 @@ class User < ActiveRecord::Base
           subscription.save
         end
 
-        if has_gift_card?
+        if has_active_gift_card?
           #create coupon
           coupon_results = received_gift_cards.last.create_coupon_from_remainder
           unless coupon_results == false
@@ -322,13 +336,13 @@ class User < ActiveRecord::Base
         end
       end
 
-      #if donation_amt.present?
-      #  if !donate(donation_amt * 100)
-      #    raise "Donation could not be charged. Can't create account.'" if donation_required
-      #  end
-      #else
-      #  raise "Donation amount not present. Can't create account." if donation_required
-      #end 
+      if donation_amt.present?
+        if !donate(donation_amt * 100)
+          raise "Donation could not be charged. Can't create account.'" if donation_required
+        end
+      else
+        raise "Donation amount not present. Can't create account." if donation_required
+      end 
     elsif !stripe_customer.nil?
       if stripe_token.present?
         stripe_customer.card = stripe_token

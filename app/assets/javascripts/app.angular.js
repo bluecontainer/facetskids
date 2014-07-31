@@ -31,10 +31,13 @@ app.controller('MainCtrl', function($scope, $log, TagListService, VideoTaggingSe
     $log.debug("playVideo");
     $log.debug(video);
 
+    videoSelected = video.selected;
     selectVideo(video);
 
-    $scope.result.play_video = video;
-    $scope.play(video);    
+    if (videoSelected) {
+      $scope.result.play_video = video;
+      $scope.play(video);
+    }
   }
 
   $scope.result.getVideoList = getVideoList;
@@ -49,41 +52,48 @@ app.controller('MainCtrl', function($scope, $log, TagListService, VideoTaggingSe
       $scope.user_emotion_list_watcher();
     }
 
+    if ($scope.result.selected_video) {
+      $scope.result.selected_video.selected = false;
+    }
     $scope.result.selected_video = video;
-    var user_video = VideoTaggingService.get({id: video.id}, function() {
-      $log.debug("VideoTaggingService.query callback");
-      $log.debug(user_video);
 
-      $scope.result.selected_user_video = user_video;
-      if (!user_video.user_rating) {
-        $scope.selected.user_rating = 0;
-      } else {
-        $log.debug(user_video.user_rating);
-        $scope.selected.user_rating = parseInt(user_video.user_rating.charAt(0));
-      }
-      if (!user_video.user_emotion_list) {
-        $scope.selected.user_emotion_list = [];
-      } else {
-        $scope.selected.user_emotion_list = user_video.user_emotion_list;
-      }
+    if (!video.selected) {
+      video.selected = true;
 
-      $scope.user_rating_watcher = $scope.$watch('selected.user_rating', function(newValue, oldValue) {
-        if (newValue != oldValue) {
-          $log.debug('user_rating changed - ' + newValue);
-          $scope.result.selected_user_video.user_rating = newValue.toString() + "_star";
-          $scope.result.selected_user_video.$save();
+      var user_video = VideoTaggingService.get({id: video.id}, function() {
+        $log.debug("VideoTaggingService.query callback");
+        $log.debug(user_video);
+
+        $scope.result.selected_user_video = user_video;
+        if (!user_video.user_rating) {
+          $scope.selected.user_rating = 0;
+        } else {
+          $log.debug(user_video.user_rating);
+          $scope.selected.user_rating = parseInt(user_video.user_rating.charAt(0));
         }
-      });
-
-      $scope.user_emotion_list_watcher = $scope.$watch('selected.user_emotion_list', function(newValue, oldValue) {
-        if (newValue != oldValue) {
-          $log.debug('user_emotion_list changed = ' + newValue);
-          $scope.result.selected_user_video.user_emotion_list = newValue;
-          $scope.result.selected_user_video.$save();
+        if (!user_video.user_emotion_list) {
+          $scope.selected.user_emotion_list = [];
+        } else {
+          $scope.selected.user_emotion_list = user_video.user_emotion_list;
         }
-      });
 
-    });
+        $scope.user_rating_watcher = $scope.$watch('selected.user_rating', function(newValue, oldValue) {
+          if (newValue != oldValue) {
+            $log.debug('user_rating changed - ' + newValue);
+            $scope.result.selected_user_video.user_rating = newValue.toString() + "_star";
+            $scope.result.selected_user_video.$save();
+          }
+        });
+
+        $scope.user_emotion_list_watcher = $scope.$watch('selected.user_emotion_list', function(newValue, oldValue) {
+          if (newValue != oldValue) {
+            $log.debug('user_emotion_list changed = ' + newValue);
+            $scope.result.selected_user_video.user_emotion_list = newValue;
+            $scope.result.selected_user_video.$save();
+          }
+        });
+      });
+    }
   }
  
   function getVideoList(name) {
@@ -311,8 +321,10 @@ app.directive('svgbuttongroup', ['$log', function($log) {
           btn.state = !btn.state;
           this.update();
         } else {
+          state = btn.state;
           resetState($scope.btns);     
-          btn.state = true;
+          //btn.state = true;
+          btn.state = !state;
           this.update();
         }
       };

@@ -8,7 +8,10 @@ class SessionsController < Devise::SessionsController
     @redeem_view = false
     if session[:user_return_to] =~ /redeem/
       @redeem_view = true
-      @giftcode = CGI.parse(URI.parse(session[:user_return_to]).query)["code"].first
+      #logger.debug session[:user_return_to]
+      #query = URI.parse(session[:user_return_to]).query
+      #@giftcode = CGI.parse(query)["code"].first unless query.nil?
+      @gift_code = session[:gift_code]
     elsif params["type"] == "redeem"
       @redeem_view = true
     end

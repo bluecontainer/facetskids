@@ -1,7 +1,7 @@
 class RegistrationsController < Devise::RegistrationsController
   before_filter :configure_permitted_parameters
 
-  prepend_before_filter :authenticate_scope!, only: [:edit, :update, :destroy, :redeem_gift, :purchase_gift_edit]
+  prepend_before_filter :authenticate_scope!, only: [:edit, :update, :destroy, :purchase_gift_edit]
 
   def after_sign_up_path_for(resource)
     case current_user.roles.first.name
@@ -209,17 +209,26 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def redeem_gift
-    @gift_code = params["code"]
+    @gift_code = params["gift"]["code"]
+    @gift_code = session[:gift_code] if @gift_code.nil?
+    session[:gift_code] = @gift_code
+    
     @apply = params["apply"]
     
+    authenticate_scope!
+
+    failed = false
     unless @apply.nil?
       @gc = current_user.redeem_gift(@gift_code)
+      failed = @gc.nil?
     else
       @gc = GiftCard.find_by(:code => @gift_code)
-      if @gc.nil? or @gc.redeemed?
-        flash.now.alert = "Gift code #{@gift_code} is invalid"
-        render "home/giftcard"
-      end
+      failed = @gc.nil? or @gc.redeemed?
+    end
+
+    if failed
+      flash.alert = "Gift code #{@gift_code} is invalid"
+      redirect_to request.referer
     end
   end
 

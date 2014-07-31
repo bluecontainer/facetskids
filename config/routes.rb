@@ -16,6 +16,7 @@ FacetsKids::Application.routes.draw do
   devise_scope :user do
     get 'myaccount', :to => 'registrations#edit'
     get 'redeem_gift', :to => 'registrations#redeem_gift'
+    post 'redeem_gift', :to => 'registrations#redeem_gift'
     get 'purchase_gift', :to => 'registrations#purchase_gift_edit'
     put 'purchase_gift_update', :to => 'registrations#purchase_gift_update'
     put 'subscribe_plan', :to => 'registrations#subscribe_plan'

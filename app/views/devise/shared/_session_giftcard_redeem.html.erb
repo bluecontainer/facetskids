@@ -8,7 +8,7 @@
       Add to an existing account
 
       <%= render 'layouts/messages' %>
-      <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+      <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :method => "post") do |f| %>
         <%= f.error_notification %>
 
         <%= f.input :email, :autofocus => true, :label => "Email", :placeholder => "Email", input_html: { class: "login-field"} %>
@@ -20,12 +20,12 @@
         <%= f.button :submit, "Sign In", :class => "btn btn-primary btn-lg btn-block" %>
 
         <%= hidden_field_tag "check", "{{check}}" %>
-        <%= hidden_field_tag "giftcode", @giftcode %>
+        <%= hidden_field_tag "gift_code", @gift_code %>
       <% end %>
     </div>
     <div class="col-md-offset-2 col-md-5">
       <p>Add to a new account</p> 
 
-      <%= link_to "Create a New Account", new_registration_path(resource_name, :giftcode => @giftcode), :class => "btn btn-large btn-primary" %>
+      <%= link_to "Create a New Account", new_registration_path(resource_name, :giftcode => @gift_code, :plan => "giftcard_redeem"), :class => "btn btn-large btn-primary" %>
     </div>
   </div>
