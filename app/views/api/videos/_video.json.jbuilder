@@ -1,6 +1,6 @@
 json.(video, :id, :name, :description)
 json.duration_in_sec video.duration_in_ms/1000
-#json.(video, :emotion_list, :viewing_age_list)
+json.age_range video.viewing_age_list.first.to_s.split("_").first+"-"+video.viewing_age_list.last.to_s
 #json.user_emotion_list video.emotions_from(current_user)
 json.(video, :origin_country_code, :audio_language_code, :subtitle_language_code, :released_year)
 json.audio_language video.audio_language_code.map{ |code| LanguageList::LanguageInfo.find(code).name } unless video.audio_language_code.nil?

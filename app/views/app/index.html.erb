@@ -13,6 +13,7 @@
         <span ng-if="result.selected_video.origin_country.length > 0">{{result.selected_video.origin_country[0]}}</span>
         <span style="font-weight: bold; margin-left: 10px;">{{result.selected_video.released_year}}</span>
         <span ng-if="result.selected_video.audio_language.length > 0" style="margin-left: 10px">{{result.selected_video.audio_language[0]}}</span>
+        <span style="font-weight: bold; margin-left: 10px;">Ages: {{result.selected_video.age_range}}</span>
       </div>
       <div style="margin: 5px 9px 0px 9px; height: 95px; width: 288px;" class="scrollable">
         <div ng-bind-html="result.selected_video.description">
