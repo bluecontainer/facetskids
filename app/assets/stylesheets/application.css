@@ -18,70 +18,14 @@
   background-color: transparent;
 }
 
-.circle{
-  width:25px;
-  height:25px;
-  border-radius:12px;
-  /*font-size:20px;*/
-  color:#fff;
-  line-height:25px;
-  text-align:center;
-  background:#000;
-}
-
-.animated {
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-
-    -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
-    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
-}
-
-@-webkit-keyframes bounceIn {
-    0% {
-        opacity: 0;
-        -webkit-transform: scale(.3);
-    }
-
-    50% {
-        opacity: 1;
-        -webkit-transform: scale(1.05);
-    }
-
-    70% {
-        -webkit-transform: scale(.9);
-    }
-
-    100% {
-        -webkit-transform: scale(1);
-    }
-}
-
-@keyframes bounceIn {
-    0% {
-        opacity: 0;
-        transform: scale(.3);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1.05);
-    }
-
-    70% {
-        transform: scale(.9);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-.bounceIn {
-    -webkit-animation-name: bounceIn;
-    animation-name: bounceIn;
+.spinner {
+    width: 206px;
+    height: 155px;
+    background-image: url('http://pictures.reuters.com/ClientFiles/RTR/Images/ajax-loader.gif');
+    background-size: contain;
+    background-size: 37px 37px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
 }
 
 .hide {
