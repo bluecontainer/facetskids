@@ -417,6 +417,9 @@ app.directive('svgbuttongroup', ['$log', function ($log) {
                     $log.debug($scope.btns);
 
                     $scope.btns.forEach(function (btn) {
+                        if (!$scope.tagList.indexOf) {
+                            $scope.tagList = [];
+                        }
                         if ($scope.tagList.indexOf(btn.tag) != -1) {
                             $log.debug(btn.tag + " get true");
                             btn.state = true;

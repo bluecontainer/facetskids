@@ -68,6 +68,9 @@ class ApplicationController < ActionController::Base
   end
 
   def can_run_app?
+    unless config.restrict_useragent
+      return true
+    end
     return true if session[:app_force]
     @user_agent = UserAgent.parse(request.user_agent)
     #check if an iPad
