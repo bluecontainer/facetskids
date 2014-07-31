@@ -161,9 +161,9 @@ app.controller('MainCtrl', function ($scope, $log, TagListService, VideoTaggingS
 
     $scope.thumbnailId = function () {
         /*var retina = window.devicePixelRatio > 1;
-        if (retina) {
-            return 0;
-        }*/
+         if (retina) {
+         return 0;
+         }*/
         return 1;
     }
 
@@ -404,9 +404,6 @@ app.directive('svgbuttongroup', ['$log', function ($log) {
                 }
             };
 
-
-            ctrl = this;
-
             $scope.$watch('tagList', function (value) {
                 $log.debug("tagList watch:");
                 $log.debug(value);
@@ -427,7 +424,6 @@ app.directive('svgbuttongroup', ['$log', function ($log) {
                     })
                 }
             });
-
         },
 
         link: function (scope, element, attrs, controller) {
