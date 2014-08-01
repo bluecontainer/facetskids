@@ -317,6 +317,10 @@ class Video < ActiveRecord::Base
     return response
   end
 
+  def people
+    SupportingRole.where(video: self)
+  end
+
   #def as_json(options = { })
     # just in case someone says as_json(nil) and bypasses
     # our default...
