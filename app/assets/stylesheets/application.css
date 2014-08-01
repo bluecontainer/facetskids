@@ -31,3 +31,12 @@
 .hide {
     opacity: 0;
 }
+
+table {
+    border: 1px solid darkgrey;
+}
+
+td {
+    border-top: 1px solid darkgrey;
+    border-right: 1px dotted darkgrey;
+}

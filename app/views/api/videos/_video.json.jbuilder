@@ -8,7 +8,7 @@ json.subtitle_language video.subtitle_language_code.map{ |code| LanguageList::La
 json.origin_country video.origin_country_code.map{ |code| Country.find_country_by_alpha2(code).name } unless video.origin_country_code.nil?
 json.video_url video.encoding.url(:hlsipad)
 json.(video, :thumbnails)
-json.supporing_roles video.supporting_roles do |role|
+json.supporting_roles video.supporting_roles do |role|
   json.role role.name
-  json.person role.person.name
+  json.name role.person.name
 end

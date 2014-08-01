@@ -15,6 +15,17 @@
         <span ng-if="result.selected_video.audio_language.length > 0" style="margin-left: 10px">{{result.selected_video.audio_language[0]}}</span>
         <br>
         <span style="font-weight: bold">Ages: {{result.selected_video.age_range}}</span>
+        <br>
+        <table style="width:100%;align-self: center; text-align: center;" ng-if="result.selected_video.supporting_roles.length>0">
+          <tr>
+            <th style="text-align: center">Person:</th>
+            <th style="text-align: center">Role:</th>
+          </tr>
+          <tr ng-repeat="person in result.selected_video.supporting_roles">
+            <td>{{person.name}}</td>
+            <td>{{person.role}}</td>
+          </tr>
+        </table>
       </div>
       <div style="margin: 5px 9px 0px 9px; height: 95px; width: 288px;" class="scrollable">
         <div ng-bind-html="result.selected_video.description">
