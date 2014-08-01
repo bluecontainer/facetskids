@@ -317,8 +317,8 @@ class Video < ActiveRecord::Base
     return response
   end
 
-  def people
-    SupportingRole.where(video: self)
+  def supporting_roles
+  SupportingRole.where(video: self)
   end
 
   #def as_json(options = { })
