@@ -102,11 +102,11 @@
     });
 
     snapper.on("open",function(){
-        $("div.snap-drawers").toggleClass("hidden",100);
+        $("div.snap-drawers").removeClass("hidden");
     });
 
     snapper.on("close",function(){
-        $("div.snap-drawers").toggleClass("hidden",100);
+        $("div.snap-drawers").addClass("hidden");
     })
 
     $(document).on('touchmove', function (e) {
