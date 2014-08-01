@@ -27,29 +27,36 @@
           </tr>
         </table>
       </div>
-      <div style="margin: 5px 9px 0px 9px; height: 95px; width: 288px;" class="scrollable">
-        <div ng-bind-html="result.selected_video.description">
+      <div style="margin: 5px 9px 0px 9px; height: 150px; width: 288px;" class="scrollable">
+      <div ng-bind-html="result.selected_video.description">
         </div>
       </div>
     </div>
-    <div class="ratingContainer">
+    <div ng-if="result.selected_video.view_count>0">
+      <div class="ratingContainer">
+        <div class="ratingTitle">
+          Rate It
+          <div style="margin: 0px 9px 0px 9px;">
+            <rating value="selected.user_rating" max="5" readonly="false" state-on="'entypo-star'" state-off="'entypo-star-empty'"></rating>
+          </div>
+        </div>
+      </div>
+      <div class="tagTitle">
+        Did this make you...
+      </div>
+      <div class="tagContainer" svgbuttongroup tag-list="selected.user_emotion_list" multiple="true">
+        <svgbutton src="<%= image_path('happy.svg') %>" value="happy"></svgbutton>
+        <svgbutton src="<%= image_path('excited.svg') %>" value="excited"></svgbutton>
+        <svgbutton src="<%= image_path('scared.svg') %>" value="scared"></svgbutton>
+        <svgbutton src="<%= image_path('think.svg') %>" value="think"></svgbutton>
+        <svgbutton src="<%= image_path('laugh.svg') %>" value="laugh"></svgbutton>
+        <svgbutton src="<%= image_path('care.svg') %>" value="care"></svgbutton>
+      </div>
+    </div>
+    <div ng-if="result.selected_video.view_count==0">
       <div class="ratingTitle">
-        Rate It
-        <div style="margin: 0px 9px 0px 9px;">
-          <rating value="selected.user_rating" max="5" readonly="false" state-on="'entypo-star'" state-off="'entypo-star-empty'"></rating>
-        </div>
+        View the movie to rate it!
       </div>
-    </div>
-    <div class="tagTitle">
-      Did this make you...
-    </div>
-    <div class="tagContainer" svgbuttongroup tag-list="selected.user_emotion_list" multiple="true">
-      <svgbutton src="<%= image_path('happy.svg') %>" value="happy"></svgbutton>
-      <svgbutton src="<%= image_path('excited.svg') %>" value="excited"></svgbutton>
-      <svgbutton src="<%= image_path('scared.svg') %>" value="scared"></svgbutton>
-      <svgbutton src="<%= image_path('think.svg') %>" value="think"></svgbutton>
-      <svgbutton src="<%= image_path('laugh.svg') %>" value="laugh"></svgbutton>
-      <svgbutton src="<%= image_path('care.svg') %>" value="care"></svgbutton>
     </div>
 
   </div>

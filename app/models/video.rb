@@ -318,7 +318,7 @@ class Video < ActiveRecord::Base
   end
 
   def supporting_roles
-  SupportingRole.where(video: self)
+    SupportingRole.where(video: self)
   end
 
   #def as_json(options = { })

@@ -12,3 +12,4 @@ json.supporting_roles video.supporting_roles do |role|
   json.role role.name
   json.name role.person.name
 end
+json.view_count UserVideoView.where(video: video, user: current_user).size
